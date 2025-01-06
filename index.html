@@ -10,63 +10,70 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<header class="bg-primary text-white text-center py-4">
-    <h1>Repositório de Aulas do Charlão!</h1>
+<header>
+    <!-- Barra de Navegação -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Charlão Aulas</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Alternar navegação">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">Início</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="aulas.html">Aulas em PDF</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Contato</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 </header>
+
 <main class="container my-5">
     <section class="mb-4">
-        <h2 class="text-secondary">Exercícos Módulo 1</h2>
-       
-
+        <h2 class="text-secondary">Exercícios Módulo 1</h2>
         <ul class="list-group">
             <li class="list-group-item">
-                <a href="pdf/m1/A3M1wannaCry.pdf" target="_blank" class="text-decoration-none">Exercío A3M1</a>
-            </li>           
-        </ul>
-
-        <ul class="list-group">
+                <a href="exercicios/m1/A3M1wannaCry.pdf" target="_blank" class="text-decoration-none">Exercício A3M1</a>
+            </li>
             <li class="list-group-item">
-                <a href="pdf/m1/Exercícios A4M1.pdf" target="_blank" class="text-decoration-none">Exercío A4M1</a>
-            </li>           
-        </ul>
-
-
-        <ul class="list-group">
+                <a href="exercicios/m1/Exercícios A4M1.pdf" target="_blank" class="text-decoration-none">Exercício A4M1</a>
+            </li>
             <li class="list-group-item">
-                <a href="pdf/m1/Exercícios A8M1.pdf" target="_blank" class="text-decoration-none">Exercío A8M1</a>
-            </li>           
+                <a href="exercicios/m1/Exercícios A8M1.pdf" target="_blank" class="text-decoration-none">Exercício A8M1</a>
+            </li>
         </ul>
-
     </section>
     
-
     <section class="mb-4">
-        <h2 class="text-secondary">Exercícos Módulo 2</h2>
-       
-
+        <h2 class="text-secondary">Exercícios Módulo 2</h2>
         <ul class="list-group">
             <li class="list-group-item">
-                <a href="pdf/m2/ExercícioA3M2.pdf" target="_blank" class="text-decoration-none">Exercío A3M2</a>
-            </li>           
+                <a href="exercicios/m2/ExercícioA3M2.pdf" target="_blank" class="text-decoration-none">Exercício A3M2</a>
+            </li>
         </ul>
-
-      
-
     </section>
     
-
     <section>
-        <h2 class="text-secondary">Oficinas e Workshops </h2>
+        <h2 class="text-secondary">Oficinas e Workshops</h2>
         <ul class="list-group">
             <li class="list-group-item">
-                <a href="pdf/Harmonia Tecnológica.pdf" target="_blank" class="text-decoration-none">Oficina Harmonia Tecnológica</a>
-            </li>           
+                <a href="exercicios/oficinas/Harmonia Tecnológica.pdf" target="_blank" class="text-decoration-none">Oficina Harmonia Tecnológica</a>
+            </li>
         </ul>
     </section>
 </main>
+
 <footer class="bg-dark text-white text-center py-3">
     <p>&copy; 2024 O melhor da região</p>
 </footer>
+
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
