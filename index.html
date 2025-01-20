@@ -38,13 +38,26 @@
             background-color: #2c6b2f;
         }
         
+        /* Estilo das linhas na lista */
         .list-group-item {
             background-color: #e9f5e3;
             border: 1px solid #c8e6c9;
+            cursor: pointer; /* Adiciona cursor de ponteiro para indicar que é clicável */
         }
 
         .list-group-item:hover {
-            background-color: #c8e6c9;
+            background-color: #c8e6c9; /* Cor mais escura quando passar o mouse */
+        }
+
+        .list-group-item a {
+            display: block;
+            padding: 10px;
+            color: #2c6b2f; /* Cor do texto */
+        }
+
+        .list-group-item a:hover {
+            color: #1c5e29; /* Cor mais escura no hover do link */
+            text-decoration: none;
         }
 
         footer {
@@ -53,7 +66,6 @@
         }
     </style>
 
-    <!---->
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZY4F301R5D"></script>
     <script>
@@ -63,7 +75,6 @@
 
         gtag('config', 'G-ZY4F301R5D');
     </script>
-    <!---->  
 </head>
 
 <body>
