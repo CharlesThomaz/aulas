@@ -64,6 +64,15 @@
             background-color: #2c6b2f;
             color: white;
         }
+
+        .senha-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .btn-senha {
+            display: none;
+        }
     </style>
 
     <!-- Google tag (gtag.js) -->
@@ -74,6 +83,17 @@
         gtag('js', new Date());
 
         gtag('config', 'G-ZY4F301R5D');
+
+        function validarSenha() {
+            var senha = document.getElementById("senha").value;
+            if(senha === "senha123") { // Senha correta
+                document.getElementById("btn-plataforma").style.display = "block"; // Exibe o botão
+                document.getElementById("senha").value = ""; // Limpa o campo de senha
+                alert("Senha correta! Acesse a Plataforma de Provas.");
+            } else {
+                alert("Senha incorreta. Tente novamente.");
+            }
+        }
     </script>
 </head>
 
@@ -102,6 +122,17 @@
 <!-- Botões de Navegação -->
 <div class="container my-3 text-center">
     <a href="aulas.html" class="btn btn-primary mx-2">Clique aqui para acessar as Aulas</a>        
+</div>
+
+<!-- Campo para digitar a senha -->
+<div class="senha-container">
+    <input type="password" id="senha" class="form-control" placeholder="Digite a senha para acessar a plataforma de provas" required>
+    <button class="btn btn-success mt-2" onclick="validarSenha()">Acessar</button>
+</div>
+
+<!-- Botão da plataforma de provas (escondido inicialmente) -->
+<div class="container my-3 text-center">
+    <a href="https://charlao-ad206.web.app/index.html" target="_blank" id="btn-plataforma" class="btn btn-primary btn-senha">Plataforma de Provas</a>
 </div>
 
 <main class="container my-5">
@@ -143,7 +174,7 @@
             </li>
         </ul>
     </section>
-    
+
     <section class="mb-4">
         <h2 class="text-secondary">Exercícios Módulo 2</h2>
         <ul class="list-group">
@@ -164,7 +195,7 @@
             </li>
         </ul>
     </section>
-    
+
     <section>
         <h2 class="text-secondary">Oficinas</h2>
         <ul class="list-group">
