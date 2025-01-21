@@ -82,6 +82,22 @@
             border-radius: 0;
         }
 
+        /* Estilo para o botão de "Acessar Plataforma de Provas" */
+        .btn-plataforma {
+            background-color: #ff9900;
+            border-color: #ff9900;
+            color: white;
+            font-size: 18px;
+            padding: 10px 20px;
+            text-align: center;
+            display: none;
+        }
+
+        .btn-plataforma:hover {
+            background-color: #cc7a00;
+            border-color: #cc7a00;
+        }
+
     </style>
 
     <!-- Google tag (gtag.js) -->
@@ -119,18 +135,19 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <!-- Lado Direito -->
                 <ul class="navbar-nav ms-auto">
+                   
                     <li class="nav-item">
-                        <a class="nav-link" href="#aulas">Aulas</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#plataforma">Plataforma de Provas</a>
+                        <a class="nav-link" href="https://charlao-ad206.web.app/">Plataforma de Provas</a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
 </header>
-
+<!-- Botão da plataforma de provas (escondido inicialmente) -->
+<div class="container my-3 text-center">
+    <a href="https://charlao-ad206.web.app/index.html" target="_blank" id="btn-plataforma" class="btn btn-primary btn-senha">Plataforma de Provas</a>
+</div>
 <main class="container my-5">
     <!-- Aba de Aulas -->
     <div class="tab-content" id="aulas">
@@ -172,6 +189,9 @@
                 </li>
             </ul>
         </section>
+        <div class="container my-3 text-center">
+            <a href="exercicios/m1" target="_blank" class="btn btn-success">Acessar Aulas</a>
+        </div>
     </div>
 
     <!-- Aba de Plataforma de Provas -->
@@ -182,7 +202,7 @@
         </div>
         <!-- Botão da plataforma de provas (escondido inicialmente) -->
         <div class="container my-3 text-center">
-            <a href="https://charlao-ad206.web.app/index.html" target="_blank" id="btn-plataforma" class="btn btn-primary btn-senha">Plataforma de Provas</a>
+            <a href="https://charlao-ad206.web.app/index.html" target="_blank" id="btn-plataforma" class="btn btn-plataforma">Plataforma de Provas</a>
         </div>
     </div>
 </main>
