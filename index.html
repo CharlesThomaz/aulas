@@ -3,246 +3,158 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Professor Charlão - Apresentação</title>
-    <link rel="stylesheet" href="styles.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <title>Universo Charlão</title>
     <style>
-        /* Estilos gerais */
-        body {
+        /* Estilos Globais */
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
             font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #00c6ff, #0072ff);
-            color: white;
+            background-color: #000;
             overflow: hidden;
-        }
-        .container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-        }
-        
-        .section {
-            width: 100%;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: absolute;
-            top: 0;
-            left: 0;
-        }
-
-        .login-section {
-            background: rgba(0, 0, 0, 0.7);
-            border-radius: 10px;
-            padding: 30px;
-            z-index: 2;
-            transform: scale(0.9);
-        }
-        .game-section {
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 1;
-            width: 100%;
-            height: 100%;
-            display: none; /* Inicialmente escondido */
-            position: absolute;
-            top: 0;
-            left: 0;
-            transform: scale(1.2);
-            transition: transform 0.3s ease;
-        }
-
-        /* Títulos */
-        h1 {
-            font-size: 50px;
-            text-align: center;
-            color: white;
-            animation: fadeIn 1s ease-out;
-        }
-
-        /* Botões futuristas */
-        .btn-container {
-            display: flex;
-            gap: 30px;
-            justify-content: center;
-            margin-top: 20px;
-        }
-        .btn {
-            background-color: #ff6600;
-            color: white;
-            padding: 20px 40px;
-            border-radius: 50%;
-            font-size: 18px;
-            cursor: pointer;
-            border: none;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s ease;
+            color: #fff;
             position: relative;
         }
-        .btn:hover {
-            background-color: #ff4500;
-            box-shadow: 0 20px 30px rgba(0, 0, 0, 0.5);
-            transform: translateY(-10px);
-        }
-        .btn:active {
-            transform: scale(0.95);
+
+        /* Fundo Dinâmico */
+        #background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('fundo-universo.gif') no-repeat center center fixed;
+            background-size: cover;
+            z-index: -1;
         }
 
-        /* Jogo do Dinossauro */
-        .game-container {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            height: 300px;
-            background-color: #D3D3D3;
-            overflow: hidden;
-            z-index: 1; /* Fica atrás dos botões */
+        /* Sessão de Boas-Vindas */
+        #boas-vindas {
+            text-align: center;
+            margin-top: 20%;
         }
-        .dino {
-            width: 40px;
-            height: 40px;
-            background-color: #28a745;
-            position: absolute;
-            bottom: 0;
-            left: 50px;
+
+        #boas-vindas h1 {
+            font-size: 3em;
+            animation: bounce 2s ease-in-out;
+            font-family: 'Orbitron', sans-serif;
+            color: #ff00ff;
+        }
+
+        /* Animação do texto */
+        @keyframes bounce {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.2);
+            }
+        }
+
+        /* Sessão de Login */
+        #login {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            background-color: #00ff99;
+            color: #000;
             border-radius: 50%;
-            transition: bottom 0.2s ease;
-        }
-        .obstacle {
-            width: 20px;
-            height: 40px;
-            background-color: #ff6347;
-            position: absolute;
-            bottom: 0;
-            animation: moveObstacle 2s linear infinite;
-        }
-        @keyframes moveObstacle {
-            0% { right: -20px; }
-            100% { right: 100%; }
-        }
-        #game-over {
-            display: none;
-            font-size: 50px;
-            color: red;
-            position: absolute;
-            top: 100px;
-            width: 100%;
+            border: none;
+            padding: 20px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: transform 0.2s ease, background-color 0.2s ease;
         }
 
-        /* Animações */
-        @keyframes fadeIn {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
+        .btn:hover {
+            transform: scale(1.1);
+            background-color: #ff6600;
+        }
+
+        .btn:active {
+            transform: scale(0.9);
+            background-color: #ff3300;
+        }
+
+        /* Sessão de Jogo */
+        #jogo {
+            display: flex;
+            justify-content: center;
+            margin-top: 50px;
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            #boas-vindas h1 {
+                font-size: 2.5em;
+            }
+
+            .btn {
+                padding: 15px;
+                font-size: 1em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            #boas-vindas h1 {
+                font-size: 2em;
+            }
+
+            .btn {
+                padding: 10px;
+                font-size: 0.8em;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Sessão de Login -->
-        <div class="section login-section">
-            <h1>Bem-vindo ao Mundo do Professor Charlão!</h1>
-            <div class="btn-container">
-                <button class="btn" onclick="pedirSenhaProfessor('area_professor.html')">Área do Professor</button>
-                <button class="btn" onclick="pedirSenhaAluno('area_aluno.html')">Área do Aluno</button>
-            </div>
-        </div>
+    <!-- Fundo Dinâmico -->
+    <div id="background"></div>
 
-        <!-- Sessão do Jogo -->
-        <div class="section game-section" id="gameSection">
-            <div class="game-container">
-                <div class="dino" id="dino"></div>
-                <div id="game-over">Game Over!</div>
-            </div>
+    <!-- Sessão de Boas-Vindas -->
+    <section id="boas-vindas">
+        <h1>Bem-vindo ao Universo Charlão!</h1>
+    </section>
+
+    <!-- Sessão de Login -->
+    <section id="login">
+        <button class="btn" id="professor">Área do Professor</button>
+        <button class="btn" id="aluno">Área do Aluno</button>
+    </section>
+
+    <!-- Sessão de Jogo -->
+    <section id="jogo">
+        <div id="dino-game">
+            <!-- Jogo do Dinossauro será inserido aqui -->
         </div>
-    </div>
+    </section>
 
     <script>
-        // Função para redirecionar para áreas com senha
-        function pedirSenhaProfessor(destino) {
-            var senha = prompt("Digite a senha para acessar a Área do Professor:");
-            if (senha === "professor") {
-                showGameSection();
-            } else {
-                alert("Senha incorreta! Tente novamente.");
-            }
-        }
+        // Animação de entrada para os botões de login
+        window.onload = () => {
+            document.getElementById('professor').classList.add('show');
+            document.getElementById('aluno').classList.add('show');
+        };
 
-        function pedirSenhaAluno(destino) {
-            var senha = prompt("Digite a senha para acessar a Área do Aluno:");
-            if (senha === "aluno") {
-                showGameSection();
-            } else {
-                alert("Senha incorreta! Tente novamente.");
-            }
-        }
-
-        function showGameSection() {
-            // Esconde a seção de login e exibe a seção do jogo com animação
-            document.querySelector('.login-section').style.display = 'none';
-            let gameSection = document.getElementById('gameSection');
-            gameSection.style.display = 'flex';
-            gsap.to(gameSection, { duration: 0.5, transform: 'scale(1)' });
-            startGame();
-        }
-
-        // Animação dos elementos na tela
-        gsap.from("h1", { duration: 1.5, opacity: 0, y: -50, ease: "bounce.out" });
-        gsap.from(".btn", { duration: 1, opacity: 0, scale: 0.5, stagger: 0.3, ease: "back.out(1.7)" });
-
-        // Jogo do Dinossauro
-        const dino = document.getElementById("dino");
-        const gameOver = document.getElementById("game-over");
-        let jumping = false;
-
-        // Função para pular
-        document.addEventListener("keydown", (e) => {
-            if (e.key === " " && !jumping) {
-                jumping = true;
-                dino.style.bottom = "80px"; // Pulo do dinossauro
-                setTimeout(() => {
-                    dino.style.bottom = "0px"; // Retorna à posição inicial
-                    jumping = false;
-                }, 500); // Tempo para o pulo
-            }
+        const buttons = document.querySelectorAll('.btn');
+        buttons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                alert(`Você clicou na ${e.target.innerText}`);
+            });
         });
 
-        // Função para criar obstáculos
-        function createObstacle() {
-            const obstacle = document.createElement("div");
-            obstacle.classList.add("obstacle");
-            document.querySelector(".game-container").appendChild(obstacle);
-
-            let moveInterval = setInterval(() => {
-                let dinoPos = dino.getBoundingClientRect();
-                let obstaclePos = obstacle.getBoundingClientRect();
-
-                // Verifica colisão entre dinossauro e obstáculo
-                if (
-                    obstaclePos.left < dinoPos.right &&
-                    obstaclePos.right > dinoPos.left &&
-                    obstaclePos.top < dinoPos.bottom
-                ) {
-                    clearInterval(moveInterval);
-                    gameOver.style.display = "block"; // Fim de jogo
-                    setTimeout(() => {
-                        location.reload(); // Reinicia o jogo após 2 segundos
-                    }, 2000);
-                }
-
-                // Verifica quando o obstáculo sai da tela
-                if (obstaclePos.right <= 0) {
-                    clearInterval(moveInterval);
-                    obstacle.remove();
-                }
-            }, 10);
-        }
-
-        // Cria um obstáculo a cada 2 segundos
-        setInterval(createObstacle, 2000);
+        // Efeito de transição para os botões
+        document.querySelectorAll('.btn').forEach(btn => {
+            btn.style.transition = 'all 0.3s ease';
+        });
     </script>
 </body>
 </html>
