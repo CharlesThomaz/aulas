@@ -113,6 +113,54 @@
                 font-size: 0.8em;
             }
         }
+
+        /* Jogo do Dinossauro */
+        #dino-game {
+            width: 100%;
+            height: 300px;
+            background-color: #f0f0f0;
+            position: relative;
+            overflow: hidden;
+            display: none; /* Inicialmente escondido */
+        }
+
+        .dino {
+            width: 50px;
+            height: 50px;
+            background-color: #00ff00;
+            position: absolute;
+            bottom: 0;
+            left: 50px;
+        }
+
+        .cactus {
+            width: 20px;
+            height: 30px;
+            background-color: #ff0000;
+            position: absolute;
+            bottom: 0;
+            right: -20px;
+            animation: moveCactus 2s infinite linear;
+        }
+
+        @keyframes moveCactus {
+            0% {
+                right: -20px;
+            }
+            100% {
+                right: 100%;
+            }
+        }
+
+        .game-over {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2em;
+            color: #ff0000;
+            display: none; /* Inicialmente escondido */
+        }
     </style>
 </head>
 <body>
@@ -133,7 +181,9 @@
     <!-- Sessão de Jogo -->
     <section id="jogo">
         <div id="dino-game">
-            <!-- Jogo do Dinossauro será inserido aqui -->
+            <div class="dino" id="dino"></div>
+            <div class="cactus"></div>
+            <div class="game-over" id="gameOver">GAME OVER</div>
         </div>
     </section>
 
@@ -151,10 +201,48 @@
             });
         });
 
-        // Efeito de transição para os botões
-        document.querySelectorAll('.btn').forEach(btn => {
-            btn.style.transition = 'all 0.3s ease';
-        });
+        // Jogo do Dinossauro
+        const dino = document.getElementById('dino');
+        const cactus = document.querySelector('.cactus');
+        const gameOver = document.getElementById('gameOver');
+        let isJumping = false;
+
+        // Iniciar o jogo
+        window.onload = function() {
+            setTimeout(() => {
+                document.getElementById('dino-game').style.display = 'block'; // Mostrar o jogo
+            }, 1000);
+
+            // Controle de pulo
+            document.addEventListener('keydown', function(e) {
+                if (e.code === 'Space' && !isJumping) {
+                    isJumping = true;
+                    jump();
+                }
+            });
+
+            // Função do pulo
+            function jump() {
+                dino.style.animation = 'jump 0.5s ease';
+                setTimeout(() => {
+                    dino.style.animation = '';
+                    isJumping = false;
+                }, 500);
+            }
+
+            // Colisão
+            setInterval(() => {
+                let dinoTop = parseInt(window.getComputedStyle(dino).top);
+                let cactusLeft = parseInt(window.getComputedStyle(cactus).left);
+
+                if (cactusLeft > 50 && cactusLeft < 100 && dinoTop >= 100) {
+                    gameOver.style.display = 'block';
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1500);
+                }
+            }, 10);
+        };
     </script>
 </body>
 </html>
