@@ -236,7 +236,7 @@
         }
 
         
-       const questions = [
+        const questions = [
     { question: "Quanto é 3 + 5?", options: ["5", "8", "10", "7"], answer: 1 },
     { question: "Se um trem viaja a 80 km/h e outro a 100 km/h, qual é mais rápido?", options: ["Trem 1", "Trem 2", "Ambos", "Nenhum"], answer: 1 },
     { question: "Qual é o valor de PI?", options: ["3.14", "3.00", "3.10", "3.20"], answer: 0 },
@@ -285,8 +285,60 @@
     { question: "Em que ano o Brasil se tornou independente?", options: ["1820", "1822", "1830", "1889"], answer: 1 },
     { question: "Qual é o principal gás responsável pelo efeito estufa?", options: ["Oxigênio", "Dióxido de carbono", "Metano", "Óxido nitroso"], answer: 1 },
     { question: "Qual é o nome do maior arquipélago do mundo?", options: ["Ilhas Filipinas", "Ilhas Maldivas", "Ilhas da Indonésia", "Ilhas Galápagos"], answer: 2 },
-    { question: "Qual é o maior animal terrestre?", options: ["Elefante", "Hipopótamo", "Rinoceronte", "Girafa"], answer: 0 }
+    { question: "Qual é o maior animal terrestre?", options: ["Elefante", "Hipopótamo", "Rinoceronte", "Girafa"], answer: 0 },
+    // Perguntas novas adicionadas:
+    { question: "Qual é o sistema operacional mais usado no mundo?", options: ["Windows", "Mac OS", "Linux", "Android"], answer: 0 },
+    { question: "Qual é a moeda oficial da União Europeia?", options: ["Franco Suíço", "Libra Esterlina", "Euro", "Dólar"], answer: 2 },
+    { question: "Quem é o fundador da Microsoft?", options: ["Bill Gates", "Steve Jobs", "Mark Zuckerberg", "Larry Page"], answer: 0 },
+    { question: "Qual o maior social network em número de usuários?", options: ["Facebook", "Instagram", "Twitter", "TikTok"], answer: 0 },
+    { question: "Quem foi o primeiro ministro do Brasil após a redemocratização?", options: ["Tancredo Neves", "José Sarney", "Fernando Henrique Cardoso", "Lula"], answer: 1 },
+    { question: "O que é um 'smartphone'?", options: ["Telefone fixo", "Computador", "Celular com funções avançadas", "Consola de jogos"], answer: 2 },
+    { question: "Qual é o nome do chefe do governo na Alemanha?", options: ["Chanceler", "Presidente", "Rei", "Primeiro Ministro"], answer: 0 },
+    { question: "O que é blockchain?", options: ["Tipo de moeda", "Tecnologia de segurança digital", "Rede de computadores", "Internet segura"], answer: 1 },
+    { question: "Em qual país a Torre Eiffel está localizada?", options: ["França", "Reino Unido", "Espanha", "Alemanha"], answer: 0 },
+    { question: "Qual é o nome da maior empresa de streaming do mundo?", options: ["Disney+", "Netflix", "Amazon Prime Video", "HBO Max"], answer: 1 },
+
+     // Novas perguntas      
+    { question: "Qual é o principal sistema operacional para servidores web?", options: ["Windows", "Linux", "Mac OS", "Android"], answer: 1 },
+    { question: "Qual linguagem de programação é mais usada para desenvolvimento de apps móveis?", options: ["Java", "Swift", "Python", "C#"], answer: 1 },
+    { question: "O que é a inteligência artificial?", options: ["Máquinas que pensam como seres humanos", "Robôs com emoções", "Sistema que imita funções cognitivas humanas", "Computadores rápidos"], answer: 2 },
+    { question: "Qual é a principal função de um firewall?", options: ["Aumentar a velocidade da internet", "Proteger redes contra acessos não autorizados", "Limpar vírus do computador", "Monitorar o uso de internet"], answer: 1 },
+    { question: "O que é o 'cloud computing'?", options: ["Armazenamento físico de dados", "Armazenamento de dados na nuvem", "Tecnologia para impressoras", "Computadores de uso pessoal"], answer: 1 },
+    { question: "Qual é o nome do processo que utiliza células-tronco para tratar doenças?", options: ["Terapia genética", "Regeneração celular", "Terapia celular", "Regeneração de tecidos"], answer: 2 },
+    { question: "Qual é o órgão responsável pela produção de insulina no corpo humano?", options: ["Fígado", "Coração", "Pâncreas", "Rins"], answer: 2 },
+    { question: "O que é um tumor benigno?", options: ["Tumor que se espalha rapidamente", "Tumor que não se espalha para outras partes do corpo", "Tumor que afeta apenas os ossos", "Tumor maligno"], answer: 1 },
+    { question: "Qual é a especialidade médica que trata de doenças cardíacas?", options: ["Cardiologia", "Neurologia", "Ginecologia", "Endocrinologia"], answer: 0 },
+    { question: "O que é a pressão arterial?", options: ["Pressão exercida pelos músculos", "Pressão do sangue nas artérias", "Pressão interna dos pulmões", "Pressão nos vasos linfáticos"], answer: 1 },
+    { question: "O que é a Lei Maria da Penha?", options: ["Lei sobre direitos das crianças", "Lei contra o racismo", "Lei contra violência doméstica", "Lei de liberdade de expressão"], answer: 2 },
+    { question: "Qual o conceito jurídico de 'dolo'?", options: ["Atuar sem intenção", "Atuar com intenção de prejudicar", "Ato realizado por omissão", "Ato sem culpa"], answer: 1 },
+    { question: "O que é a 'liberdade de expressão'?", options: ["Direito de se expressar sem restrições", "Liberdade para criticar governos", "Direito de publicar opiniões sem censura", "Liberdade de escolha de profissão"], answer: 0 },
+    { question: "O que caracteriza um contrato de adesão?", options: ["Quando uma parte define as condições", "Quando as condições são negociáveis", "Quando ambas as partes têm o mesmo poder", "Quando é uma obrigação do consumidor"], answer: 0 },
+    { question: "O que é a 'dano moral' no direito?", options: ["Danificação de um bem material", "Violação de direitos pessoais e imateriais", "Dano causado por acidente", "Ato de negligência em um contrato"], answer: 1 },
+    { question: "Qual é a principal função do marketing digital?", options: ["Criar comerciais na TV", "Vender produtos em lojas físicas", "Aumentar a visibilidade online", "Promover eventos ao vivo"], answer: 2 },
+    { question: "O que é SEO?", options: ["Estratégia de publicidade paga", "Técnicas para otimizar sites nos motores de busca", "Campanha de e-mail marketing", "Tecnologia de redes sociais"], answer: 1 },
+    { question: "O que significa 'branding'?", options: ["Criação de conteúdo digital", "Gestão da imagem e identidade de uma marca", "Marketing de influência", "Publicação de anúncios na TV"], answer: 1 },
+    { question: "O que é um 'influenciador digital'?", options: ["Pessoa que compartilha conteúdo para engajar seguidores", "Profissional de marketing", "Empresa que cria campanhas publicitárias", "Pessoa que vende produtos físicos"], answer: 0 },
+    { question: "O que é um 'lead' em marketing?", options: ["Potencial cliente que demonstra interesse", "Produto para venda", "Oferta especial", "Campanha publicitária"], answer: 0 },
+    { question: "O que caracteriza um 'tratamento estético'?", options: ["Técnicas para melhorar a aparência da pele e do corpo", "Procedimentos médicos invasivos", "Tratamentos para doenças graves", "Intervenções para melhorar o desempenho físico"], answer: 0 },
+    { question: "O que é o 'botox'?", options: ["Medicamento utilizado para relaxamento muscular", "Creme hidratante", "Produto para emagrecimento", "Tratamento contra acne"], answer: 0 },
+    { question: "Qual é a função do 'ácido hialurônico' em cosméticos?", options: ["Diminuir a produção de melanina", "Hidratar e suavizar a pele", "Aumentar a produção de colágeno", "Proteger contra raios UV"], answer: 1 },
+    { question: "O que é o 'peeling químico'?", options: ["Procedimento para remoção de manchas e cicatrizes", "Tratamento contra acne", "Técnica para suavizar rugas", "Tratamento com laser para rejuvenescimento"], answer: 0 },
+    { question: "Qual é a função do 'serum' em cuidados com a pele?", options: ["Proteger contra raios solares", "Hidratar profundamente a pele", "Retirar impurezas da pele", "Reduzir a produção de óleo da pele"], answer: 1 },
+    { question: "O que é 'publi' em publicidade?", options: ["Anúncio pago por influenciadores", "Publicidade tradicional em jornais", "Campanha com descontos", "Promoção em redes sociais"], answer: 0 },
+    { question: "O que é a 'pesquisa de mercado'?", options: ["Estudo sobre o comportamento do consumidor", "Publicidade em jornais e revistas", "Análise do concorrente", "Campanha publicitária"], answer: 0 },
+    { question: "O que é a 'promotoria' no direito?", options: ["Departamento público que defende a sociedade", "Advogado especializado em família", "Responsável pelo processo de falência", "Juiz de direito"], answer: 0 },
+    { question: "O que caracteriza uma 'empresa de pequeno porte'?", options: ["Baixo faturamento anual", "Poucos funcionários", "Venda de produtos em pequena escala", "Atuação em poucos estados"], answer: 0 },
+    { question: "Qual é a principal função de um publicitário?", options: ["Desenvolver campanhas de marketing", "Gerenciar finanças de uma empresa", "Proteger a imagem de empresas", "Estudar concorrentes de mercado"], answer: 0 },
+    { question: "O que é o conceito de 'marketing de conteúdo'?", options: ["Publicidade agressiva em redes sociais", "Criação de conteúdo relevante para atrair consumidores", "Venda direta de produtos", "Campanha de descontos e promoções"], answer: 1 },
+    { question: "O que é um 'tratamento capilar'?", options: ["Técnicas para cuidar da saúde dos cabelos", "Cirurgia capilar", "Alisamento permanente", "Tintura para cabelos"], answer: 0 },
+    { question: "O que é 'microagulhamento'?", options: ["Técnica para rejuvenescimento da pele", "Tratamento capilar para queda de cabelo", "Tratamento dentário", "Remoção de manchas de pele"], answer: 0 },
+    { question: "Qual é a função do 'filtro solar'?", options: ["Proteger a pele dos raios UV", "Hidratar a pele", "Ajudar na cicatrização de feridas", "Diminuir a oleosidade da pele"], answer: 0 },
+    { question: "O que é um 'marketing de influência'?", options: ["Publicidade realizada por influenciadores", "Publicidade em revistas especializadas", "Publicidade de empresas em rádios", "Promoção de produtos por celebridades"], answer: 0 },
+    { question: "Qual é a principal diferença entre um contrato de trabalho CLT e um contrato de trabalho autônomo?", options: ["Vínculo empregatício", "Forma de pagamento", "Local de trabalho", "Horário fixo"], answer: 0 }
+
+   
 ];
+
 
 
 let currentQuestionIndex = 0;
