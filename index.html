@@ -204,7 +204,7 @@
     </div>
 
     <script>
-        // Funções para acesso (Professor e Aluno)
+                // Funções para acesso (Professor e Aluno)
         function checkPasswordProfessor() {
             var password = document.getElementById("passwordProfessor").value;
             var message = document.getElementById("access-message-professor");
@@ -212,6 +212,8 @@
             if (password === "professor123") {
                 message.textContent = "Acesso concedido ao Professor!";
                 message.style.color = "green";
+                // Redirecionamento após acesso concedido
+                window.location.href = "https://charlesthomaz.github.io/aulas";
             } else {
                 message.textContent = "Senha incorreta!";
                 message.style.color = "red";
@@ -225,11 +227,15 @@
             if (password === "aluno2025") {
                 message.textContent = "Acesso concedido ao Aluno!";
                 message.style.color = "green";
+                // Redirecionamento após acesso concedido
+                window.location.href = "https://charlesthomaz.github.io/aulas";
             } else {
                 message.textContent = "Senha incorreta!";
                 message.style.color = "red";
             }
         }
+
+        
        const questions = [
     { question: "Quanto é 3 + 5?", options: ["5", "8", "10", "7"], answer: 1 },
     { question: "Se um trem viaja a 80 km/h e outro a 100 km/h, qual é mais rápido?", options: ["Trem 1", "Trem 2", "Ambos", "Nenhum"], answer: 1 },
