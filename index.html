@@ -12,68 +12,86 @@
         body {
             margin: 0;
             padding: 0;
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #00c6ff, #0072ff);
             color: white;
-            text-align: center;
-            background: url('img/earth-3537401_1280.jpg') no-repeat center center fixed;
-            background-size: cover;
+            overflow: hidden;
         }
         .container {
-            position: relative;
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
             height: 100vh;
-            background: rgba(0, 0, 0, 0.6);
-            padding: 20px;
-            border-radius: 10px;
-            z-index: 10;
         }
-        .card {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 20px;
-            border-radius: 10px;
-            margin: 10px;
+        
+        .section {
+            width: 100%;
+            height: 100vh;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
+            position: absolute;
+            top: 0;
+            left: 0;
         }
+
+        .login-section {
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 10px;
+            padding: 30px;
+            z-index: 2;
+            transform: scale(0.9);
+        }
+        .game-section {
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1;
+            width: 100%;
+            height: 100%;
+            display: none; /* Inicialmente escondido */
+            position: absolute;
+            top: 0;
+            left: 0;
+            transform: scale(1.2);
+            transition: transform 0.3s ease;
+        }
+
+        /* Títulos */
+        h1 {
+            font-size: 50px;
+            text-align: center;
+            color: white;
+            animation: fadeIn 1s ease-out;
+        }
+
+        /* Botões futuristas */
         .btn-container {
             display: flex;
-            gap: 15px;
-            flex-direction: row;
+            gap: 30px;
             justify-content: center;
-            align-items: center;
+            margin-top: 20px;
         }
         .btn {
             background-color: #ff6600;
             color: white;
-            padding: 15px 30px;
-            margin: 10px;
-            border: none;
-            border-radius: 50px;
+            padding: 20px 40px;
+            border-radius: 50%;
             font-size: 18px;
             cursor: pointer;
-            transition: 0.3s;
+            border: none;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
             position: relative;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            transform: scale(1);
         }
         .btn:hover {
-            background-color: #cc5500;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-            animation: jump 0.5s ease-in-out;
+            background-color: #ff4500;
+            box-shadow: 0 20px 30px rgba(0, 0, 0, 0.5);
+            transform: translateY(-10px);
         }
         .btn:active {
             transform: scale(0.95);
         }
-        @keyframes jump {
-            0% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0); }
-        }
+
         /* Jogo do Dinossauro */
         .game-container {
             position: absolute;
@@ -82,7 +100,7 @@
             height: 300px;
             background-color: #D3D3D3;
             overflow: hidden;
-            z-index: -1; /* Fica atrás dos botões */
+            z-index: 1; /* Fica atrás dos botões */
         }
         .dino {
             width: 40px;
@@ -114,32 +132,40 @@
             top: 100px;
             width: 100%;
         }
+
+        /* Animações */
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
     </style>
 </head>
 <body>
-    <main>
-        <section class="container">
+    <div class="container">
+        <!-- Sessão de Login -->
+        <div class="section login-section">
             <h1>Bem-vindo ao Mundo do Professor Charlão!</h1>
-            <div class="card">
-                <div class="btn-container">
-                    <button class="btn" onclick="pedirSenhaProfessor('area_professor.html')">Área do Professor</button>
-                    <button class="btn" onclick="pedirSenhaAluno('areaAluno.html')">Área do Aluno</button>
-                </div>
+            <div class="btn-container">
+                <button class="btn" onclick="pedirSenhaProfessor('area_professor.html')">Área do Professor</button>
+                <button class="btn" onclick="pedirSenhaAluno('area_aluno.html')">Área do Aluno</button>
             </div>
-        </section>
-        <!-- Jogo do Dinossauro -->
-        <div class="game-container">
-            <div class="dino" id="dino"></div>
-            <div id="game-over">Game Over!</div>
         </div>
-    </main>
+
+        <!-- Sessão do Jogo -->
+        <div class="section game-section" id="gameSection">
+            <div class="game-container">
+                <div class="dino" id="dino"></div>
+                <div id="game-over">Game Over!</div>
+            </div>
+        </div>
+    </div>
 
     <script>
         // Função para redirecionar para áreas com senha
         function pedirSenhaProfessor(destino) {
             var senha = prompt("Digite a senha para acessar a Área do Professor:");
             if (senha === "professor") {
-                location.href = destino;
+                showGameSection();
             } else {
                 alert("Senha incorreta! Tente novamente.");
             }
@@ -148,10 +174,19 @@
         function pedirSenhaAluno(destino) {
             var senha = prompt("Digite a senha para acessar a Área do Aluno:");
             if (senha === "aluno") {
-                location.href = destino;
+                showGameSection();
             } else {
                 alert("Senha incorreta! Tente novamente.");
             }
+        }
+
+        function showGameSection() {
+            // Esconde a seção de login e exibe a seção do jogo com animação
+            document.querySelector('.login-section').style.display = 'none';
+            let gameSection = document.getElementById('gameSection');
+            gameSection.style.display = 'flex';
+            gsap.to(gameSection, { duration: 0.5, transform: 'scale(1)' });
+            startGame();
         }
 
         // Animação dos elementos na tela
