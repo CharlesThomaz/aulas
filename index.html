@@ -195,8 +195,9 @@
         </div>
 
         <!-- Área de Acesso (Aluno) -->
-       <br><br> <div class="access-area">
+        <br><br> <div class="access-area">
             <h2>Acesso Restrito - Aluno</h2>
+            <input type="text" id="playerName" placeholder="Digite seu nome">
             <input type="password" id="passwordAluno" placeholder="Digite a senha">
             <button onclick="checkPasswordAluno()">Entrar</button>
             <div id="access-message-aluno" style="margin-top: 15px;"></div>
@@ -204,7 +205,7 @@
     </div>
 
     <script>
-                // Funções para acesso (Professor e Aluno)
+        // Funções para acesso (Professor e Aluno)
         function checkPasswordProfessor() {
             var password = document.getElementById("passwordProfessor").value;
             var message = document.getElementById("access-message-professor");
@@ -222,15 +223,21 @@
 
         function checkPasswordAluno() {
             var password = document.getElementById("passwordAluno").value;
+            var playerName = document.getElementById("playerName").value;
             var message = document.getElementById("access-message-aluno");
 
-            if (password === "aluno2025") {
+            if (password === "aluno2025" && playerName !== "") {
                 message.textContent = "Acesso concedido ao Aluno!";
                 message.style.color = "green";
+                // Armazenar nome do jogador
+                localStorage.setItem("playerName", playerName);
                 // Redirecionamento após acesso concedido
                 window.location.href = "areaAluno.html";
-            } else {
+            } else if (password !== "aluno2025") {
                 message.textContent = "Senha incorreta!";
+                message.style.color = "red";
+            } else if (playerName === "") {
+                message.textContent = "Digite seu nome!";
                 message.style.color = "red";
             }
         }
@@ -342,55 +349,53 @@
 
 
 let currentQuestionIndex = 0;
-let score = 0;
+        let score = 0;
 
+        // Função para sortear uma pergunta aleatória
+        function getRandomQuestion() {
+            const randomIndex = Math.floor(Math.random() * questions.length);
+            return questions[randomIndex];
+        }
 
+        // Função para carregar a pergunta e opções
+        function loadQuestion() {
+            const questionElement = document.getElementById("question");
+            const optionsElement = document.getElementById("options");
 
-// Função para sortear uma pergunta aleatória
-function getRandomQuestion() {
-    const randomIndex = Math.floor(Math.random() * questions.length);
-    return questions[randomIndex];
-}
+            const currentQuestion = getRandomQuestion(); // Sorteia a pergunta aleatoriamente
+            questionElement.textContent = currentQuestion.question;
 
-// Função para carregar a pergunta e opções
-function loadQuestion() {
-    const questionElement = document.getElementById("question");
-    const optionsElement = document.getElementById("options");
+            // Limpar as opções anteriores
+            optionsElement.innerHTML = '';
 
-    const currentQuestion = getRandomQuestion(); // Sorteia a pergunta aleatoriamente
-    questionElement.textContent = currentQuestion.question;
+            currentQuestion.options.forEach((option, index) => {
+                const button = document.createElement("button");
+                button.textContent = option;
+                button.classList.add("option");
+                button.onclick = () => checkAnswer(index, currentQuestion.answer);
+                optionsElement.appendChild(button);
+            });
+        }
 
-    // Limpar as opções anteriores
-    optionsElement.innerHTML = '';
+        // Função para verificar a resposta
+        function checkAnswer(selectedOption, correctAnswer) {
+            const scoreElement = document.getElementById("score");
 
-    currentQuestion.options.forEach((option, index) => {
-        const button = document.createElement("button");
-        button.textContent = option;
-        button.classList.add("option");
-        button.onclick = () => checkAnswer(index, currentQuestion.answer);
-        optionsElement.appendChild(button);
-    });
-}
+            if (selectedOption === correctAnswer) {
+                score++;
+                scoreElement.textContent = "Pontuação: " + score;
+            } else {
+                scoreElement.textContent = "Resposta errada. Tente novamente!";
+            }
 
-// Função para verificar a resposta
-function checkAnswer(selectedOption, correctAnswer) {
-    const scoreElement = document.getElementById("score");
+            // Carregar a próxima pergunta
+            setTimeout(() => {
+                loadQuestion();
+            }, 1000);
+        }
 
-    if (selectedOption === correctAnswer) {
-        score++;
-        scoreElement.textContent = "Pontuação: " + score;
-    } else {
-        scoreElement.textContent = "Resposta errada. Tente novamente!";
-    }
-
-    // Carregar a próxima pergunta
-    setTimeout(() => {
-        loadQuestion();
-    }, 1000);
-}
-
-// Carregar a primeira pergunta ao carregar a página
-window.onload = loadQuestion;
-</script>
+        // Carregar a primeira pergunta ao carregar a página
+        window.onload = loadQuestion;
+    </script>
 </body>
 </html>
