@@ -27,17 +27,29 @@
             background: rgba(0, 0, 0, 0.6);
             padding: 20px;
             border-radius: 10px;
+            z-index: 10;
         }
         .card {
             background: rgba(255, 255, 255, 0.2);
             padding: 20px;
             border-radius: 10px;
             margin: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn-container {
+            display: flex;
+            gap: 15px; /* Espaçamento entre os botões */
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
         }
         .btn {
             background-color: #ff6600;
             color: white;
-            padding: 15px;
+            padding: 15px 30px;
             margin: 10px;
             border: none;
             border-radius: 50px;
@@ -45,17 +57,61 @@
             cursor: pointer;
             transition: 0.3s;
             position: relative;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transform: scale(1);
         }
         .btn:hover {
             background-color: #cc5500;
-        }
-        .btn:hover {
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
             animation: jump 0.5s ease-in-out;
+        }
+        .btn:active {
+            transform: scale(0.95);
         }
         @keyframes jump {
             0% { transform: translateY(0); }
             50% { transform: translateY(-10px); }
             100% { transform: translateY(0); }
+        }
+        /* Estilo para o Jogo do Dinossauro */
+        .game-container {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 300px;
+            background-color: #D3D3D3;
+            overflow: hidden;
+            z-index: -1; /* Fica atrás dos botões */
+        }
+        .dino {
+            width: 40px;
+            height: 40px;
+            background-color: #28a745;
+            position: absolute;
+            bottom: 0;
+            left: 50px;
+            border-radius: 50%;
+            transition: bottom 0.2s ease;
+        }
+        .obstacle {
+            width: 20px;
+            height: 40px;
+            background-color: #ff6347;
+            position: absolute;
+            bottom: 0;
+            animation: moveObstacle 2s linear infinite;
+        }
+        @keyframes moveObstacle {
+            0% { right: -20px; }
+            100% { right: 100%; }
+        }
+        #game-over {
+            display: none;
+            font-size: 50px;
+            color: red;
+            position: absolute;
+            top: 100px;
+            width: 100%;
         }
     </style>
 </head>
@@ -64,12 +120,21 @@
         <section class="container">
             <h1>Bem-vindo ao Mundo do Professor Charlão!</h1>
             <div class="card">
-                <button class="btn" onclick="pedirSenhaProfessor('area_professor.html')">Área do Professor</button>
-                <button class="btn" onclick="pedirSenhaAluno('area_aluno.html')">Área do Aluno</button>
+                <div class="btn-container">
+                    <button class="btn" onclick="pedirSenhaProfessor('area_professor.html')">Área do Professor</button>
+                    <button class="btn" onclick="pedirSenhaAluno('area_aluno.html')">Área do Aluno</button>
+                </div>
             </div>
         </section>
+        <!-- Jogo do Dinossauro -->
+        <div class="game-container">
+            <div class="dino" id="dino"></div>
+            <div id="game-over">Game Over!</div>
+        </div>
     </main>
+
     <script>
+        // Função para redirecionar para áreas com senha
         function pedirSenhaProfessor(destino) {
             var senha = prompt("Digite a senha para acessar a Área do Professor:");
             if (senha === "professor") {
@@ -86,8 +151,61 @@
                 alert("Senha incorreta! Tente novamente.");
             }
         }
+
+        // Animação dos elementos na tela
         gsap.from("h1", { duration: 1.5, opacity: 0, y: -50, ease: "bounce.out" });
         gsap.from(".btn", { duration: 1, opacity: 0, scale: 0.5, stagger: 0.3, ease: "back.out(1.7)" });
+
+        // Jogo do Dinossauro
+        const dino = document.getElementById("dino");
+        const gameOver = document.getElementById("game-over");
+        let jumping = false;
+
+        // Função de pulo
+        document.addEventListener("keydown", (e) => {
+            if (e.key === " " && !jumping) {
+                jumping = true;
+                dino.style.bottom = "80px"; // Pulo do dinossauro
+                setTimeout(() => {
+                    dino.style.bottom = "0px"; // Retorna à posição inicial
+                    jumping = false;
+                }, 500); // Tempo para o pulo
+            }
+        });
+
+        // Função de criação de obstáculos
+        function createObstacle() {
+            const obstacle = document.createElement("div");
+            obstacle.classList.add("obstacle");
+            document.querySelector(".game-container").appendChild(obstacle);
+
+            // Move o obstáculo e detecta colisões
+            let moveInterval = setInterval(() => {
+                let dinoPos = dino.getBoundingClientRect();
+                let obstaclePos = obstacle.getBoundingClientRect();
+
+                // Colisão
+                if (
+                    obstaclePos.left < dinoPos.right &&
+                    obstaclePos.right > dinoPos.left &&
+                    obstaclePos.top < dinoPos.bottom
+                ) {
+                    clearInterval(moveInterval);
+                    gameOver.style.display = "block"; // Fim de jogo
+                    setTimeout(() => {
+                        location.reload(); // Reinicia o jogo
+                    }, 2000); // Espera 2 segundos antes de reiniciar
+                }
+
+                if (obstaclePos.right <= 0) {
+                    clearInterval(moveInterval);
+                    obstacle.remove();
+                }
+            }, 10);
+        }
+
+        // Criação de obstáculos a cada 2 segundos
+        setInterval(createObstacle, 2000);
     </script>
 </body>
 </html>
