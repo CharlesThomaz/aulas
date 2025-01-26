@@ -235,7 +235,7 @@
             }
         }
 
-        
+        let studentName = '';   
         const questions = [
     { question: "Quanto é 3 + 5?", options: ["5", "8", "10", "7"], answer: 1 },
     { question: "Se um trem viaja a 80 km/h e outro a 100 km/h, qual é mais rápido?", options: ["Trem 1", "Trem 2", "Ambos", "Nenhum"], answer: 1 },
@@ -342,55 +342,87 @@
 
 
 let currentQuestionIndex = 0;
-let score = 0;
+        let score = 0;
+        let ranking = [];
 
+        // Função para começar o quiz
+        function startQuiz() {
+            studentName = document.getElementById("studentName").value;
+            if (!studentName) {
+                alert('Por favor, digite seu nome!');
+                return;
+            }
+            document.querySelector('.access-area').style.display = 'none'; // Esconde a área de acesso
+            loadQuestion();
+        }
 
+        // Função para sortear uma pergunta aleatória
+        function getRandomQuestion() {
+            const randomIndex = Math.floor(Math.random() * questions.length);
+            return questions[randomIndex];
+        }
 
-// Função para sortear uma pergunta aleatória
-function getRandomQuestion() {
-    const randomIndex = Math.floor(Math.random() * questions.length);
-    return questions[randomIndex];
-}
+        // Função para carregar a pergunta e opções
+        function loadQuestion() {
+            const questionElement = document.getElementById("question");
+            const optionsElement = document.getElementById("options");
 
-// Função para carregar a pergunta e opções
-function loadQuestion() {
-    const questionElement = document.getElementById("question");
-    const optionsElement = document.getElementById("options");
+            const currentQuestion = getRandomQuestion(); // Sorteia a pergunta aleatoriamente
+            questionElement.textContent = currentQuestion.question;
 
-    const currentQuestion = getRandomQuestion(); // Sorteia a pergunta aleatoriamente
-    questionElement.textContent = currentQuestion.question;
+            // Limpar as opções anteriores
+            optionsElement.innerHTML = '';
 
-    // Limpar as opções anteriores
-    optionsElement.innerHTML = '';
+            currentQuestion.options.forEach((option, index) => {
+                const button = document.createElement("button");
+                button.textContent = option;
+                button.classList.add("option");
+                button.onclick = () => checkAnswer(index, currentQuestion.answer);
+                optionsElement.appendChild(button);
+            });
+        }
 
-    currentQuestion.options.forEach((option, index) => {
-        const button = document.createElement("button");
-        button.textContent = option;
-        button.classList.add("option");
-        button.onclick = () => checkAnswer(index, currentQuestion.answer);
-        optionsElement.appendChild(button);
-    });
-}
+        // Função para verificar a resposta
+        function checkAnswer(selectedOption, correctAnswer) {
+            const scoreElement = document.getElementById("score");
 
-// Função para verificar a resposta
-function checkAnswer(selectedOption, correctAnswer) {
-    const scoreElement = document.getElementById("score");
+            if (selectedOption === correctAnswer) {
+                score++;
+                scoreElement.textContent = "Pontuação: " + score;
+            } else {
+                scoreElement.textContent = "Resposta errada. Tente novamente!";
+            }
 
-    if (selectedOption === correctAnswer) {
-        score++;
-        scoreElement.textContent = "Pontuação: " + score;
-    } else {
-        scoreElement.textContent = "Resposta errada. Tente novamente!";
-    }
+            // Carregar a próxima pergunta
+            setTimeout(() => {
+                loadQuestion();
+            }, 1000);
+        }
 
-    // Carregar a próxima pergunta
-    setTimeout(() => {
-        loadQuestion();
-    }, 1000);
-}
+        // Função para exibir o ranking
+        function updateRanking() {
+            const rankingList = document.getElementById("rankingList");
+            rankingList.innerHTML = ''; // Limpar o ranking
 
-// Carregar a primeira pergunta ao carregar a página
-window.onload = loadQuestion;
-</script>
+            // Adicionar o aluno atual ao ranking
+            ranking.push({ name: studentName, score: score });
+
+            // Ordenar o ranking por pontuação
+            ranking.sort((a, b) => b.score - a.score);
+
+            // Exibir o ranking
+            ranking.forEach(item => {
+                const li = document.createElement("li");
+                li.textContent = `${item.name} - Pontuação: ${item.score}`;
+                rankingList.appendChild(li);
+            });
+        }
+
+        // Atualizar o ranking quando o aluno terminar o quiz
+        window.onbeforeunload = updateRanking;
+
+        // Carregar a primeira pergunta ao carregar a página
+        window.onload = loadQuestion;
+    </script>
 </body>
 </html>
