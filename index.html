@@ -8,6 +8,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <style>
+        /* Estilos gerais */
         body {
             margin: 0;
             padding: 0;
@@ -41,7 +42,7 @@
         }
         .btn-container {
             display: flex;
-            gap: 15px; /* Espaçamento entre os botões */
+            gap: 15px;
             flex-direction: row;
             justify-content: center;
             align-items: center;
@@ -73,7 +74,7 @@
             50% { transform: translateY(-10px); }
             100% { transform: translateY(0); }
         }
-        /* Estilo para o Jogo do Dinossauro */
+        /* Jogo do Dinossauro */
         .game-container {
             position: absolute;
             bottom: 0;
@@ -143,6 +144,7 @@
                 alert("Senha incorreta! Tente novamente.");
             }
         }
+
         function pedirSenhaAluno(destino) {
             var senha = prompt("Digite a senha para acessar a Área do Aluno:");
             if (senha === "aluno") {
@@ -161,7 +163,7 @@
         const gameOver = document.getElementById("game-over");
         let jumping = false;
 
-        // Função de pulo
+        // Função para pular
         document.addEventListener("keydown", (e) => {
             if (e.key === " " && !jumping) {
                 jumping = true;
@@ -173,18 +175,17 @@
             }
         });
 
-        // Função de criação de obstáculos
+        // Função para criar obstáculos
         function createObstacle() {
             const obstacle = document.createElement("div");
             obstacle.classList.add("obstacle");
             document.querySelector(".game-container").appendChild(obstacle);
 
-            // Move o obstáculo e detecta colisões
             let moveInterval = setInterval(() => {
                 let dinoPos = dino.getBoundingClientRect();
                 let obstaclePos = obstacle.getBoundingClientRect();
 
-                // Colisão
+                // Verifica colisão entre dinossauro e obstáculo
                 if (
                     obstaclePos.left < dinoPos.right &&
                     obstaclePos.right > dinoPos.left &&
@@ -193,10 +194,11 @@
                     clearInterval(moveInterval);
                     gameOver.style.display = "block"; // Fim de jogo
                     setTimeout(() => {
-                        location.reload(); // Reinicia o jogo
-                    }, 2000); // Espera 2 segundos antes de reiniciar
+                        location.reload(); // Reinicia o jogo após 2 segundos
+                    }, 2000);
                 }
 
+                // Verifica quando o obstáculo sai da tela
                 if (obstaclePos.right <= 0) {
                     clearInterval(moveInterval);
                     obstacle.remove();
@@ -204,7 +206,7 @@
             }, 10);
         }
 
-        // Criação de obstáculos a cada 2 segundos
+        // Cria um obstáculo a cada 2 segundos
         setInterval(createObstacle, 2000);
     </script>
 </body>
