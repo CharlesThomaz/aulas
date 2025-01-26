@@ -7,43 +7,91 @@
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            color: white;
+            text-align: center;
+            overflow: hidden;
+        }
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        .video-background iframe {
+            width: 100vw;
+            height: 100vh;
+        }
+        .container {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 10px;
+        }
+        .btn {
+            background-color: #ff6600;
+            color: white;
+            padding: 15px;
+            margin: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .btn:hover {
+            background-color: #cc5500;
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <h1>Bem-vindo ao Mundo do Professor Charlão!</h1>
-    </header>
+    <div class="video-background">
+        <iframe src="https://www.youtube.com/embed/SEU_VIDEO?autoplay=1&mute=1&loop=1&playlist=SEU_VIDEO" frameborder="0" allowfullscreen></iframe>
+    </div>
     <main>
         <section class="container">
-            <div class="card video-card">
-                <h2>Assista ao Meu Vídeo!</h2>
-                <div class="video-container">
-                    <iframe width="560" height="315" src="https://www.youtube.com/embed/SEU_VIDEO" frameborder="0" allowfullscreen></iframe>
-                </div>
-            </div>
+            <h1>Bem-vindo ao Mundo do Professor Charlão!</h1>
             <div class="card">
                 <button class="btn" onclick="pedirSenhaProfessor('area_professor.html')">Área do Professor</button>
-                <button class="btn" onclick="pedirSenhaAluno('areaAluno.html')">Área do Aluno</button>
+                <button class="btn" onclick="pedirSenhaAluno('area_aluno.html')">Área do Aluno</button>
             </div>
         </section>
     </main>
     <script>
         function pedirSenhaProfessor(destino) {
-            var senha = prompt("Digite a senha para acessar:");
-            if (senha === "professor") { // Você pode mudar essa senha
+            var senha = prompt("Digite a senha para acessar a Área do Professor:");
+            if (senha === "professor") {
                 location.href = destino;
             } else {
                 alert("Senha incorreta! Tente novamente.");
             }
         }
         function pedirSenhaAluno(destino) {
-            var senha = prompt("Digite a senha para acessar:");
-            if (senha === "aluno") { // Você pode mudar essa senha
+            var senha = prompt("Digite a senha para acessar a Área do Aluno:");
+            if (senha === "aluno") {
                 location.href = destino;
             } else {
                 alert("Senha incorreta! Tente novamente.");
             }
         }
-
         gsap.from("h1", { duration: 1.5, opacity: 0, y: -50, ease: "bounce.out" });
         gsap.from(".btn", { duration: 1, opacity: 0, scale: 0.5, stagger: 0.3, ease: "back.out(1.7)" });
     </script>
