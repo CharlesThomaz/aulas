@@ -38,20 +38,12 @@
         text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
     }
     
-    header h2 {
-        font-size: 1.5em;
-        color: #000;
-        margin-top: 10px;
-    }
-    
     /* Layout com Flexbox */
     #quiz-container {
         display: flex;
         justify-content: space-between;
         padding: 20px;
         gap: 20px;
-        flex-direction: column; /* Alterado para coluna para adaptar o ranking */
-        align-items: center;
     }
     
     /* Área do Quiz */
@@ -163,15 +155,6 @@
         background-color: #ff3300;
     }
     
-    /* Ranking */
-    #ranking {
-        margin-top: 20px;
-        font-size: 1.2em;
-        color: #333;
-        font-weight: bold;
-        text-align: center;
-    }
-
     /* Responsividade */
     @media (max-width: 768px) {
         #quiz-container {
@@ -191,15 +174,11 @@
     <header>
         <h1>"Bem vindo ao Universo Charlão" </h1><br>
         <h2>Aperte os cintos e boa aula!!! </h2>
+
     </header>
 
     <!-- Layout com Flexbox -->
     <div id="quiz-container">
-        <!-- Nome do Quiz -->
-        <div id="quiz-name" class="question">
-            Quiz Lógico - Teste seus conhecimentos!
-        </div>
-
         <!-- Área do Quiz -->
         <div id="quiz-area">
             <div id="question" class="question"></div>
@@ -216,21 +195,16 @@
         </div>
 
         <!-- Área de Acesso (Aluno) -->
-        <br><br> <div class="access-area">
+       <br><br> <div class="access-area">
             <h2>Acesso Restrito - Aluno</h2>
             <input type="password" id="passwordAluno" placeholder="Digite a senha">
             <button onclick="checkPasswordAluno()">Entrar</button>
             <div id="access-message-aluno" style="margin-top: 15px;"></div>
         </div>
-
-        <!-- Ranking de Pessoas Online -->
-        <div id="ranking">
-            Pessoas Online: <span id="online-count">10</span>
-        </div>
     </div>
 
     <script>
-        // Funções para acesso (Professor e Aluno)
+                // Funções para acesso (Professor e Aluno)
         function checkPasswordProfessor() {
             var password = document.getElementById("passwordProfessor").value;
             var message = document.getElementById("access-message-professor");
@@ -368,53 +342,55 @@
 
 
 let currentQuestionIndex = 0;
-        let score = 0;
+let score = 0;
 
-        // Função para sortear uma pergunta aleatória
-        function getRandomQuestion() {
-            const randomIndex = Math.floor(Math.random() * questions.length);
-            return questions[randomIndex];
-        }
 
-        // Função para carregar a pergunta e opções
-        function loadQuestion() {
-            const questionElement = document.getElementById("question");
-            const optionsElement = document.getElementById("options");
 
-            const currentQuestion = getRandomQuestion(); // Sorteia a pergunta aleatoriamente
-            questionElement.textContent = currentQuestion.question;
+// Função para sortear uma pergunta aleatória
+function getRandomQuestion() {
+    const randomIndex = Math.floor(Math.random() * questions.length);
+    return questions[randomIndex];
+}
 
-            // Limpar as opções anteriores
-            optionsElement.innerHTML = '';
+// Função para carregar a pergunta e opções
+function loadQuestion() {
+    const questionElement = document.getElementById("question");
+    const optionsElement = document.getElementById("options");
 
-            currentQuestion.options.forEach((option, index) => {
-                const button = document.createElement("button");
-                button.textContent = option;
-                button.classList.add("option");
-                button.onclick = () => checkAnswer(index, currentQuestion.answer);
-                optionsElement.appendChild(button);
-            });
-        }
+    const currentQuestion = getRandomQuestion(); // Sorteia a pergunta aleatoriamente
+    questionElement.textContent = currentQuestion.question;
 
-        // Função para verificar a resposta
-        function checkAnswer(selectedOption, correctAnswer) {
-            const scoreElement = document.getElementById("score");
+    // Limpar as opções anteriores
+    optionsElement.innerHTML = '';
 
-            if (selectedOption === correctAnswer) {
-                score++;
-                scoreElement.textContent = "Pontuação: " + score;
-            } else {
-                scoreElement.textContent = "Resposta errada. Tente novamente!";
-            }
+    currentQuestion.options.forEach((option, index) => {
+        const button = document.createElement("button");
+        button.textContent = option;
+        button.classList.add("option");
+        button.onclick = () => checkAnswer(index, currentQuestion.answer);
+        optionsElement.appendChild(button);
+    });
+}
 
-            // Carregar a próxima pergunta
-            setTimeout(() => {
-                loadQuestion();
-            }, 1000);
-        }
+// Função para verificar a resposta
+function checkAnswer(selectedOption, correctAnswer) {
+    const scoreElement = document.getElementById("score");
 
-        // Carregar a primeira pergunta ao carregar a página
-        window.onload = loadQuestion;
-    </script>
+    if (selectedOption === correctAnswer) {
+        score++;
+        scoreElement.textContent = "Pontuação: " + score;
+    } else {
+        scoreElement.textContent = "Resposta errada. Tente novamente!";
+    }
+
+    // Carregar a próxima pergunta
+    setTimeout(() => {
+        loadQuestion();
+    }, 1000);
+}
+
+// Carregar a primeira pergunta ao carregar a página
+window.onload = loadQuestion;
+</script>
 </body>
 </html>
