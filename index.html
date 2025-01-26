@@ -178,7 +178,7 @@
 <body>
     <!-- Barra Superior -->
     <header>
-        <h1>"Bem vindo ao Universo Charlão" </h1><br>
+        <h1>"Bem-vindo ao Universo Charlão" </h1><br>
         <h2>Aperte os cintos e boa aula!!! </h2>
     </header>
 
@@ -274,22 +274,15 @@
 
         // Função para iniciar o quiz
         function startQuiz(playerName) {
-            players.push({ name: playerName, score: 0 });
-            alert("Bem-vindo, " + playerName + "! O quiz vai começar.");
-            updateRanking();
+            if (!players.find(p => p.name === playerName)) {
+                players.push({ name: playerName, score: 0 });
+            }
+
+            displayQuestion();
+            displayRanking();
         }
 
-        // Atualizar o ranking em tempo real
-        function updateRanking() {
-            const rankingList = document.getElementById("ranking-list");
-            rankingList.innerHTML = ""; // Limpa a lista
-
-            players.forEach(player => {
-                const li = document.createElement("li");
-                li.textContent = `${player.name} - Pontuação: ${player.score}`;
-                rankingList.appendChild(li);
-            });
-        }
+        // Perguntas do Quiz
 
         const questions = [
     { question: "Quanto é 3 + 5?", options: ["5", "8", "10", "7"], answer: 1 },
@@ -398,54 +391,49 @@
 
 let currentQuestionIndex = 0;
 
-        // Função para sortear uma pergunta aleatória
-        function getRandomQuestion() {
-            const randomIndex = Math.floor(Math.random() * questions.length);
-            return questions[randomIndex];
-        }
+// Exibir pergunta e opções
+function displayQuestion() {
+    const question = questions[currentQuestionIndex];
+    document.getElementById("question").textContent = question.question;
+    document.getElementById("options").innerHTML = question.options.map((option, index) => 
+        `<button class="option" onclick="answerQuestion('${option}')">${option}</button>`
+    ).join('');
+}
 
-        // Função para carregar a pergunta e opções
-        function loadQuestion() {
-            const questionElement = document.getElementById("question");
-            const optionsElement = document.getElementById("options");
+// Responder a pergunta
+function answerQuestion(selectedAnswer) {
+    const currentPlayer = players[players.length - 1];
+    const currentQuestion = questions[currentQuestionIndex];
 
-            const currentQuestion = getRandomQuestion(); // Sorteia a pergunta aleatoriamente
-            questionElement.textContent = currentQuestion.question;
+    if (selectedAnswer === currentQuestion.answer) {
+        currentPlayer.score += 10;
+        alert("Resposta correta!");
+    } else {
+        alert("Resposta incorreta!");
+    }
 
-            // Limpar as opções anteriores
-            optionsElement.innerHTML = '';
+    // Próxima pergunta
+    currentQuestionIndex++;
+    if (currentQuestionIndex < questions.length) {
+        displayQuestion();
+    } else {
+        alert("Quiz finalizado!");
+        displayRanking();
+    }
+}
 
-            currentQuestion.options.forEach((option, index) => {
-                const button = document.createElement("button");
-                button.textContent = option;
-                button.classList.add("option");
-                button.onclick = () => checkAnswer(index, currentQuestion.answer);
-                optionsElement.appendChild(button);
-            });
-        }
+// Exibir Ranking
+function displayRanking() {
+    const rankingList = document.getElementById("ranking-list");
+    rankingList.innerHTML = '';
+    players.sort((a, b) => b.score - a.score); // Ordenar pela pontuação
 
-        // Função para verificar a resposta
-        function checkAnswer(selectedOption, correctAnswer) {
-            const scoreElement = document.getElementById("score");
-
-            if (selectedOption === correctAnswer) {
-                players[players.length - 1].score++; // Atualiza a pontuação do último jogador
-                scoreElement.textContent = "Pontuação: " + players[players.length - 1].score;
-            } else {
-                scoreElement.textContent = "Resposta errada. Tente novamente!";
-            }
-
-            // Atualiza o ranking
-            updateRanking();
-
-            // Carregar a próxima pergunta
-            setTimeout(() => {
-                loadQuestion();
-            }, 1000);
-        }
-
-        // Carregar a primeira pergunta ao carregar a página
-        window.onload = loadQuestion;
-    </script>
+    players.forEach(player => {
+        const listItem = document.createElement("li");
+        listItem.textContent = `${player.name}: ${player.score} pontos`;
+        rankingList.appendChild(listItem);
+    });
+}
+</script>
 </body>
 </html>
