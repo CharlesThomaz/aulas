@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Repositório de Aulas</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+
+    <style>
+        /* Alterando a cor do site para verde */
+        body {
+            background-color: #f4f8f2;
+            color: #2c6b2f;
+        }
+
+        .navbar-dark.bg-primary {
+            background-color: #28a745 !important;
+        }
+
+        .btn-primary {
+            background-color: #28a745;
+            border-color: #28a745;
+        }
+
+        .btn-primary:hover {
+            background-color: #218838;
+            border-color: #1e7e34;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            border-color: #dc3545;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+            border-color: #bd2130;
+        }
+
+        .text-secondary {
+            color: #6c757d !important;
+        }
+
+        .footer {
+            background-color: #2c6b2f;
+        }
+        
+        .list-group-item {
+            background-color: #e9f5e3;
+            border: 1px solid #c8e6c9;
+        }
+
+        .list-group-item:hover {
+            background-color: #c8e6c9;
+        }
+
+        footer {
+            background-color: #2c6b2f;
+            color: white;
+        }
+    </style>
+    
+    <script>
+        function acessarPlataforma() {
+            var senha = prompt("Por favor, insira a senha para acessar a plataforma de provas:");
+            if (senha === "janeiro") {
+                window.location.href = "https://charlao-ad206.web.app/"; // ink  da plataforma
+            } else {
+                alert("Senha incorreta. Tente novamente.");
+            }
+        }
+    </script>
+</head>
+
+<body>
+<header>
+    <!-- Barra de Navegação -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <!-- Lado Esquerdo -->
+            <a class="navbar-brand" href="#">Repositório de aulas do Charlão</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Alternar navegação">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <!-- Lado Direito -->
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">#</a>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-danger" onclick="acessarPlataforma()">Acessar Plataforma de Provas</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<!-- Botões de Navegação -->
+<div class="container my-3 text-center">
+    <a href="aulas.html" class="btn btn-primary mx-2">Clique aqui para acessar as Aulas</a>        
+</div>
+
+<main class="container my-5">
+    <section class="mb-4">
+        <h2 class="text-secondary">Exercícios Módulo 1</h2>
+        <ul class="list-group">
+            <li class="list-group-item">
+                <a href="exercicios/m1/Exercícios A1M1.pdf" target="_blank" class="text-decoration-none">Exercício A1M1</a>
+            </li>
+            <li class="list-group-item">
+                <a href="exercicios/m1/Exercícios A2M1.pdf" target="_blank" class="text-decoration-none">Exercício A2M1</a>
+            </li>
+            <li class="list-group-item">
+                <a href="exercicios/m1/Exercícios A3M1.pdf" target="_blank" class="text-decoration-none">Exercício A3M1</a>
+            </li>
+            <li class="list-group-item">
+                <a href="exercicios/m1/Exercícios A4M1.pdf" target="_blank" class="text-decoration-none">Exercício A4M1</a>
+            </li>
+            <li class="list-group-item">
+                <a href="exercicios/m1/ExercíciosRevisãoAV1.pdf" target="_blank" class="text-decoration-none">Exercícios Revisão AV1</a>
+            </li>
+            <li class="list-group-item">
+                <a href="exercicios/m1/Exercícios A5M1.pdf" target="_blank" class="text-decoration-none">Exercício A5M1</a>
+            </li>
+            <li class="list-group-item">
+                <a href="exercicios/m1/Exercícios A6M1.pdf" target="_blank" class="text-decoration-none">Exercício A6M1</a>
+            </li>
+            <li class="list-group-item">
+                <a href="exercicios/m1/Exercícios A7M1.pdf" target="_blank" class="text-decoration-none">Exercício A7M1</a>
+            </li>
+            <li class="list-group-item">
+                <a href="exercicios/m1/Exercícios A8M1.pdf" target="_blank" class="text-decoration-none">Exercício A8M1</a>
+            </li>
+            <li class="list-group-item">
+                <a href="exercicios/m1/ExercíciosRevisãoAV2.pdf" target="_blank" class="text-decoration-none">Exercícios Revisão AV2</a>
+            </li>
+            <li class="list-group-item">
+                <a href="exercicios/m1/Exercícios A9M1.pdf" target="_blank" class="text-decoration-none">Exercício A9M1</a>
+            </li>
+        </ul>
+    </section>
+    
+    <section class="mb-4">
+        <h2 class="text-secondary">Exercícios Módulo 2</h2>
+        <ul class="list-group">
+            <li class="list-group-item">
+                <a href="exercicios/m2/ExercícioA00M2.pdf" target="_blank" class="text-decoration-none">Exercício A00M2</a>
+            </li>
+            <li class="list-group-item">
+                <a href="exercicios/m2/ExercícioA1M2.pdf" target="_blank" class="text-decoration-none">Exercício A1M2</a>
+            </li>
+            <li class="list-group-item">
+                <a href="exercicios/m2/ExercícioA2M2.pdf" target="_blank" class="text-decoration-none">Exercício A2M2</a>
+            </li>
+            <li class="list-group-item">
+                <a href="exercicios/m2/ExercícioA3M2.pdf" target="_blank" class="text-decoration-none">Exercício A3M2</a>
+            </li>
+            <li class="list-group-item">
+                <a href="exercicios/m2/ExercícioA4M2.pdf" target="_blank" class="text-decoration-none">Exercício A4M2</a>
+            </li>
+        </ul>
+    </section>
+    
+    <section>
+        <h2 class="text-secondary">Oficinas</h2>
+        <ul class="list-group">
+            <li class="list-group-item">
+                <a href="exercicios/oficinas/ExercicioOficina 1 - Personalizando Sua Área de Trabalho.pdf" target="_blank" class="text-decoration-none">Exercício Oficina 1</a>
+            </li>
+            <li class="list-group-item">
+                <a href="exercicios/oficinas/ExercicioOficina  2 - O que é computação Introdução ao mundo digital.pdf" target="_blank" class="text-decoration-none">Exercício Oficina 2 </a>
+            </li>
+            <li class="list-group-item">
+                <a href="https://jogos-58c96.web.app/" target="_blank" class="text-decoration-none">Exercícios das Startups</a>
+            </li>
+
+            <li class="list-group-item">
+                <a href="https://agilefingers.com/pt" target="_blank" class="text-decoration-none">Exercício de Digitação - Agile Fingers</a>
+            </li>
+            
+        </ul>
+    </section>
+
+    <section>
+        <h2 class="text-secondary"> Workshops</h2>
+        <ul class="list-group">
+            <li class="list-group-item">
+                <a href="exercicios/workshop/Harmonia Tecnológica.pdf" target="_blank" class="text-decoration-none">Workshop Harmonia Tecnológica</a>
+            </li>
+        </ul>
+    </section>
+</main>
+
+<footer class="bg-dark text-white text-center py-3">
+    <p>&copy; 2025 O melhor da região</p>
+</footer>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
