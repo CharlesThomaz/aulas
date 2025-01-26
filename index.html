@@ -14,23 +14,11 @@
             font-family: Arial, sans-serif;
             color: white;
             text-align: center;
-            overflow: hidden;
-        }
-        .video-background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-        }
-        .video-background iframe {
-            width: 100vw;
-            height: 100vh;
+            background: url('img/earth-3537401_1280.jpg') no-repeat center center fixed;
+            background-size: cover;
         }
         .container {
             position: relative;
-            z-index: 1;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -52,23 +40,29 @@
             padding: 15px;
             margin: 10px;
             border: none;
-            border-radius: 5px;
+            border-radius: 50px;
             font-size: 18px;
             cursor: pointer;
             transition: 0.3s;
+            position: relative;
         }
         .btn:hover {
             background-color: #cc5500;
         }
+        .btn:hover {
+            animation: jump 0.5s ease-in-out;
+        }
+        @keyframes jump {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0); }
+        }
     </style>
 </head>
 <body>
-    <div class="video-background">
-        <iframe src="https://www.youtube.com/embed/SEU_VIDEO?autoplay=1&mute=1&loop=1&playlist=SEU_VIDEO" frameborder="0" allowfullscreen></iframe>
-    </div>
     <main>
         <section class="container">
-            <h1>Bem-vindo ao Universo do Charlão!</h1>
+            <h1>Bem-vindo ao Mundo do Professor Charlão!</h1>
             <div class="card">
                 <button class="btn" onclick="pedirSenhaProfessor('area_professor.html')">Área do Professor</button>
                 <button class="btn" onclick="pedirSenhaAluno('area_aluno.html')">Área do Aluno</button>
