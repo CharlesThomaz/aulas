@@ -157,11 +157,18 @@
             <div id="score">Pontuação: 0</div>
         </div>
 
-        <!-- Área de Acesso (Professor e Aluno) -->
+        <!-- Área de Acesso (Professor ) -->
         <div id="access-area">
             <h2>Acesso Restrito</h2>
             <input type="password" id="password" placeholder="Digite a senha">
-            <button onclick="checkPassword()">Entrar</button>
+            <button onclick="checkPasswordProfessor()">Entrar</button>
+            <div id="access-message" style="margin-top: 15px;"></div>
+        </div>
+        <!-- Área de Acesso ( Aluno) -->
+        <div id="access-area">
+            <h2>Acesso Restrito</h2>
+            <input type="password" id="password" placeholder="Digite a senha">
+            <button onclick="checkPasswordAluno()">Entrar</button>
             <div id="access-message" style="margin-top: 15px;"></div>
         </div>
     </div>
@@ -251,9 +258,17 @@
             }
         }
 
-        function checkPassword() {
+        function checkPasswordProfessor() {
             const password = document.getElementById("password").value;
-            if (password === "1234") {
+            if (password === "professorCharlao") {
+                document.getElementById("access-message").innerText = "Acesso permitido!";
+            } else {
+                document.getElementById("access-message").innerText = "Senha incorreta.";
+            }
+        }
+        function checkPasswordAluno() {
+            const password = document.getElementById("password").value;
+            if (password === "alunoinaq") {
                 document.getElementById("access-message").innerText = "Acesso permitido!";
             } else {
                 document.getElementById("access-message").innerText = "Senha incorreta.";
