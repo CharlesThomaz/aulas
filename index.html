@@ -347,52 +347,55 @@
 
 
 let currentQuestionIndex = 0;
-        let score = 0;
-        let studentName = '';
+let score = 0;
 
-        // Função para sortear uma pergunta aleatória
-        function getRandomQuestion() {
-            const randomIndex = Math.floor(Math.random() * questions.length);
-            return questions[randomIndex];
-        }
 
-        // Função para carregar a pergunta e opções
-        function loadQuestion() {
-            const questionElement = document.getElementById("question");
-            const optionsElement = document.getElementById("options");
 
-            const currentQuestion = getRandomQuestion();
-            questionElement.textContent = currentQuestion.question;
+// Função para sortear uma pergunta aleatória
+function getRandomQuestion() {
+    const randomIndex = Math.floor(Math.random() * questions.length);
+    return questions[randomIndex];
+}
 
-            optionsElement.innerHTML = '';
+// Função para carregar a pergunta e opções
+function loadQuestion() {
+    const questionElement = document.getElementById("question");
+    const optionsElement = document.getElementById("options");
 
-            currentQuestion.options.forEach((option, index) => {
-                const button = document.createElement("button");
-                button.textContent = option;
-                button.classList.add("option");
-                button.onclick = () => checkAnswer(index, currentQuestion.answer);
-                optionsElement.appendChild(button);
-            });
-        }
+    const currentQuestion = getRandomQuestion(); // Sorteia a pergunta aleatoriamente
+    questionElement.textContent = currentQuestion.question;
 
-        // Função para verificar a resposta
-        function checkAnswer(selectedOption, correctAnswer) {
-            const scoreElement = document.getElementById("score");
+    // Limpar as opções anteriores
+    optionsElement.innerHTML = '';
 
-            if (selectedOption === correctAnswer) {
-                score++;
-                scoreElement.textContent = "Pontuação: " + score;
-            } else {
-                scoreElement.textContent = "Resposta errada. Tente novamente!";
-            }
+    currentQuestion.options.forEach((option, index) => {
+        const button = document.createElement("button");
+        button.textContent = option;
+        button.classList.add("option");
+        button.onclick = () => checkAnswer(index, currentQuestion.answer);
+        optionsElement.appendChild(button);
+    });
+}
 
-            setTimeout(() => {
-                loadQuestion();
-            }, 1000);
-        }
+// Função para verificar a resposta
+function checkAnswer(selectedOption, correctAnswer) {
+    const scoreElement = document.getElementById("score");
 
-        // Carregar a primeira pergunta ao carregar a página
-        window.onload = loadQuestion;
-    </script>
+    if (selectedOption === correctAnswer) {
+        score++;
+        scoreElement.textContent = "Pontuação: " + score;
+    } else {
+        scoreElement.textContent = "Resposta errada. Tente novamente!";
+    }
+
+    // Carregar a próxima pergunta
+    setTimeout(() => {
+        loadQuestion();
+    }, 1000);
+}
+
+// Carregar a primeira pergunta ao carregar a página
+window.onload = loadQuestion;
+</script>
 </body>
 </html>
