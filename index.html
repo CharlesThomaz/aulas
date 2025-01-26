@@ -3,153 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Universo Charlão</title>
+    <title>Jogo do Dinossauro</title>
     <style>
-        /* Estilos Globais */
-        * {
+        body {
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #000;
             overflow: hidden;
-            color: #fff;
-            position: relative;
+            background-color: #f2f2f2;
         }
 
-        /* Fundo Dinâmico */
-        #background {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('fundo-universo.gif') no-repeat center center fixed;
-            background-size: cover;
-            z-index: -1;
-        }
-
-        /* Sessão de Boas-Vindas */
-        #boas-vindas {
-            text-align: center;
-            margin-top: 20%;
-        }
-
-        #boas-vindas h1 {
-            font-size: 3em;
-            animation: bounce 2s ease-in-out;
-            font-family: 'Orbitron', sans-serif;
-            color: #ff00ff;
-        }
-
-        /* Animação do texto */
-        @keyframes bounce {
-            0%, 100% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.2);
-            }
-        }
-
-        /* Sessão de Login */
-        #login {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 30px;
-        }
-
-        .btn {
-            background-color: #00ff99;
-            color: #000;
-            border-radius: 50%;
-            border: none;
-            padding: 20px;
-            font-size: 1.2em;
-            cursor: pointer;
-            transition: transform 0.2s ease, background-color 0.2s ease;
-        }
-
-        .btn:hover {
-            transform: scale(1.1);
-            background-color: #ff6600;
-        }
-
-        .btn:active {
-            transform: scale(0.9);
-            background-color: #ff3300;
-        }
-
-        /* Sessão de Jogo */
-        #jogo {
-            display: flex;
-            justify-content: center;
-            margin-top: 50px;
-        }
-
-        /* Responsividade */
-        @media (max-width: 768px) {
-            #boas-vindas h1 {
-                font-size: 2.5em;
-            }
-
-            .btn {
-                padding: 15px;
-                font-size: 1em;
-            }
-        }
-
-        @media (max-width: 480px) {
-            #boas-vindas h1 {
-                font-size: 2em;
-            }
-
-            .btn {
-                padding: 10px;
-                font-size: 0.8em;
-            }
-        }
-
-        /* Jogo do Dinossauro */
-        #dino-game {
-            width: 100%;
-            height: 300px;
-            background-color: #f0f0f0;
-            position: relative;
-            overflow: hidden;
-            display: none; /* Inicialmente escondido */
-        }
-
-        .dino {
-            width: 50px;
-            height: 50px;
-            background-color: #00ff00;
-            position: absolute;
-            bottom: 0;
-            left: 50px;
-        }
-
-        .cactus {
-            width: 20px;
-            height: 30px;
-            background-color: #ff0000;
-            position: absolute;
-            bottom: 0;
-            right: -20px;
-            animation: moveCactus 2s infinite linear;
-        }
-
-        @keyframes moveCactus {
-            0% {
-                right: -20px;
-            }
-            100% {
-                right: 100%;
-            }
+        canvas {
+            display: block;
+            background-color: #EAEAEA;
         }
 
         .game-over {
@@ -158,91 +23,129 @@
             left: 50%;
             transform: translate(-50%, -50%);
             font-size: 2em;
-            color: #ff0000;
-            display: none; /* Inicialmente escondido */
+            color: red;
+            font-weight: bold;
+            display: none;
         }
     </style>
 </head>
 <body>
-    <!-- Fundo Dinâmico -->
-    <div id="background"></div>
-
-    <!-- Sessão de Boas-Vindas -->
-    <section id="boas-vindas">
-        <h1>Bem-vindo ao Universo Charlão!</h1>
-    </section>
-
-    <!-- Sessão de Login -->
-    <section id="login">
-        <button class="btn" id="professor">Área do Professor</button>
-        <button class="btn" id="aluno">Área do Aluno</button>
-    </section>
-
-    <!-- Sessão de Jogo -->
-    <section id="jogo">
-        <div id="dino-game">
-            <div class="dino" id="dino"></div>
-            <div class="cactus"></div>
-            <div class="game-over" id="gameOver">GAME OVER</div>
-        </div>
-    </section>
+    <div class="game-over" id="gameOver">GAME OVER!</div>
+    <canvas id="gameCanvas" width="800" height="300"></canvas>
 
     <script>
-        // Animação de entrada para os botões de login
-        window.onload = () => {
-            document.getElementById('professor').classList.add('show');
-            document.getElementById('aluno').classList.add('show');
-        };
+        const canvas = document.getElementById("gameCanvas");
+        const ctx = canvas.getContext("2d");
+        const gameOver = document.getElementById("gameOver");
 
-        const buttons = document.querySelectorAll('.btn');
-        buttons.forEach(button => {
-            button.addEventListener('click', (e) => {
-                alert(`Você clicou na ${e.target.innerText}`);
-            });
-        });
-
-        // Jogo do Dinossauro
-        const dino = document.getElementById('dino');
-        const cactus = document.querySelector('.cactus');
-        const gameOver = document.getElementById('gameOver');
+        let dinoX = 50;
+        let dinoY = 250;
+        let dinoWidth = 30;
+        let dinoHeight = 30;
+        let gravity = 0.6;
+        let jumpStrength = -15;
+        let dinoVelocity = 0;
         let isJumping = false;
 
-        // Iniciar o jogo
-        window.onload = function() {
-            setTimeout(() => {
-                document.getElementById('dino-game').style.display = 'block'; // Mostrar o jogo
-            }, 1000);
+        let obstacleWidth = 20;
+        let obstacleHeight = 30;
+        let obstacleX = canvas.width;
+        let obstacleY = 250;
+        let obstacleSpeed = 5;
 
-            // Controle de pulo
-            document.addEventListener('keydown', function(e) {
-                if (e.code === 'Space' && !isJumping) {
-                    isJumping = true;
-                    jump();
-                }
-            });
+        let isGameOver = false;
 
-            // Função do pulo
-            function jump() {
-                dino.style.animation = 'jump 0.5s ease';
-                setTimeout(() => {
-                    dino.style.animation = '';
-                    isJumping = false;
-                }, 500);
+        // Função para desenhar o dinossauro
+        function drawDino() {
+            ctx.fillStyle = "green";
+            ctx.fillRect(dinoX, dinoY, dinoWidth, dinoHeight);
+        }
+
+        // Função para desenhar o obstáculo
+        function drawObstacle() {
+            ctx.fillStyle = "brown";
+            ctx.fillRect(obstacleX, obstacleY, obstacleWidth, obstacleHeight);
+        }
+
+        // Função para verificar colisão
+        function checkCollision() {
+            if (
+                dinoX + dinoWidth > obstacleX &&
+                dinoX < obstacleX + obstacleWidth &&
+                dinoY + dinoHeight > obstacleY
+            ) {
+                isGameOver = true;
+                gameOver.style.display = "block";
+            }
+        }
+
+        // Função para atualizar o estado do jogo
+        function update() {
+            if (isGameOver) return;
+
+            // Limpar o canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Atualizar dinossauro (gravidade)
+            if (dinoY + dinoHeight < canvas.height) {
+                dinoVelocity += gravity;
+            } else {
+                dinoVelocity = 0;
+                dinoY = canvas.height - dinoHeight;
+                isJumping = false;
             }
 
-            // Colisão
-            setInterval(() => {
-                let dinoTop = parseInt(window.getComputedStyle(dino).top);
-                let cactusLeft = parseInt(window.getComputedStyle(cactus).left);
+            dinoY += dinoVelocity;
 
-                if (cactusLeft > 50 && cactusLeft < 100 && dinoTop >= 100) {
-                    gameOver.style.display = 'block';
-                    setTimeout(() => {
-                        location.reload();
-                    }, 1500);
-                }
-            }, 10);
-        };
+            // Mover o obstáculo
+            obstacleX -= obstacleSpeed;
+
+            // Se o obstáculo sair da tela, criar um novo
+            if (obstacleX < 0) {
+                obstacleX = canvas.width;
+            }
+
+            // Desenhar elementos
+            drawDino();
+            drawObstacle();
+
+            // Verificar colisão
+            checkCollision();
+
+            // Atualizar a animação
+            requestAnimationFrame(update);
+        }
+
+        // Função para pular
+        function jump() {
+            if (!isJumping && !isGameOver) {
+                isJumping = true;
+                dinoVelocity = jumpStrength;
+            }
+        }
+
+        // Detectar pressionamento de tecla (para pular)
+        document.addEventListener("keydown", function(event) {
+            if (event.code === "Space") {
+                jump();
+            }
+        });
+
+        // Funções para iniciar e pausar o jogo
+        window.addEventListener("message", (event) => {
+            const { action } = event.data;
+
+            if (action === "start") {
+                isGameOver = false;
+                gameOver.style.display = "none";
+                update();
+            }
+
+            if (action === "pause") {
+                isGameOver = true;
+                gameOver.style.display = "block";
+            }
+        });
     </script>
 </body>
 </html>
