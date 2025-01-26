@@ -154,7 +154,7 @@
         <div id="quiz-area">
             <div id="question" class="question"></div>
             <div class="options" id="options"></div>
-            <div id="score"></div>
+            <div id="score">Pontuação: 0</div>
         </div>
 
         <!-- Área de Acesso (Professor e Aluno) -->
@@ -168,121 +168,55 @@
 
     <script>
         const questions = [
-    { question: "Quanto é 3 + 5?", options: ["5", "8", "10", "7"], answer: 1 },
-    { question: "Se um trem viaja a 80 km/h e outro a 100 km/h, qual é mais rápido?", options: ["Trem 1", "Trem 2", "Ambos", "Nenhum"], answer: 1 },
-    { question: "Qual é o valor de PI?", options: ["3.14", "3.00", "3.10", "3.20"], answer: 0 },
-    { question: "Quanto é 9 * 6?", options: ["56", "54", "60", "62"], answer: 1 },
-    { question: "Qual o número primo mais próximo de 10?", options: ["9", "11", "13", "7"], answer: 1 },
-    { question: "Quanto é 50 / 5?", options: ["8", "10", "12", "15"], answer: 1 },
-    { question: "Quanto é 15 * 2?", options: ["25", "30", "35", "40"], answer: 1 },
-    { question: "Qual é o maior número entre 24, 56, 33 e 89?", options: ["24", "56", "33", "89"], answer: 3 },
-    { question: "Quanto é 7 + 12?", options: ["18", "19", "20", "21"], answer: 1 },
-    { question: "Quantos lados tem um hexágono?", options: ["6", "7", "8", "9"], answer: 0 },
-    { question: "Qual é a raiz quadrada de 64?", options: ["6", "7", "8", "9"], answer: 2 },
-    { question: "Se você tem 10 maçãs e dá 3 para um amigo, quantas maçãs restam?", options: ["7", "6", "8", "9"], answer: 0 },
-    { question: "Quanto é 200 - 75?", options: ["125", "150", "175", "200"], answer: 0 },
-    { question: "Qual é a capital do Brasil?", options: ["São Paulo", "Rio de Janeiro", "Brasília", "Curitiba"], answer: 2 },
-    { question: "Quantos meses tem um ano?", options: ["10", "11", "12", "13"], answer: 2 },
-    { question: "Qual é o valor de 2 elevado a 3?", options: ["6", "8", "10", "12"], answer: 1 },
-    { question: "Quantos segundos tem 1 minuto?", options: ["60", "120", "180", "240"], answer: 0 },
-    { question: "Qual é a metade de 50?", options: ["20", "25", "30", "35"], answer: 1 },
-    { question: "Quanto é 12 / 4?", options: ["3", "4", "5", "6"], answer: 0 },
-    { question: "Quantos dias tem um ano bissexto?", options: ["365", "366", "367", "368"], answer: 1 },
-    { question: "Quanto é 7 * 8?", options: ["54", "56", "58", "60"], answer: 1 },
-    { question: "Quem foi o primeiro presidente do Brasil?", options: ["Getúlio Vargas", "Juscelino Kubitschek", "Deodoro da Fonseca", "Dom Pedro I"], answer: 2 },
-    { question: "Onde está localizada a Grande Muralha da China?", options: ["Japão", "Índia", "China", "Coreia do Norte"], answer: 2 },
-    { question: "Qual é o maior continente do mundo?", options: ["África", "América", "Ásia", "Europa"], answer: 2 },
-    { question: "Quem escreveu a obra 'Dom Casmurro'?", options: ["Machado de Assis", "José de Alencar", "Clarice Lispector", "Raul Pompeia"], answer: 0 },
-    { question: "Em que ano ocorreu a Independência do Brasil?", options: ["1822", "1889", "1500", "1808"], answer: 0 },
-    { question: "Quantos estados tem o Brasil?", options: ["24", "26", "27", "28"], answer: 1 },
-    { question: "Quem foi o responsável por descobrir o Brasil?", options: ["Pedro Álvares Cabral", "Cristóvão Colombo", "Vasco da Gama", "Dom Pedro II"], answer: 0 },
-    { question: "Qual é a capital de Portugal?", options: ["Lisboa", "Porto", "Funchal", "Coimbra"], answer: 0 },
-    { question: "Quem pintou a Mona Lisa?", options: ["Vincent van Gogh", "Leonardo da Vinci", "Pablo Picasso", "Claude Monet"], answer: 1 },
-    { question: "Quem é o atual presidente dos Estados Unidos?", options: ["Joe Biden", "Donald Trump", "Barack Obama", "George Bush"], answer: 0 },
-    { question: "Qual é o nome do primeiro filme da série Star Wars?", options: ["Star Wars: A Nova Esperança", "Star Wars: O Império Contra-Ataca", "Star Wars: O Retorno de Jedi", "Star Wars: A Ameaça Fantasma"], answer: 0 },
-    { question: "Em que país nasceu a pizza?", options: ["França", "Itália", "Espanha", "Portugal"], answer: 1 },
-    { question: "Quem é o criador do Facebook?", options: ["Steve Jobs", "Bill Gates", "Mark Zuckerberg", "Elon Musk"], answer: 2 },
-    { question: "Qual é o maior animal terrestre?", options: ["Elefante", "Girafa", "Baleia", "Rinoceronte"], answer: 0 },
-    { question: "Quantos jogadores tem uma equipe de futebol?", options: ["10", "11", "12", "9"], answer: 1 },
-    { question: "Qual o nome do famoso dinossauro do desenho animado 'Os Flintstones'?", options: ["Barney", "Fred", "Dino", "Betty"], answer: 2 },
-    { question: "Qual o nome do super-herói que tem um escudo redondo e usa as cores vermelho, branco e azul?", options: ["Capitão América", "Homem de Ferro", "Thor", "Hulk"], answer: 0 },
-    { question: "Quem é o rei leão no filme da Disney?", options: ["Simba", "Mufasa", "Scar", "Timon"], answer: 0 },
-    { question: "Qual é o nome da princesa do filme 'A Bela e a Fera'?", options: ["Cinderela", "Aurora", "Bela", "Rapunzel"], answer: 2 },
-    { question: "Qual filme da Disney tem uma sereia chamada Ariel?", options: ["A Pequena Sereia", "Cinderela", "A Bela e a Fera", "Aladdin"], answer: 0 },
-    { question: "Qual é o nome da vaca no filme 'Toy Story'?", options: ["Jessie", "Bo Peep", "Moo", "Daisy"], answer: 0 },
-    { question: "Em que cidade nasceu Harry Potter?", options: ["Londres", "Godric's Hollow", "Hogwarts", "Edimburgo"], answer: 1 },
-    { question: "Quem é o vilão no filme 'O Rei Leão'?", options: ["Scar", "Shere Khan", "Malévola", "Jafar"], answer: 0 },
-    { question: "Quem foi o autor de 'O Senhor dos Anéis'?", options: ["J.K. Rowling", "George R. R. Martin", "J.R.R. Tolkien", "C.S. Lewis"], answer: 2 },
-    { question: "Quantos minutos tem uma hora?", options: ["60", "50", "70", "90"], answer: 0 },
-    { question: "O que é o 'Cubo Mágico'?", options: ["Uma forma geométrica", "Um jogo de tabuleiro", "Um quebra-cabeça", "Um brinquedo eletrônico"], answer: 2 },
-    { question: "Qual é o nome do primeiro satélite artificial lançado pelo homem?", options: ["Sputnik", "Apollo", "Vostok", "Explorer"], answer: 0 },
-    { question: "Qual é a língua oficial do Brasil?", options: ["Espanhol", "Inglês", "Francês", "Português"], answer: 3 },
-    { question: "Qual é a capital da França?", options: ["Paris", "Lyon", "Marselha", "Nice"], answer: 0 },
-    { question: "Quem inventou a lâmpada elétrica?", options: ["Nikola Tesla", "Thomas Edison", "Albert Einstein", "Alexander Graham Bell"], answer: 1 },
-    { question: "Qual é a maior floresta do mundo?", options: ["Floresta Amazônica", "Floresta de Sherwood", "Floresta Negra", "Taiga"], answer: 0 },
-    { question: "Em que ano o homem pisou na Lua pela primeira vez?", options: ["1969", "1959", "1971", "1980"], answer: 0 },
-    { question: "Quem pintou o teto da Capela Sistina?", options: ["Michelangelo", "Leonardo da Vinci", "Rafael", "Caravaggio"], answer: 0 },
-    { question: "O que é o Polvo?", options: ["Um animal marinho", "Uma planta aquática", "Uma espécie de peixe", "Uma criatura mitológica"], answer: 0 },
-    { question: "Qual é o maior oceano do planeta?", options: ["Atlântico", "Índico", "Pacífico", "Ártico"], answer: 2 },
-    // Continuação...   
-];
+            { question: "Quanto é 3 + 5?", options: ["5", "8", "10", "7"], answer: 1 },
+            { question: "Se um trem viaja a 80 km/h e outro a 100 km/h, qual é mais rápido?", options: ["Trem 1", "Trem 2", "Ambos", "Nenhum"], answer: 1 },
+            { question: "Qual é o valor de PI?", options: ["3.14", "3.00", "3.10", "3.20"], answer: 0 },
+            { question: "Quanto é 9 * 6?", options: ["56", "54", "60", "62"], answer: 1 },
+            { question: "Qual o número primo mais próximo de 10?", options: ["9", "11", "13", "7"], answer: 1 }
+        ];
 
+        let currentQuestionIndex = 0;
+        let score = 0;
 
-       // Função para embaralhar o array
-    function shuffleArray(array) {
-        for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
+        function loadQuestion() {
+            const currentQuestion = questions[currentQuestionIndex];
+            document.getElementById("question").innerText = currentQuestion.question;
+            const optionsContainer = document.getElementById("options");
+            optionsContainer.innerHTML = "";
+            currentQuestion.options.forEach((option, index) => {
+                const optionButton = document.createElement("button");
+                optionButton.classList.add("option");
+                optionButton.innerText = option;
+                optionButton.onclick = () => checkAnswer(index);
+                optionsContainer.appendChild(optionButton);
+            });
         }
-    }
 
-    // Função para exibir a próxima pergunta
-    function showQuestion() {
-        // Embaralha as questões
-        shuffleArray(questions);
-
-        const questionData = questions[0];
-        const questionElement = document.getElementById("question");
-        const optionsElement = document.getElementById("options");
-
-        questionElement.innerHTML = questionData.question;
-
-        // Embaralha as opções
-        shuffleArray(questionData.options);
-
-        optionsElement.innerHTML = '';
-        questionData.options.forEach((option, index) => {
-            const optionButton = document.createElement("button");
-            optionButton.classList.add("option");
-            optionButton.innerText = option;
-            optionButton.onclick = () => checkAnswer(index, questionData.answer);
-            optionsElement.appendChild(optionButton);
-        });
-    }
-
-    // Função para verificar a resposta
-    function checkAnswer(selectedIndex, correctAnswerIndex) {
-        if (selectedIndex === correctAnswerIndex) {
-            alert("Resposta correta!");
-        } else {
-            alert("Resposta errada.");
+        function checkAnswer(selectedIndex) {
+            const currentQuestion = questions[currentQuestionIndex];
+            if (selectedIndex === currentQuestion.answer) {
+                score++;
+                document.getElementById("score").innerText = `Pontuação: ${score}`;
+            }
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                loadQuestion();
+            } else {
+                alert(`Quiz finalizado! Sua pontuação é ${score}`);
+            }
         }
-        showQuestion();
-    }
 
-    // Função para validar a senha (para a área restrita)
-    function checkPassword() {
-        const password = document.getElementById("password").value;
-        if (password === "admin123") {
-            document.getElementById("access-message").innerText = "Acesso concedido!";
-        } else {
-            document.getElementById("access-message").innerText = "Senha incorreta!";
+        function checkPassword() {
+            const password = document.getElementById("password").value;
+            if (password === "1234") {
+                document.getElementById("access-message").innerText = "Acesso permitido!";
+            } else {
+                document.getElementById("access-message").innerText = "Senha incorreta.";
+            }
         }
-    }
 
-    // Inicia o quiz assim que a página for carregada
-    window.onload = function() {
-        showQuestion();
-    };
-</script></body>
+        // Carregar a primeira pergunta
+        loadQuestion();
+    </script>
+</body>
 </html>
