@@ -167,13 +167,58 @@
     </div>
 
     <script>
-        const questions = [
-            { question: "Quanto é 3 + 5?", options: ["5", "8", "10", "7"], answer: 1 },
-            { question: "Se um trem viaja a 80 km/h e outro a 100 km/h, qual é mais rápido?", options: ["Trem 1", "Trem 2", "Ambos", "Nenhum"], answer: 1 },
-            { question: "Qual é o valor de PI?", options: ["3.14", "3.00", "3.10", "3.20"], answer: 0 },
-            { question: "Quanto é 9 * 6?", options: ["56", "54", "60", "62"], answer: 1 },
-            { question: "Qual o número primo mais próximo de 10?", options: ["9", "11", "13", "7"], answer: 1 }
-        ];
+       const questions = [
+    { question: "Quanto é 3 + 5?", options: ["5", "8", "10", "7"], answer: 1 },
+    { question: "Se um trem viaja a 80 km/h e outro a 100 km/h, qual é mais rápido?", options: ["Trem 1", "Trem 2", "Ambos", "Nenhum"], answer: 1 },
+    { question: "Qual é o valor de PI?", options: ["3.14", "3.00", "3.10", "3.20"], answer: 0 },
+    { question: "Quanto é 9 * 6?", options: ["56", "54", "60", "62"], answer: 1 },
+    { question: "Qual o número primo mais próximo de 10?", options: ["9", "11", "13", "7"], answer: 1 },
+    { question: "Qual é a capital do Brasil?", options: ["Rio de Janeiro", "São Paulo", "Brasília", "Salvador"], answer: 2 },
+    { question: "Qual é o maior oceano do mundo?", options: ["Atlântico", "Índico", "Ártico", "Pacífico"], answer: 3 },
+    { question: "Quem pintou o quadro 'Mona Lisa'?", options: ["Vincent van Gogh", "Pablo Picasso", "Leonardo da Vinci", "Claude Monet"], answer: 2 },
+    { question: "Quem escreveu 'Dom Quixote'?", options: ["Miguel de Cervantes", "William Shakespeare", "José de Alencar", "Machado de Assis"], answer: 0 },
+    { question: "Qual é o símbolo químico do Ouro?", options: ["Au", "Ag", "Pb", "Fe"], answer: 0 },
+    { question: "Qual é o maior continente do mundo?", options: ["África", "Ásia", "América", "Europa"], answer: 1 },
+    { question: "Qual é o nome da estrela mais próxima da Terra?", options: ["Sirius", "Proxima Centauri", "Sol", "Betelgeuse"], answer: 2 },
+    { question: "Qual é o elemento químico de número atômico 1?", options: ["Oxigênio", "Hidrogênio", "Carbono", "Nitrogênio"], answer: 1 },
+    { question: "Em que ano o homem pisou na Lua pela primeira vez?", options: ["1967", "1969", "1971", "1965"], answer: 1 },
+    { question: "Qual é a maior cidade do mundo em número de habitantes?", options: ["Tóquio", "Nova York", "São Paulo", "Xangai"], answer: 0 },
+    { question: "Quem descobriu a teoria da relatividade?", options: ["Isaac Newton", "Albert Einstein", "Galileu Galilei", "Nikola Tesla"], answer: 1 },
+    { question: "Qual é a cor do céu em um dia claro?", options: ["Azul", "Verde", "Amarelo", "Cinza"], answer: 0 },
+    { question: "Quantos continentes existem no mundo?", options: ["5", "6", "7", "8"], answer: 2 },
+    { question: "Quem escreveu a peça 'Hamlet'?", options: ["William Shakespeare", "Molière", "Chekhov", "Pirandello"], answer: 0 },
+    { question: "Qual é o maior país do mundo em termos de área?", options: ["Rússia", "Canadá", "China", "Estados Unidos"], answer: 0 },
+    { question: "Qual é o animal terrestre mais rápido?", options: ["Leão", "Tigre", "Chita", "Elefante"], answer: 2 },
+    { question: "Quem foi o primeiro presidente dos Estados Unidos?", options: ["Thomas Jefferson", "Abraham Lincoln", "George Washington", "John Adams"], answer: 2 },
+    { question: "Qual é o nome do famoso científico que formulou as leis do movimento?", options: ["Isaac Newton", "Albert Einstein", "Galileu Galilei", "Nikola Tesla"], answer: 0 },
+    { question: "Qual é o maior rio do mundo?", options: ["Nilo", "Amazonas", "Yangtsé", "Mississipi"], answer: 1 },
+    { question: "Quem compôs a famosa obra 'O Nascimento de Vênus'?", options: ["Leonardo da Vinci", "Michelangelo", "Sandro Botticelli", "Caravaggio"], answer: 2 },
+    { question: "Qual o nome do maior satélite natural da Terra?", options: ["Fobos", "Deimos", "Lua", "Titã"], answer: 2 },
+    { question: "Quem foi o autor de 'O Pequeno Príncipe'?", options: ["J.K. Rowling", "Antoine de Saint-Exupéry", "Charles Dickens", "F. Scott Fitzgerald"], answer: 1 },
+    { question: "Qual é a unidade de medida da temperatura?", options: ["Celsius", "Kelvin", "Fahrenheit", "Todas as alternativas"], answer: 3 },
+    { question: "Em que cidade fica a Torre Eiffel?", options: ["Londres", "Paris", "Roma", "Berlim"], answer: 1 },
+    { question: "Quantos ossos tem o corpo humano?", options: ["206", "250", "300", "400"], answer: 0 },
+    { question: "Quem descobriu a América?", options: ["Cristóvão Colombo", "Pedro Álvares Cabral", "Vasco da Gama", "Fernão de Magalhães"], answer: 0 },
+    { question: "Qual é a maior floresta tropical do mundo?", options: ["Floresta Amazônica", "Floresta do Congo", "Floresta Negra", "Floresta de Borneo"], answer: 0 },
+    { question: "Quem foi o responsável pela criação do Facebook?", options: ["Bill Gates", "Steve Jobs", "Mark Zuckerberg", "Larry Page"], answer: 2 },
+    { question: "Quem pintou o famoso quadro 'A Última Ceia'?", options: ["Michelangelo", "Vincent van Gogh", "Leonardo da Vinci", "Raphael"], answer: 2 },
+    { question: "Qual é o animal símbolo da Austrália?", options: ["Canguru", "Coala", "Pinguim", "Leão-marinho"], answer: 0 },
+    { question: "Qual é o nome do maior deserto do mundo?", options: ["Deserto do Saara", "Deserto de Atacama", "Deserto de Gobi", "Antártica"], answer: 3 },
+    { question: "Qual é a fórmula química da água?", options: ["CO2", "H2O", "O2", "H2SO4"], answer: 1 },
+    { question: "Em que continente fica o Egito?", options: ["África", "Ásia", "Europa", "América"], answer: 0 },
+    { question: "Quem foi o primeiro homem a viajar para o espaço?", options: ["Yuri Gagarin", "Neil Armstrong", "Buzz Aldrin", "John Glenn"], answer: 0 },
+    { question: "Qual é o nome da maior cadeia de montanhas do mundo?", options: ["Alpes", "Andes", "Himalaia", "Rocky Mountains"], answer: 2 },
+    { question: "Quem é considerado o pai da psicanálise?", options: ["Carl Jung", "Sigmund Freud", "Jean Piaget", "Erik Erikson"], answer: 1 },
+    { question: "Qual é o nome da moeda do Japão?", options: ["Yuan", "Won", "Yen", "Ringgit"], answer: 2 },
+    { question: "Qual é o principal ingrediente da guacamole?", options: ["Tomate", "Abacate", "Cebola", "Alho"], answer: 1 },
+    { question: "Quem foi o inventor da lâmpada elétrica?", options: ["Nikola Tesla", "Benjamin Franklin", "Thomas Edison", "Alexander Graham Bell"], answer: 2 },
+    { question: "Qual é o maior animal do planeta?", options: ["Elefante", "Baleia-azul", "Girafa", "Tubarão-baleia"], answer: 1 },
+    { question: "Em que ano o Brasil se tornou independente?", options: ["1820", "1822", "1830", "1889"], answer: 1 },
+    { question: "Qual é o principal gás responsável pelo efeito estufa?", options: ["Oxigênio", "Dióxido de carbono", "Metano", "Óxido nitroso"], answer: 1 },
+    { question: "Qual é o nome do maior arquipélago do mundo?", options: ["Ilhas Filipinas", "Ilhas Maldivas", "Ilhas da Indonésia", "Ilhas Galápagos"], answer: 2 },
+    { question: "Qual é o maior animal terrestre?", options: ["Elefante", "Hipopótamo", "Rinoceronte", "Girafa"], answer: 0 }
+];
+
 
         let currentQuestionIndex = 0;
         let score = 0;
