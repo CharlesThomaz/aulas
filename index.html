@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Universo Charlão - Quiz</title>
+    <title>Universo Charlão - Quiz Lógico</title>
     <style>
         /* Estilos Globais */
         * {
@@ -31,14 +31,15 @@
             color: #000;
         }
 
-        /* Estilo do Quiz */
-        #quiz {
+        /* Layout com Flexbox */
+        #quiz-container {
             display: flex;
             justify-content: space-between;
             padding: 20px;
         }
 
-        #quiz-container {
+        /* Área do Quiz */
+        #quiz-area {
             width: 60%;
             padding: 20px;
             background-color: #fff;
@@ -84,8 +85,8 @@
             font-weight: bold;
         }
 
-        /* Áreas de Acesso */
-        #area-access {
+        /* Área de Acesso */
+        #access-area {
             width: 35%;
             background-color: #fff;
             padding: 20px;
@@ -93,12 +94,12 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
-        #area-access h2 {
+        #access-area h2 {
             margin-bottom: 20px;
             font-size: 1.8em;
         }
 
-        #area-access input {
+        #access-area input {
             width: 100%;
             padding: 10px;
             margin-bottom: 10px;
@@ -107,7 +108,7 @@
             border: 1px solid #ccc;
         }
 
-        #area-access button {
+        #access-area button {
             width: 100%;
             padding: 10px;
             background-color: #00ff99;
@@ -119,22 +120,24 @@
             transition: background-color 0.2s ease;
         }
 
-        #area-access button:hover {
+        #access-area button:hover {
             background-color: #ff6600;
         }
 
-        #area-access button:active {
+        #access-area button:active {
             background-color: #ff3300;
         }
 
         /* Responsividade */
         @media (max-width: 768px) {
-            #quiz {
+            #quiz-container {
                 flex-direction: column;
+                align-items: center;
             }
 
-            #quiz-container, #area-access {
+            #quiz-area, #access-area {
                 width: 100%;
+                margin-bottom: 20px;
             }
         }
     </style>
@@ -145,17 +148,17 @@
         <h1>Universo Charlão - Quiz Lógico</h1>
     </header>
 
-    <!-- Área do Quiz e Áreas de Acesso -->
-    <div id="quiz">
-        <!-- Quiz Container -->
-        <div id="quiz-container">
+    <!-- Layout com Flexbox -->
+    <div id="quiz-container">
+        <!-- Área do Quiz -->
+        <div id="quiz-area">
             <div id="question" class="question"></div>
             <div class="options" id="options"></div>
             <div id="score"></div>
         </div>
 
-        <!-- Áreas de Acesso (Professor e Aluno) -->
-        <div id="area-access">
+        <!-- Área de Acesso (Professor e Aluno) -->
+        <div id="access-area">
             <h2>Acesso Restrito</h2>
             <input type="password" id="password" placeholder="Digite a senha">
             <button onclick="checkPassword()">Entrar</button>
@@ -164,14 +167,30 @@
     </div>
 
     <script>
-        // Quiz Questions
+        // Perguntas do Quiz
         const questions = [
             { question: "Quanto é 3 + 5?", options: ["5", "8", "10", "7"], answer: 1 },
             { question: "Se um trem viaja a 80 km/h e outro a 100 km/h, qual é mais rápido?", options: ["Trem 1", "Trem 2", "Ambos", "Nenhum"], answer: 1 },
             { question: "Qual é o valor de PI?", options: ["3.14", "3.00", "3.10", "3.20"], answer: 0 },
             { question: "Quanto é 9 * 6?", options: ["56", "54", "60", "62"], answer: 1 },
             { question: "Qual o número primo mais próximo de 10?", options: ["9", "11", "13", "7"], answer: 1 },
-            // Adicione mais perguntas aqui
+            { question: "Quanto é 50 / 5?", options: ["8", "10", "12", "15"], answer: 1 },
+            { question: "Quanto é 15 * 2?", options: ["25", "30", "35", "40"], answer: 1 },
+            { question: "Qual é o maior número entre 24, 56, 33 e 89?", options: ["24", "56", "33", "89"], answer: 3 },
+            { question: "Quanto é 7 + 12?", options: ["18", "19", "20", "21"], answer: 1 },
+            { question: "Quantos lados tem um hexágono?", options: ["6", "7", "8", "9"], answer: 0 },
+            { question: "Qual é a raiz quadrada de 64?", options: ["6", "7", "8", "9"], answer: 2 },
+            { question: "Se você tem 10 maçãs e dá 3 para um amigo, quantas maçãs restam?", options: ["7", "6", "8", "9"], answer: 0 },
+            { question: "Quanto é 200 - 75?", options: ["125", "150", "175", "200"], answer: 0 },
+            { question: "Qual é a capital do Brasil?", options: ["São Paulo", "Rio de Janeiro", "Brasília", "Curitiba"], answer: 2 },
+            { question: "Quantos meses tem um ano?", options: ["10", "11", "12", "13"], answer: 2 },
+            { question: "Qual é o valor de 2 elevado a 3?", options: ["6", "8", "10", "12"], answer: 1 },
+            { question: "Quantos segundos tem 1 minuto?", options: ["60", "120", "180", "240"], answer: 0 },
+            { question: "Qual é a metade de 50?", options: ["20", "25", "30", "35"], answer: 1 },
+            { question: "Quanto é 12 / 4?", options: ["3", "4", "5", "6"], answer: 0 },
+            { question: "Quantos dias tem um ano bissexto?", options: ["365", "366", "367", "368"], answer: 1 },
+            { question: "Quanto é 7 * 8?", options: ["54", "56", "58", "60"], answer: 1 },
+            // Adicione mais perguntas aqui conforme necessário
         ];
 
         let currentQuestionIndex = 0;
