@@ -5,162 +5,169 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Universo Charlão - Quiz Lógico</title>
     <style>
-        /* Estilos Globais */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f0f0f0;
-            color: #333;
-            margin: 0;
-        }
-
-        /* Barra Superior */
-        header {
-            background-color: #00ff99;
-            padding: 10px 0;
-            text-align: center;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-
-        header h1 {
-            font-size: 2.5em;
-            color: #000;
-            font-weight: bold;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-        }
-
-        /* Layout com Flexbox */
+    /* Estilos Globais */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f0f0f0;
+        color: #333;
+        margin: 0;
+        background-image: url('sua-imagem.jpg'); /* Substitua com o caminho da sua imagem */
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+    }
+    
+    /* Barra Superior */
+    header {
+        background-color: #00ff99;
+        padding: 10px 0;
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    
+    header h1 {
+        font-size: 2.5em;
+        color: #000;
+        font-weight: bold;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+    
+    /* Layout com Flexbox */
+    #quiz-container {
+        display: flex;
+        justify-content: space-between;
+        padding: 20px;
+        gap: 20px;
+    }
+    
+    /* Área do Quiz */
+    #quiz-area {
+        width: 60%;
+        padding: 30px;
+        background-color: rgba(255, 255, 255, 0.8); /* Fundo semi-transparente */
+        border-radius: 12px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+        backdrop-filter: blur(5px); /* Efeito de desfoque no fundo */
+        -webkit-backdrop-filter: blur(5px); /* Para compatibilidade com navegadores antigos */
+    }
+    
+    #quiz-area:hover {
+        transform: scale(1.05);
+    }
+    
+    .question {
+        font-size: 1.8em;
+        margin-bottom: 20px;
+        font-weight: bold;
+    }
+    
+    .options {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+    
+    .option {
+        padding: 15px;
+        background-color: #00ff99;
+        border: none;
+        color: #000;
+        font-size: 1.2em;
+        cursor: pointer;
+        border-radius: 8px;
+        transition: transform 0.3s ease, background-color 0.3s ease;
+    }
+    
+    .option:hover {
+        transform: scale(1.05);
+        background-color: #ff6600;
+    }
+    
+    .option:active {
+        transform: scale(0.95);
+        background-color: #ff3300;
+    }
+    
+    #score {
+        font-size: 1.5em;
+        margin-top: 25px;
+        font-weight: bold;
+        color: #00ff99;
+    }
+    
+    /* Área de Acesso */
+    .access-area {
+        width: 35%;
+        background-color: rgba(255, 255, 255, 0.9); /* Fundo semi-transparente */
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        backdrop-filter: blur(5px); /* Efeito de desfoque no fundo */
+        -webkit-backdrop-filter: blur(5px); /* Para compatibilidade com navegadores antigos */
+    }
+    
+    .access-area h2 {
+        margin-bottom: 20px;
+        font-size: 1.8em;
+    }
+    
+    .access-area input {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 12px;
+        font-size: 1.2em;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        transition: border-color 0.3s ease;
+    }
+    
+    .access-area input:focus {
+        border-color: #00ff99;
+    }
+    
+    .access-area button {
+        width: 100%;
+        padding: 12px;
+        background-color: #00ff99;
+        border: none;
+        color: #000;
+        font-size: 1.2em;
+        cursor: pointer;
+        border-radius: 8px;
+        transition: background-color 0.3s ease;
+    }
+    
+    .access-area button:hover {
+        background-color: #ff6600;
+    }
+    
+    .access-area button:active {
+        background-color: #ff3300;
+    }
+    
+    /* Responsividade */
+    @media (max-width: 768px) {
         #quiz-container {
-            display: flex;
-            justify-content: space-between;
-            padding: 20px;
-            gap: 20px;
-        }
-
-        /* Área do Quiz */
-        #quiz-area {
-            width: 60%;
-            padding: 30px;
-            background-color: #fff;
-            border-radius: 12px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
-        }
-
-        #quiz-area:hover {
-            transform: scale(1.05);
-        }
-
-        .question {
-            font-size: 1.8em;
-            margin-bottom: 20px;
-            font-weight: bold;
-        }
-
-        .options {
-            display: flex;
             flex-direction: column;
-            gap: 12px;
+            align-items: center;
         }
-
-        .option {
-            padding: 15px;
-            background-color: #00ff99;
-            border: none;
-            color: #000;
-            font-size: 1.2em;
-            cursor: pointer;
-            border-radius: 8px;
-            transition: transform 0.3s ease, background-color 0.3s ease;
-        }
-
-        .option:hover {
-            transform: scale(1.05);
-            background-color: #ff6600;
-        }
-
-        .option:active {
-            transform: scale(0.95);
-            background-color: #ff3300;
-        }
-
-        #score {
-            font-size: 1.5em;
-            margin-top: 25px;
-            font-weight: bold;
-            color: #00ff99;
-        }
-
-        /* Área de Acesso */
-        .access-area {
-            width: 35%;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .access-area h2 {
+    
+        #quiz-area, .access-area {
+            width: 100%;
             margin-bottom: 20px;
-            font-size: 1.8em;
         }
-
-        .access-area input {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 12px;
-            font-size: 1.2em;
-            border-radius: 8px;
-            border: 1px solid #ccc;
-            transition: border-color 0.3s ease;
-        }
-
-        .access-area input:focus {
-            border-color: #00ff99;
-        }
-
-        .access-area button {
-            width: 100%;
-            padding: 12px;
-            background-color: #00ff99;
-            border: none;
-            color: #000;
-            font-size: 1.2em;
-            cursor: pointer;
-            border-radius: 8px;
-            transition: background-color 0.3s ease;
-        }
-
-        .access-area button:hover {
-            background-color: #ff6600;
-        }
-
-        .access-area button:active {
-            background-color: #ff3300;
-        }
-
-        /* Responsividade */
-        @media (max-width: 768px) {
-            #quiz-container {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            #quiz-area, .access-area {
-                width: 100%;
-                margin-bottom: 20px;
-            }
-        }
-
-    </style>
+    }
+</style>    
 </head>
 <body>
     <!-- Barra Superior -->
