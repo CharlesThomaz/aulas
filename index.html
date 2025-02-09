@@ -219,39 +219,57 @@
             <div id="access-message-aluno" style="margin-top: 15px;"></div>
         </div>
     </div>
-            <div>
-                <article style="background-color: rgba(255, 255, 255, 0.9); padding: 25px; margin: 20px auto; max-width: 800px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); backdrop-filter: blur(5px); transition: transform 0.3s ease;">
-                    <p style="font-size: 1.5em; line-height: 1.8; color: #000; font-weight: bold; text-align: justify;">
-                        🌟 *Ei, aventureiro!* Você está prestes a embarcar em uma jornada maluca cheia de mistérios e desafios! 😎 Imagine um mundo onde tudo é possível – um lugar onde a diversão nunca tem fim e cada escolha sua pode mudar tudo! 
-                        Estamos falando de um universo incrível, onde você pode ser o herói de sua própria história. 🚀
-                        Está preparado para testar seus limites e aprender coisas que você nunca imaginou? Se sim, *bem-vindo* ao Universo Charlão! Aqui, as respostas podem ser mais épicas do que você imagina! 💥
-                    </p>
-            
-                    <p style="font-size: 1.4em; line-height: 1.8; color: #333; text-align: justify;">
-                        🧠 *Você sabia?* Resolver puzzles e quizzes não é só sobre encontrar respostas, é sobre desbloquear superpoderes do cérebro! 🎮
-                        Cada pergunta é uma pista, e cada acerto é uma vitória. Mas cuidado, porque nem tudo é o que parece! Está pronto para descobrir um mundo cheio de enigmas e aventuras? 💡
-                        Seja curioso, explore cada canto, e não se esqueça: *a verdadeira diversão está em se perder para encontrar as melhores respostas!* ✨
-                    </p>
-            
-                    <!-- Anúncio Google AdSense -->
-                    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2021333552615070"
-                        crossorigin="anonymous"></script>
-                    <ins class="adsbygoogle"
-                        style="display:block; text-align:center;"
-                        data-ad-layout="in-article"
-                        data-ad-format="fluid"
-                        data-ad-client="ca-pub-2021333552615070"
-                        data-ad-slot="1560975208"></ins>
-                    <script>
-                        (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-            
-                    <p style="font-size: 1.4em; line-height: 1.8; color: #333; text-align: justify;">
-                        E aí, pronto para o próximo desafio? O que você vai aprender pode te surpreender! Cada etapa traz novas descobertas e momentos de *"uau!"* 😲
-                        No Universo Charlão, a diversão nunca acaba. Prepare-se para explorar, aprender, e, claro, *ganhar superpoderes de sabedoria!* ⚡
-                    </p>
-                </article>
-            </div>
+    <div>
+        <article id="interactive-article" style="background-color: rgba(255, 255, 255, 0.9); padding: 25px; margin: 20px auto; max-width: 800px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); backdrop-filter: blur(5px); transition: transform 0.3s ease;">
+            <p style="font-size: 1.5em; line-height: 1.8; color: #000; font-weight: bold; text-align: justify;">
+                🌟 *Ei, aventureiro!* Você está prestes a embarcar em uma jornada maluca cheia de mistérios e desafios! 😎 Imagine um mundo onde tudo é possível – um lugar onde a diversão nunca tem fim e cada escolha sua pode mudar tudo! 
+                Estamos falando de um universo incrível, onde você pode ser o herói de sua própria história. 🚀
+                Está preparado para testar seus limites e aprender coisas que você nunca imaginou? Se sim, *bem-vindo* ao Universo Charlão! Aqui, as respostas podem ser mais épicas do que você imagina! 💥
+            </p>
+    
+            <p style="font-size: 1.4em; line-height: 1.8; color: #333; text-align: justify;">
+                🧠 *Você sabia?* Resolver puzzles e quizzes não é só sobre encontrar respostas, é sobre desbloquear superpoderes do cérebro! 🎮
+                Cada pergunta é uma pista, e cada acerto é uma vitória. Mas cuidado, porque nem tudo é o que parece! Está pronto para descobrir um mundo cheio de enigmas e aventuras? 💡
+                Seja curioso, explore cada canto, e não se esqueça: *a verdadeira diversão está em se perder para encontrar as melhores respostas!* ✨
+            </p>
+    
+            <p style="font-size: 1.4em; line-height: 1.8; color: #333; text-align: justify;">
+                E aí, pronto para o próximo desafio? O que você vai aprender pode te surpreender! Cada etapa traz novas descobertas e momentos de *"uau!"* 😲
+                No Universo Charlão, a diversão nunca acaba. Prepare-se para explorar, aprender, e, claro, *ganhar superpoderes de sabedoria!* ⚡
+            </p>
+    
+            <!-- Anúncio Google AdSense -->
+            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2021333552615070"
+                crossorigin="anonymous"></script>
+            <ins class="adsbygoogle"
+                style="display:block; text-align:center;"
+                data-ad-layout="in-article"
+                data-ad-format="fluid"
+                data-ad-client="ca-pub-2021333552615070"
+                data-ad-slot="1560975208"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </article>
+    </div>
+    
+    <script>
+        const article = document.getElementById('interactive-article');
+    
+        // Função para mover o artigo quando o mouse estiver sobre ele
+        article.addEventListener('mouseover', function() {
+            const randomX = Math.floor(Math.random() * 200) - 100; // Movimento aleatório em X
+            const randomY = Math.floor(Math.random() * 200) - 100; // Movimento aleatório em Y
+    
+            article.style.transform = `translate(${randomX}px, ${randomY}px)`;
+        });
+    
+        // Função para voltar o artigo à posição original quando o mouse sai
+        article.addEventListener('mouseout', function() {
+            article.style.transform = 'translate(0, 0)';
+        });
+    </script>
+    
     
 
                     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2021333552615070"
