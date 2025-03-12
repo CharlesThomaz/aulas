@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jogo de Descriptografia</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background: linear-gradient(135deg, #f9a8d4, #93c5fd);
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+    }
+    .container {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      padding: 2rem;
+      max-width: 500px;
+      margin: auto;
+    }
+    h1 {
+      color: #3b82f6;
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+    .cifrada {
+      background: #f3f4f6;
+      padding: 1rem;
+      border-radius: 10px;
+      font-family: monospace;
+      color: #1e40af;
+    }
+    .dicas {
+      background: #fef3c7;
+      padding: 1rem;
+      border-radius: 10px;
+      margin: 1rem 0;
+      color: #92400e;
+    }
+    input {
+      width: 100%;
+      padding: 0.5rem;
+      border: 2px solid #3b82f6;
+      border-radius: 10px;
+      margin: 1rem 0;
+      font-size: 1rem;
+    }
+    button {
+      background: #3b82f6;
+      color: white;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background: #2563eb;
+    }
+    #resultado {
+      margin-top: 1rem;
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+    .acerto {
+      color: #10b981;
+    }
+    .erro {
+      color: #ef4444;
+    }
+  </style>
+</head>
+<body>
+  <div class="container text-center">
+    <h1>Jogo de Descriptografia</h1>
+    <p>Decifre a mensagem secreta abaixo usando a Cifra de César (deslocamento de 3 letras):</p>
+    <p class="cifrada">Frase cifrada: "D FULDÇDGRD JRVWD GH DSVHQGHU FULSWRJUILD"</p>
+
+    <!-- Dicas -->
+    <div class="dicas text-left">
+      <p class="font-bold">Dicas:</p>
+      <ul class="list-disc list-inside">
+        <li>A letra "D" pode ser a letra "A".</li>
+        <li>Palavras com 2 letras: "GH" → "DE".</li>
+        <li>A última palavra é "CRIPTOGRAFIA".</li>
+      </ul>
+    </div>
+
+    <!-- Campo de resposta -->
+    <input
+      type="text"
+      id="resposta"
+      placeholder="Digite sua resposta aqui"
+    />
+    <button onclick="verificarResposta()">Verificar</button>
+    <p id="resultado"></p>
+  </div>
+
+  <script>
+    function verificarResposta() {
+      // Remove espaços extras e converte para maiúsculas
+      const resposta = document.getElementById("resposta").value.trim().toUpperCase().replace(/Ç/g, 'C');
+      const respostaCorreta = "A CRIANÇADA GOSTA DE APRENDER CRIPTOGRAFIA".toUpperCase().replace(/Ç/g, 'C');
+      const resultado = document.getElementById("resultado");
+
+      if (resposta === respostaCorreta) {
+        resultado.textContent = "Parabéns! Você acertou! 🎉";
+        resultado.className = "acerto";
+      } else {
+        resultado.textContent = "Tente novamente! 😅";
+        resultado.className = "erro";
+      }
+    }
+  </script>
+</body>
+</html>
