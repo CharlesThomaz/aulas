@@ -3,69 +3,224 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Repositório de Aulas</title>
+    <title>Repositório de Aulas | Portal do Professor</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="styles.css">
-
     <style>
-        /* Alterando a cor do site para verde */
+        :root {
+            --primary-color: #2E7D32;
+            --primary-light: #4CAF50;
+            --primary-dark: #1B5E20;
+            --secondary-color: #F5F5F5;
+            --accent-color: #8BC34A;
+            --text-dark: #263238;
+            --text-light: #757575;
+        }
+        
         body {
-            background-color: #f4f8f2;
-            color: #2c6b2f;
+            font-family: 'Poppins', sans-serif;
+            background-color: #FAFAFA;
+            color: var(--text-dark);
+            line-height: 1.6;
         }
-
-        .navbar-dark.bg-primary {
-            background-color: #28a745 !important;
+        
+        .navbar-brand {
+            font-weight: 600;
+            font-size: 1.3rem;
         }
-
+        
+        .navbar {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary-color));
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 0.8rem 1rem;
+        }
+        
+        .nav-item {
+            margin-left: 0.5rem;
+        }
+        
         .btn-primary {
-            background-color: #28a745;
-            border-color: #28a745;
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            padding: 0.5rem 1.5rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
         }
-
+        
         .btn-primary:hover {
-            background-color: #218838;
-            border-color: #1e7e34;
+            background-color: var(--primary-dark);
+            border-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
-
+        
         .btn-danger {
-            background-color: #dc3545;
-            border-color: #dc3545;
+            background-color: #D32F2F;
+            border-color: #D32F2F;
+            padding: 0.5rem 1.5rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
         }
-
-        .btn-sair {
-            background-color: #5635dc;
-            border-color: #6d35dc;
-        }
-
-
+        
         .btn-danger:hover {
-            background-color: #c82333;
-            border-color: #bd2130;
+            background-color: #B71C1C;
+            border-color: #B71C1C;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
-
-        .text-secondary {
-            color: #6c757d !important;
+        
+        .btn-sair {
+            background-color: #5C6BC0;
+            border-color: #5C6BC0;
+            color: white;
+            padding: 0.5rem 1.5rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
         }
-
-        .footer {
-            background-color: #2c6b2f;
+        
+        .btn-sair:hover {
+            background-color: #3949AB;
+            border-color: #3949AB;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .hero-section {
+            background: linear-gradient(rgba(46, 125, 50, 0.9), rgba(46, 125, 50, 0.9)), 
+                        url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 4rem 0;
+            border-radius: 0 0 20px 20px;
+            margin-bottom: 3rem;
+        }
+        
+        .section-title {
+            color: var(--primary-dark);
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+        
+        .section-title:after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 50px;
+            height: 3px;
+            background-color: var(--accent-color);
+        }
+        
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        .card-header {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: 500;
+            padding: 1rem;
         }
         
         .list-group-item {
-            background-color: #e9f5e3;
-            border: 1px solid #c8e6c9;
+            border: none;
+            border-bottom: 1px solid #eee;
+            padding: 1rem 1.5rem;
+            transition: all 0.3s ease;
         }
-
+        
+        .list-group-item:last-child {
+            border-bottom: none;
+        }
+        
         .list-group-item:hover {
-            background-color: #c8e6c9;
+            background-color: #F1F8E9;
+            padding-left: 2rem;
         }
-
+        
+        .list-group-item a {
+            color: var(--text-dark);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        
+        .list-group-item a:hover {
+            color: var(--primary-color);
+        }
+        
+        .list-group-item i {
+            margin-right: 10px;
+            color: var(--primary-light);
+        }
+        
         footer {
-            background-color: #2c6b2f;
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary-color));
             color: white;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+        
+        .footer-links a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            margin-right: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        .social-icons a {
+            color: white;
+            font-size: 1.2rem;
+            margin-right: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .social-icons a:hover {
+            transform: translateY(-3px);
+        }
+        
+        .badge-module {
+            background-color: var(--accent-color);
+            color: var(--text-dark);
+            font-weight: 500;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-left: 0.5rem;
+        }
+        
+        @media (max-width: 768px) {
+            .hero-section {
+                padding: 2rem 0;
+            }
+            
+            .section-title {
+                font-size: 1.5rem;
+            }
         }
     </style>
     
@@ -73,32 +228,43 @@
         function acessarPlataforma() {
             var senha = prompt("Por favor, insira a senha para acessar a plataforma de provas:");
             if (senha === "senha2") {
-                window.location.href = "https://charlao-ad206.web.app/"; // link  da plataforma
+                window.location.href = "https://charlao-ad206.web.app/";
             } else {
                 alert("Senha incorreta. Tente novamente.");
             }
         }
+        
+        // Efeito de carregamento suave
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                document.body.style.opacity = '1';
+            }, 100);
+        });
     </script>
 </head>
 
-<body>
+<body style="opacity: 0; transition: opacity 0.5s ease;">
 <header>
     <!-- Barra de Navegação -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container-fluid">
-            <!-- Lado Esquerdo -->
-            <a class="navbar-brand" href="#">Repositório de aulas do Charlão</a>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-book-open me-2"></i>Portal do Professor
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Alternar navegação">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <!-- Lado Direito -->
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="btn btn-sair" href="index.html">Sair</a>
+                        <a class="btn btn-sair" href="index.html">
+                            <i class="fas fa-sign-out-alt me-1"></i>Sair
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <button class="btn btn-danger" onclick="acessarPlataforma()">Acessar Plataforma de Provas</button>
+                        <button class="btn btn-danger" onclick="acessarPlataforma()">
+                            <i class="fas fa-graduation-cap me-1"></i>Plataforma de Provas
+                        </button>
                     </li>
                 </ul>
             </div>
@@ -106,169 +272,289 @@
     </nav>
 </header>
 
-<!-- Botões de Navegação -->
-<div class="container my-3 text-center">
-    <a href="aulas.html" class="btn btn-primary mx-2">Clique aqui para acessar as Aulas</a>        
-</div>
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container text-center">
+        <h1 class="display-4 fw-bold mb-3">Repositório de Aulas</h1>
+        <p class="lead mb-4">Materiais didáticos e exercícios organizados para facilitar seu aprendizado</p>
+        <a href="aulas.html" class="btn btn-primary btn-lg">
+            <i class="fas fa-chalkboard-teacher me-2"></i>Acessar Aulas
+        </a>
+    </div>
+</section>
 
 <main class="container my-5">
-    <section class="mb-4">
-        <h2 class="text-secondary">Exercícios Módulo 1</h2>
-        <ul class="list-group">
-            <li class="list-group-item">
-                <a href="exercicios/m1/Exercícios A1M1.pdf" target="_blank" class="text-decoration-none">Exercício A1M1</a>
-            </li>
-            <li class="list-group-item">
-                <a href="exercicios/m1/Exercícios A2M1.pdf" target="_blank" class="text-decoration-none">Exercício A2M1</a>
-            </li>
-            <li class="list-group-item">
-                <a href="exercicios/m1/Exercícios A3M1.pdf" target="_blank" class="text-decoration-none">Exercício A3M1</a>
-            </li>
-            <li class="list-group-item">
-                <a href="exercicios/m1/Exercícios A4M1.pdf" target="_blank" class="text-decoration-none">Exercício A4M1</a>
-            </li>
-            <li class="list-group-item">
-                <a href="exercicios/m1/ExercíciosRevisãoAV1.pdf" target="_blank" class="text-decoration-none">Exercícios Revisão AV1</a>
-            </li>
-            <li class="list-group-item">
-                <a href="exercicios/m1/Exercícios A5M1.pdf" target="_blank" class="text-decoration-none">Exercício A5M1</a>
-            </li>
-            <li class="list-group-item">
-                <a href="exercicios/m1/Exercícios A6M1.pdf" target="_blank" class="text-decoration-none">Exercício A6M1</a>
-            </li>
-            <li class="list-group-item">
-                <a href="exercicios/m1/Exercícios A7M1.pdf" target="_blank" class="text-decoration-none">Exercício A7M1</a>
-            </li>
-            <li class="list-group-item">
-                <a href="exercicios/m1/Exercícios A8M1.pdf" target="_blank" class="text-decoration-none">Exercício A8M1</a>
-            </li>
-            <li class="list-group-item">
-                <a href="exercicios/m1/ExercíciosRevisãoAV2.pdf" target="_blank" class="text-decoration-none">Exercícios Revisão AV2</a>
-            </li>
-            <li class="list-group-item">
-                <a href="exercicios/m1/Exercícios A9M1.pdf" target="_blank" class="text-decoration-none">Exercício A9M1</a>
-            </li>
-            <li class="list-group-item">
-                <a href="exercicios/m1/Exercícios  10M1.pdf" target="_blank" class="text-decoration-none">Exercício A10M1</a>
-            </li>
-            <li class="list-group-item">
-                <a href="exercicios/m1/Exercícios  11M1.pdf" target="_blank" class="text-decoration-none">Exercício A11M1</a>
-            </li>
-            <li class="list-group-item">
-                <a href="exercicios/m1/Exercícios  A12M1.pdf" target="_blank" class="text-decoration-none">Exercício A12M1</a>
-            </li>
-            <li class="list-group-item">
-                <a href="exercicios/m1/ExercíciosRevisãoAV3.pdf" target="_blank" class="text-decoration-none">Exercício Revisão AV3</a>
-            </li>
-        </ul>
-    </section>
-    
-    <section class="mb-4">
-        <h2 class="text-secondary">Exercícios Módulo 2</h2>
-        <ul class="list-group">
-            <li class="list-group-item">
-                <a href="exercicios/m2/ExercícioA00M2.pdf" target="_blank" class="text-decoration-none">Exercício A00M2</a>
-            </li>
-            <li class="list-group-item">
-                <a href="exercicios/m2/ExercícioA1M2.pdf" target="_blank" class="text-decoration-none">Exercício A1M2</a>
-            </li>
-            <li class="list-group-item">
-                <a href="exercicios/m2/ExercícioA2M2.pdf" target="_blank" class="text-decoration-none">Exercício A2M2</a>
-            </li>
-            <li class="list-group-item">
-                <a href="exercicios/m2/ExercícioA3M2.pdf" target="_blank" class="text-decoration-none">Exercício A3M2</a>
-            </li>
-            <li class="list-group-item">
-                <a href="exercicios/m2/ExercícioA4M2.pdf" target="_blank" class="text-decoration-none">Exercício A4M2</a>
-            </li>
-            <li class="list-group-item">
-                <a href="exercicios/m2/ExercícioRevisãoAV1.pdf" target="_blank" class="text-decoration-none">Exercício Revisão AV1</a>
-            </li>
-            <li class="list-group-item">
-                <a href="exercicios/m2/ExercícioA5M2.pdf" target="_blank" class="text-decoration-none">Exercício A5M2</a>
-            </li>
-            <li class="list-group-item">
-                <a href="exercicios/m2/ExercícioA6M2.pdf" target="_blank" class="text-decoration-none">Exercício A6M2</a>
-            </li>
-            <li class="list-group-item">
-                <a href="exercicios/m2/ExercícioA7M2.pdf" target="_blank" class="text-decoration-none">Exercício A7M2</a>
-            </li>
-            <li class="list-group-item">
-                <a href="exercicios/m2/ExercícioA8M2.pdf" target="_blank" class="text-decoration-none">Exercício A8M2</a>
-            </li>
-            <li class="list-group-item">
-                <a href="exercicios/m2/ExercícioRevisãoAV2.pdf" target="_blank" class="text-decoration-none">Exercício Revisão AV2M2</a>
-            </li>
-        </ul>
-    </section>
-
-
-
-
-    <section>
-        <h2 class="text-secondary"> Exercícios Módulo 3</h2>
-        <ul class="list-group">
-            <li class="list-group-item">
-                <a href="exercicios/m3/ExercícioA1M3.pdf" target="_blank" class="text-decoration-none">Exercício A1M3</a>
-            </li>
-            <li class="list-group-item">
-                <a href="exercicios/m3/ExercícioA2M3.pdf" target="_blank" class="text-decoration-none">Exercício A2M3</a>
-            </li>
-            <li class="list-group-item">
-                <a href="exercicios/m3/ExercícioA3M3.pdf" target="_blank" class="text-decoration-none">Exercício A3M3</a>
-            </li>
-            <li class="list-group-item">
-                <a href="exercicios/m3/Exercício A4 M3.pdf" target="_blank" class="text-decoration-none">Exercício A4M3</a>
-            </li>
-        </ul>
-    </section>
-
-
-
-
-    
-    <section>
-        <h2 class="text-secondary">Oficinas</h2>
-        <ul class="list-group">
-            <li class="list-group-item">
-                <a href="exercicios/oficinas/ExercicioOficina 1 - Personalizando Sua Área de Trabalho.pdf" target="_blank" class="text-decoration-none">Exercício Oficina 1</a>
-            </li>
-            <li class="list-group-item">
-                <a href="exercicios/oficinas/ExercicioOficina  2 - O que é computação Introdução ao mundo digital.pdf" target="_blank" class="text-decoration-none">Exercício Oficina 2 </a>
-            </li>
-            <li class="list-group-item">
-                <a href="https://jogos-58c96.web.app/" target="_blank" class="text-decoration-none">Exercícios das Startups</a>
-            </li>
-
-            <li class="list-group-item">
-                <a href="https://agilefingers.com/pt" target="_blank" class="text-decoration-none">Exercício de Digitação - Agile Fingers</a>
-            </li>
-
-            <li class="list-group-item">
-                <a href="exercicios/oficinas/exercicioCriptografia.html" target="_blank" class="text-decoration-none">Exercício de Criptografia </a>
-            </li>
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <!-- Módulo 1 -->
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h3 class="h5 mb-0">Módulo 1</h3>
+                    <span class="badge-module">Fundamentos</span>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <a href="exercicios/m1/Exercícios A1M1.pdf" target="_blank">
+                            <i class="fas fa-file-pdf"></i>Exercício A1M1
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="exercicios/m1/Exercícios A2M1.pdf" target="_blank">
+                            <i class="fas fa-file-pdf"></i>Exercício A2M1
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="exercicios/m1/Exercícios A3M1.pdf" target="_blank">
+                            <i class="fas fa-file-pdf"></i>Exercício A3M1
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="exercicios/m1/Exercícios A4M1.pdf" target="_blank">
+                            <i class="fas fa-file-pdf"></i>Exercício A4M1
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="exercicios/m1/ExercíciosRevisãoAV1.pdf" target="_blank">
+                            <i class="fas fa-file-pdf"></i>Exercícios Revisão AV1
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="exercicios/m1/Exercícios A5M1.pdf" target="_blank">
+                            <i class="fas fa-file-pdf"></i>Exercício A5M1
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="exercicios/m1/Exercícios A6M1.pdf" target="_blank">
+                            <i class="fas fa-file-pdf"></i>Exercício A6M1
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="exercicios/m1/Exercícios A7M1.pdf" target="_blank">
+                            <i class="fas fa-file-pdf"></i>Exercício A7M1
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="exercicios/m1/Exercícios A8M1.pdf" target="_blank">
+                            <i class="fas fa-file-pdf"></i>Exercício A8M1
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="exercicios/m1/ExercíciosRevisãoAV2.pdf" target="_blank">
+                            <i class="fas fa-file-pdf"></i>Exercícios Revisão AV2
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="exercicios/m1/Exercícios A9M1.pdf" target="_blank">
+                            <i class="fas fa-file-pdf"></i>Exercício A9M1
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="exercicios/m1/Exercícios  10M1.pdf" target="_blank">
+                            <i class="fas fa-file-pdf"></i>Exercício A10M1
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="exercicios/m1/Exercícios  11M1.pdf" target="_blank">
+                            <i class="fas fa-file-pdf"></i>Exercício A11M1
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="exercicios/m1/Exercícios  A12M1.pdf" target="_blank">
+                            <i class="fas fa-file-pdf"></i>Exercício A12M1
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="exercicios/m1/ExercíciosRevisãoAV3.pdf" target="_blank">
+                            <i class="fas fa-file-pdf"></i>Exercício Revisão AV3
+                        </a>
+                    </li>
+                </ul>
+            </div>
             
-        </ul>
-    </section>
+            <!-- Módulo 2 -->
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h3 class="h5 mb-0">Módulo 2</h3>
+                    <span class="badge-module">Intermediário</span>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <a href="exercicios/m2/ExercícioA00M2.pdf" target="_blank">
+                            <i class="fas fa-file-pdf"></i>Exercício A00M2
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="exercicios/m2/ExercícioA1M2.pdf" target="_blank">
+                            <i class="fas fa-file-pdf"></i>Exercício A1M2
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="exercicios/m2/ExercícioA2M2.pdf" target="_blank">
+                            <i class="fas fa-file-pdf"></i>Exercício A2M2
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="exercicios/m2/ExercícioA3M2.pdf" target="_blank">
+                            <i class="fas fa-file-pdf"></i>Exercício A3M2
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="exercicios/m2/ExercícioA4M2.pdf" target="_blank">
+                            <i class="fas fa-file-pdf"></i>Exercício A4M2
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="exercicios/m2/ExercícioRevisãoAV1.pdf" target="_blank">
+                            <i class="fas fa-file-pdf"></i>Exercício Revisão AV1
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="exercicios/m2/ExercícioA5M2.pdf" target="_blank">
+                            <i class="fas fa-file-pdf"></i>Exercício A5M2
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="exercicios/m2/ExercícioA6M2.pdf" target="_blank">
+                            <i class="fas fa-file-pdf"></i>Exercício A6M2
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="exercicios/m2/ExercícioA7M2.pdf" target="_blank">
+                            <i class="fas fa-file-pdf"></i>Exercício A7M2
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="exercicios/m2/ExercícioA8M2.pdf" target="_blank">
+                            <i class="fas fa-file-pdf"></i>Exercício A8M2
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="exercicios/m2/ExercícioRevisãoAV2.pdf" target="_blank">
+                            <i class="fas fa-file-pdf"></i>Exercício Revisão AV2M2
+                        </a>
+                    </li>
+                </ul>
+            </div>
 
-    <section>
-        <h2 class="text-secondary"> Workshops</h2>
-        <ul class="list-group">
-            <li class="list-group-item">
-                <a href="exercicios/workshop/Harmonia Tecnológica.pdf" target="_blank" class="text-decoration-none">Exercício - Workshop Harmonia Tecnológica</a>
-            </li>
-            <li class="list-group-item">
-                <a href="exercicios/workshop/Exercício - Workshop A7 - Introdução aos Editores de Texto.pdf" target="_blank" class="text-decoration-none">Exercício - Workshop A7 - Introdução aos Editores de Texto</a>
-            </li>
-        </ul>
-    </section>
+            <!-- Módulo 3 -->
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h3 class="h5 mb-0">Módulo 3</h3>
+                    <span class="badge-module">Avançado</span>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <a href="exercicios/m3/ExercícioA1M3.pdf" target="_blank">
+                            <i class="fas fa-file-pdf"></i>Exercício A1M3
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="exercicios/m3/ExercícioA2M3.pdf" target="_blank">
+                            <i class="fas fa-file-pdf"></i>Exercício A2M3
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="exercicios/m3/ExercícioA3M3.pdf" target="_blank">
+                            <i class="fas fa-file-pdf"></i>Exercício A3M3
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="exercicios/m3/Exercício A4 M3.pdf" target="_blank">
+                            <i class="fas fa-file-pdf"></i>Exercício A4M3
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Oficinas -->
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h3 class="h5 mb-0">Oficinas</h3>
+                    <span class="badge-module">Práticas</span>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <a href="exercicios/oficinas/ExercicioOficina 1 - Personalizando Sua Área de Trabalho.pdf" target="_blank">
+                            <i class="fas fa-file-pdf"></i>Exercício Oficina 1
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="exercicios/oficinas/ExercicioOficina  2 - O que é computação Introdução ao mundo digital.pdf" target="_blank">
+                            <i class="fas fa-file-pdf"></i>Exercício Oficina 2
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="https://jogos-58c96.web.app/" target="_blank">
+                            <i class="fas fa-gamepad"></i>Exercícios das Startups
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="https://agilefingers.com/pt" target="_blank">
+                            <i class="fas fa-keyboard"></i>Exercício de Digitação - Agile Fingers
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="exercicios/oficinas/exercicioCriptografia.html" target="_blank">
+                            <i class="fas fa-lock"></i>Exercício de Criptografia
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Workshops -->
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h3 class="h5 mb-0">Workshops</h3>
+                    <span class="badge-module">Especiais</span>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <a href="exercicios/workshop/Harmonia Tecnológica.pdf" target="_blank">
+                            <i class="fas fa-file-pdf"></i>Workshop Harmonia Tecnológica
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="exercicios/workshop/Exercício - Workshop A7 - Introdução aos Editores de Texto.pdf" target="_blank">
+                            <i class="fas fa-file-pdf"></i>Workshop A7 - Editores de Texto
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
 </main>
 
-<footer class="bg-dark text-white text-center py-3">
-    <p>&copy; 2025 O melhor da região</p>
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                <h5 class="mb-3">Portal do Professor</h5>
+                <p class="mb-0">Recursos educacionais para facilitar o ensino e aprendizagem.</p>
+            </div>
+            <div class="col-md-6 text-center text-md-end">
+                <div class="footer-links mb-3">
+                    <a href="#">Termos de Uso</a>
+                    <a href="#">Política de Privacidade</a>
+                    <a href="#">Contato</a>
+                </div>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+        </div>
+        <hr class="my-4 bg-light opacity-25">
+        <div class="text-center">
+            <p class="mb-0">&copy; 2025 Portal do Professor. Todos os direitos reservados.</p>
+        </div>
+    </div>
 </footer>
 
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Font Awesome -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
 </body>
 </html>
