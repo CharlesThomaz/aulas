@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercício de Algoritmos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        
+        .exercise-container {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .instructions {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-left: 4px solid #3498db;
+            margin-bottom: 20px;
+        }
+        
+        .progress-container {
+            margin-bottom: 20px;
+        }
+        
+        .progress-bar {
+            height: 20px;
+            background-color: #ecf0f1;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            background-color: #2ecc71;
+            width: 0%;
+            transition: width 0.3s;
+        }
+        
+        .progress-text {
+            text-align: center;
+            margin-top: 5px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .items-container, .sequence-container {
+            min-height: 100px;
+            border: 2px dashed #bdc3c7;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 20px;
+            background-color: #f8f9fa;
+        }
+        
+        .sequence-container {
+            min-height: 200px;
+        }
+        
+        .algorithm-step {
+            background-color: #3498db;
+            color: white;
+            padding: 10px 15px;
+            margin: 5px 0;
+            border-radius: 5px;
+            cursor: move;
+            user-select: none;
+            position: relative;
+        }
+        
+        .algorithm-step.in-sequence {
+            background-color: #2ecc71;
+            padding-left: 40px;
+        }
+        
+        .algorithm-step.in-sequence::before {
+            content: attr(data-position);
+            position: absolute;
+            left: 15px;
+            font-weight: bold;
+        }
+        
+        .algorithm-step.wrong {
+            background-color: #e74c3c;
+        }
+        
+        .feedback {
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            display: none;
+        }
+        
+        .feedback.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            display: block;
+        }
+        
+        .feedback.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            display: block;
+        }
+        
+        .reset-btn {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        
+        .reset-btn:hover {
+            background-color: #c0392b;
+        }
+    </style>
+</head>
+<body>
+    <h1>Exercício de Algoritmos</h1>
+    
+    <div class="exercise-container">
+        <div class="instructions">
+            <h3>Instruções:</h3>
+            <p>Arraste os passos do algoritmo para a área de sequência e organize-os na ordem correta. Quando estiver pronto, clique em "Verificar Resposta".</p>
+        </div>
+        
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress" id="progress"></div>
+            </div>
+            <div class="progress-text" id="progress-text">0% concluído</div>
+        </div>
+        
+        <h3>Passos disponíveis:</h3>
+        <div class="items-container" id="items-container">
+            <div class="algorithm-step" draggable="true" data-id="1">Ler o valor da temperatura</div>
+            <div class="algorithm-step" draggable="true" data-id="2">Se temperatura > 37.5</div>
+            <div class="algorithm-step" draggable="true" data-id="3">Exibir "Febre alta"</div>
+            <div class="algorithm-step" draggable="true" data-id="4">Se temperatura > 36.5 e ≤ 37.5</div>
+            <div class="algorithm-step" draggable="true" data-id="5">Exibir "Febre leve"</div>
+            <div class="algorithm-step" draggable="true" data-id="6">Exibir "Sem febre"</div>
+            <div class="algorithm-step" draggable="true" data-id="7">Fim do algoritmo</div>
+        </div>
+        
+        <h3>Sequência do algoritmo:</h3>
+        <div class="sequence-container" id="sequence-container"></div>
+        
+        <button id="check-btn">Verificar Resposta</button>
+        <button class="reset-btn" id="reset-btn">Reiniciar Exercício</button>
+        
+        <div class="feedback" id="feedback"></div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const itemsContainer = document.getElementById('items-container');
+            const sequenceContainer = document.getElementById('sequence-container');
+            const checkBtn = document.getElementById('check-btn');
+            const resetBtn = document.getElementById('reset-btn');
+            const feedback = document.getElementById('feedback');
+            const progress = document.getElementById('progress');
+            const progressText = document.getElementById('progress-text');
+            
+            // Ordem correta dos passos (por data-id)
+            const correctOrder = ['1', '2', '3', '4', '5', '6', '7'];
+            
+            let draggedItem = null;
+            
+            // Adiciona event listeners para os itens arrastáveis
+            document.querySelectorAll('.algorithm-step').forEach(item => {
+                item.addEventListener('dragstart', dragStart);
+                item.addEventListener('dragend', dragEnd);
+            });
+            
+            // Event listeners para os containers
+            itemsContainer.addEventListener('dragover', dragOver);
+            itemsContainer.addEventListener('drop', drop);
+            
+            sequenceContainer.addEventListener('dragover', dragOver);
+            sequenceContainer.addEventListener('drop', dropInSequence);
+            
+            // Botão de verificação
+            checkBtn.addEventListener('click', checkAnswer);
+            
+            // Botão de reset
+            resetBtn.addEventListener('click', resetExercise);
+            
+            function dragStart() {
+                draggedItem = this;
+                setTimeout(() => {
+                    this.style.opacity = '0.4';
+                }, 0);
+            }
+            
+            function dragEnd() {
+                this.style.opacity = '1';
+            }
+            
+            function dragOver(e) {
+                e.preventDefault();
+            }
+            
+            function drop(e) {
+                e.preventDefault();
+                if (draggedItem && e.target === itemsContainer) {
+                    // Remove a numeração se estiver voltando para os itens disponíveis
+                    draggedItem.classList.remove('in-sequence');
+                    draggedItem.removeAttribute('data-position');
+                    itemsContainer.appendChild(draggedItem);
+                }
+            }
+            
+            function dropInSequence(e) {
+                e.preventDefault();
+                if (draggedItem) {
+                    // Se o item já está na sequência, apenas reorganiza
+                    if (draggedItem.parentNode === sequenceContainer) {
+                        const afterElement = getDragAfterElement(sequenceContainer, e.clientY);
+                        
+                        if (afterElement) {
+                            sequenceContainer.insertBefore(draggedItem, afterElement);
+                        } else {
+                            sequenceContainer.appendChild(draggedItem);
+                        }
+                    } else {
+                        // Adiciona o item à sequência
+                        draggedItem.classList.add('in-sequence');
+                        sequenceContainer.appendChild(draggedItem);
+                    }
+                    
+                    // Atualiza as posições
+                    updatePositions();
+                }
+            }
+            
+            function getDragAfterElement(container, y) {
+                const draggableElements = [...container.querySelectorAll('.algorithm-step:not(.dragging)')];
+                
+                return draggableElements.reduce((closest, child) => {
+                    const box = child.getBoundingClientRect();
+                    const offset = y - box.top - box.height / 2;
+                    
+                    if (offset < 0 && offset > closest.offset) {
+                        return { offset: offset, element: child };
+                    } else {
+                        return closest;
+                    }
+                }, { offset: Number.NEGATIVE_INFINITY }).element;
+            }
+            
+            function updatePositions() {
+                const itemsInSequence = sequenceContainer.querySelectorAll('.algorithm-step');
+                
+                itemsInSequence.forEach((item, index) => {
+                    item.setAttribute('data-position', index + 1);
+                });
+            }
+            
+            function checkAnswer() {
+                const itemsInSequence = sequenceContainer.querySelectorAll('.algorithm-step');
+                let correctCount = 0;
+                
+                // Remove qualquer feedback de erro anterior
+                itemsInSequence.forEach(item => {
+                    item.classList.remove('wrong');
+                });
+                
+                // Verifica cada item na sequência
+                itemsInSequence.forEach((item, index) => {
+                    if (item.getAttribute('data-id') === correctOrder[index]) {
+                        correctCount++;
+                    } else {
+                        item.classList.add('wrong');
+                    }
+                });
+                
+                // Calcula a porcentagem de acerto
+                const percentage = Math.round((correctCount / correctOrder.length) * 100);
+                progress.style.width = percentage + '%';
+                progressText.textContent = percentage + '% concluído';
+                
+                // Mostra feedback
+                if (percentage === 100) {
+                    feedback.textContent = 'Parabéns! Você acertou a sequência completa do algoritmo!';
+                    feedback.className = 'feedback success';
+                } else if (percentage > 50) {
+                    feedback.textContent = `Você acertou ${correctCount} de ${correctOrder.length} passos. Continue tentando!`;
+                    feedback.className = 'feedback error';
+                } else {
+                    feedback.textContent = `Você acertou apenas ${correctCount} de ${correctOrder.length} passos. Revise o algoritmo e tente novamente.`;
+                    feedback.className = 'feedback error';
+                }
+            }
+            
+            function resetExercise() {
+                // Limpa a sequência
+                sequenceContainer.innerHTML = '';
+                
+                // Move todos os itens de volta para o container original
+                const items = document.querySelectorAll('.algorithm-step');
+                items.forEach(item => {
+                    item.classList.remove('in-sequence', 'wrong');
+                    item.removeAttribute('data-position');
+                    itemsContainer.appendChild(item);
+                });
+                
+                // Reseta o progresso
+                progress.style.width = '0%';
+                progressText.textContent = '0% concluído';
+                
+                // Esconde o feedback
+                feedback.className = 'feedback';
+                feedback.textContent = '';
+            }
+        });
+    </script>
+</body>
+</html>

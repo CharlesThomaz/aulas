@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receita de Bolo de Chocolate</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff9f9;
+        }
+        
+        h1 {
+            color: #5d4037;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .recipe-image {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .recipe-image img {
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .exercise-container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+            border: 1px solid #efebe9;
+        }
+        
+        .instructions {
+            background-color: #f5f5f5;
+            padding: 18px;
+            border-left: 4px solid #8d6e63;
+            margin-bottom: 25px;
+            border-radius: 4px;
+            color: #5d4037;
+        }
+        
+        .progress-container {
+            margin-bottom: 25px;
+        }
+        
+        .progress-bar {
+            height: 25px;
+            background-color: #efebe9;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+        
+        .progress {
+            height: 100%;
+            background: linear-gradient(to right, #8d6e63, #6d4c41);
+            width: 0%;
+            transition: width 0.5s;
+        }
+        
+        .progress-text {
+            text-align: center;
+            font-weight: bold;
+            color: #5d4037;
+            font-size: 18px;
+        }
+        
+        .columns {
+            display: flex;
+            gap: 25px;
+        }
+        
+        .column {
+            flex: 1;
+        }
+        
+        .items-container, .sequence-container {
+            min-height: 400px;
+            border: 2px dashed #d7ccc8;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            background-color: #fffafa;
+        }
+        
+        .sequence-container {
+            background-color: #faf4f0;
+        }
+        
+        .recipe-step {
+            background-color: #a1887f;
+            color: white;
+            padding: 12px 18px;
+            margin: 8px 0;
+            border-radius: 6px;
+            cursor: move;
+            user-select: none;
+            position: relative;
+            font-size: 15px;
+            transition: all 0.3s;
+        }
+        
+        .recipe-step.in-sequence {
+            background-color: #8d6e63;
+            padding-left: 45px;
+        }
+        
+        .recipe-step.in-sequence::before {
+            content: attr(data-position);
+            position: absolute;
+            left: 15px;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        
+        .recipe-step.wrong {
+            background-color: #bf360c;
+        }
+        
+        .feedback {
+            padding: 18px;
+            border-radius: 8px;
+            margin: 25px 0 15px 0;
+            display: none;
+            font-size: 16px;
+        }
+        
+        .feedback.success {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            border: 1px solid #c8e6c9;
+            display: block;
+        }
+        
+        .feedback.error {
+            background-color: #ffebee;
+            color: #c62828;
+            border: 1px solid #ffcdd2;
+            display: block;
+        }
+        
+        .btn {
+            padding: 12px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-right: 10px;
+            border: none;
+            transition: all 0.3s;
+        }
+        
+        .check-btn {
+            background-color: #8d6e63;
+            color: white;
+        }
+        
+        .check-btn:hover {
+            background-color: #6d4c41;
+        }
+        
+        .reset-btn {
+            background-color: #d84315;
+            color: white;
+        }
+        
+        .reset-btn:hover {
+            background-color: #bf360c;
+        }
+        
+        .hint-btn {
+            background-color: #ffb74d;
+            color: #5d4037;
+        }
+        
+        .hint-btn:hover {
+            background-color: #ffa726;
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+        
+        @media (max-width: 768px) {
+            .columns {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Receita de Bolo de Chocolate</h1>
+    
+    <div class="recipe-image">
+        <img src="https://img.freepik.com/fotos-gratis/delicioso-bolo-de-chocolate-com-cobertura_23-2149217327.jpg" alt="Bolo de Chocolate">
+    </div>
+    
+    <div class="exercise-container">
+        <div class="instructions">
+            <h3>Instruções:</h3>
+            <p>Organize os passos da receita de bolo de chocolate na ordem correta. Arraste os itens para a área de sequência e organize-os numericamente. Quando estiver pronto, clique em "Verificar Resposta".</p>
+        </div>
+        
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress" id="progress"></div>
+            </div>
+            <div class="progress-text" id="progress-text">0% concluído</div>
+        </div>
+        
+        <div class="columns">
+            <div class="column">
+                <h3>Passos disponíveis:</h3>
+                <div class="items-container" id="items-container">
+                    <!-- Os passos serão inseridos pelo JavaScript -->
+                </div>
+            </div>
+            
+            <div class="column">
+                <h3>Modo de preparo:</h3>
+                <div class="sequence-container" id="sequence-container"></div>
+            </div>
+        </div>
+        
+        <div class="buttons">
+            <button class="btn check-btn" id="check-btn">Verificar Resposta</button>
+            <button class="btn hint-btn" id="hint-btn">Dica</button>
+            <button class="btn reset-btn" id="reset-btn">Reiniciar</button>
+        </div>
+        
+        <div class="feedback" id="feedback"></div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const itemsContainer = document.getElementById('items-container');
+            const sequenceContainer = document.getElementById('sequence-container');
+            const checkBtn = document.getElementById('check-btn');
+            const hintBtn = document.getElementById('hint-btn');
+            const resetBtn = document.getElementById('reset-btn');
+            const feedback = document.getElementById('feedback');
+            const progress = document.getElementById('progress');
+            const progressText = document.getElementById('progress-text');
+            
+            // Passos da receita (id: texto)
+            const recipeSteps = {
+                '1': 'Pré-aqueça o forno a 180°C',
+                '2': 'Unte e enfarinhe uma forma de bolo',
+                '3': 'Em uma tigela, misture a farinha, açúcar, cacau em pó, fermento e sal',
+                '4': 'Adicione os ovos, leite e óvegetal à mistura seca',
+                '5': 'Bata bem até obter uma massa homogênea',
+                '6': 'Acrescente a água quente e misture delicadamente',
+                '7': 'Despeje a massa na forma preparada',
+                '8': 'Asse por 30-35 minutos',
+                '9': 'Faça o teste do palito para verificar se está assado',
+                '10': 'Deixe esfriar por 10 minutos na forma',
+                '11': 'Transfira para uma grade e deixe esfriar completamente',
+                '12': 'Para a cobertura, derreta a manteiga em uma panela',
+                '13': 'Misture o cacau em pó e mexa bem',
+                '14': 'Adicione o açúcar e o leite, mexendo continuamente',
+                '15': 'Deixe ferver por 1 minuto',
+                '16': 'Retire do fogo e adicione a baunilha',
+                '17': 'Despeje a cobertura sobre o bolo frio',
+                '18': 'Espalhe uniformemente com uma espátula',
+                '19': 'Deixe a cobertura firmar por alguns minutos',
+                '20': 'Sirva e aproveite seu bolo de chocolate!'
+            };
+            
+            // Ordem correta dos passos (por data-id)
+            const correctOrder = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20'];
+            
+            // Embaralha os passos para exibição inicial
+            let shuffledSteps = [...correctOrder].sort(() => Math.random() - 0.5);
+            
+            let draggedItem = null;
+            
+            // Inicializa os passos na tela
+            function initializeSteps() {
+                itemsContainer.innerHTML = '';
+                
+                shuffledSteps.forEach(stepId => {
+                    const stepElement = document.createElement('div');
+                    stepElement.className = 'recipe-step';
+                    stepElement.setAttribute('draggable', 'true');
+                    stepElement.setAttribute('data-id', stepId);
+                    stepElement.textContent = recipeSteps[stepId];
+                    
+                    stepElement.addEventListener('dragstart', dragStart);
+                    stepElement.addEventListener('dragend', dragEnd);
+                    
+                    itemsContainer.appendChild(stepElement);
+                });
+            }
+            
+            // Funções de arrastar e soltar
+            function dragStart() {
+                draggedItem = this;
+                setTimeout(() => {
+                    this.style.opacity = '0.6';
+                }, 0);
+            }
+            
+            function dragEnd() {
+                this.style.opacity = '1';
+            }
+            
+            function dragOver(e) {
+                e.preventDefault();
+            }
+            
+            function drop(e) {
+                e.preventDefault();
+                if (draggedItem && e.target === itemsContainer) {
+                    draggedItem.classList.remove('in-sequence', 'wrong');
+                    draggedItem.removeAttribute('data-position');
+                    itemsContainer.appendChild(draggedItem);
+                }
+            }
+            
+            function dropInSequence(e) {
+                e.preventDefault();
+                if (draggedItem) {
+                    if (draggedItem.parentNode === sequenceContainer) {
+                        const afterElement = getDragAfterElement(sequenceContainer, e.clientY);
+                        
+                        if (afterElement) {
+                            sequenceContainer.insertBefore(draggedItem, afterElement);
+                        } else {
+                            sequenceContainer.appendChild(draggedItem);
+                        }
+                    } else {
+                        draggedItem.classList.add('in-sequence');
+                        sequenceContainer.appendChild(draggedItem);
+                    }
+                    
+                    updatePositions();
+                }
+            }
+            
+            function getDragAfterElement(container, y) {
+                const draggableElements = [...container.querySelectorAll('.recipe-step:not(.dragging)')];
+                
+                return draggableElements.reduce((closest, child) => {
+                    const box = child.getBoundingClientRect();
+                    const offset = y - box.top - box.height / 2;
+                    
+                    if (offset < 0 && offset > closest.offset) {
+                        return { offset: offset, element: child };
+                    } else {
+                        return closest;
+                    }
+                }, { offset: Number.NEGATIVE_INFINITY }).element;
+            }
+            
+            function updatePositions() {
+                const itemsInSequence = sequenceContainer.querySelectorAll('.recipe-step');
+                
+                itemsInSequence.forEach((item, index) => {
+                    item.setAttribute('data-position', index + 1);
+                });
+            }
+            
+            function checkAnswer() {
+                const itemsInSequence = sequenceContainer.querySelectorAll('.recipe-step');
+                let correctCount = 0;
+                
+                itemsInSequence.forEach(item => {
+                    item.classList.remove('wrong');
+                });
+                
+                itemsInSequence.forEach((item, index) => {
+                    if (item.getAttribute('data-id') === correctOrder[index]) {
+                        correctCount++;
+                    } else {
+                        item.classList.add('wrong');
+                    }
+                });
+                
+                const percentage = Math.round((correctCount / correctOrder.length) * 100);
+                progress.style.width = percentage + '%';
+                progressText.textContent = percentage + '% concluído';
+                
+                if (percentage === 100) {
+                    feedback.textContent = 'Parabéns! Você acertou a sequência completa da receita! Agora é só preparar seu delicioso bolo!';
+                    feedback.className = 'feedback success';
+                } else if (percentage > 70) {
+                    feedback.textContent = `Ótimo progresso! Você acertou ${correctCount} de ${correctOrder.length} passos. Ajuste os últimos detalhes para completar a receita!`;
+                    feedback.className = 'feedback error';
+                } else if (percentage > 30) {
+                    feedback.textContent = `Você acertou ${correctCount} de ${correctOrder.length} passos. Pense na ordem lógica de preparo de um bolo.`;
+                    feedback.className = 'feedback error';
+                } else {
+                    feedback.textContent = `Você acertou ${correctCount} de ${correctOrder.length} passos. Lembre-se: primeiro preparamos os ingredientes, depois misturamos e por último assamos.`;
+                    feedback.className = 'feedback error';
+                }
+            }
+            
+            function giveHint() {
+                const itemsInSequence = sequenceContainer.querySelectorAll('.recipe-step');
+                const nextCorrectIndex = itemsInSequence.length;
+                
+                if (nextCorrectIndex < correctOrder.length) {
+                    const nextCorrectId = correctOrder[nextCorrectIndex];
+                    const nextCorrectText = recipeSteps[nextCorrectId];
+                    
+                    feedback.textContent = `Dica: O próximo passo correto é "${nextCorrectText}"`;
+                    feedback.className = 'feedback error';
+                } else {
+                    feedback.textContent = 'Você já colocou todos os passos na sequência! Agora verifique se estão na ordem correta.';
+                    feedback.className = 'feedback error';
+                }
+            }
+            
+            function resetExercise() {
+                sequenceContainer.innerHTML = '';
+                shuffledSteps = [...correctOrder].sort(() => Math.random() - 0.5);
+                initializeSteps();
+                
+                progress.style.width = '0%';
+                progressText.textContent = '0% concluído';
+                
+                feedback.className = 'feedback';
+                feedback.textContent = '';
+            }
+            
+            // Inicializa o exercício
+            initializeSteps();
+            
+            // Event listeners
+            itemsContainer.addEventListener('dragover', dragOver);
+            itemsContainer.addEventListener('drop', drop);
+            
+            sequenceContainer.addEventListener('dragover', dragOver);
+            sequenceContainer.addEventListener('drop', dropInSequence);
+            
+            checkBtn.addEventListener('click', checkAnswer);
+            hintBtn.addEventListener('click', giveHint);
+            resetBtn.addEventListener('click', resetExercise);
+        });
+    </script>
+</body>
+</html>
