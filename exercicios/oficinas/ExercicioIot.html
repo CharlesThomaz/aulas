@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IoT Quiz - Aprenda IoT Brincando</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+        .option-card:hover {
+            transform: scale(1.03);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        .progress-bar {
+            transition: width 0.5s ease-in-out;
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(59, 130, 246, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+        }
+        .shake {
+            animation: shake 0.5s;
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-5px); }
+            40%, 80% { transform: translateX(5px); }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans">
+    <!-- Header -->
+    <header class="bg-blue-600 text-white shadow-lg">
+        <div class="container mx-auto px-4 py-6 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fas fa-network-wired text-3xl"></i>
+                <h1 class="text-2xl md:text-3xl font-bold">IoT Quiz</h1>
+            </div>
+            <div class="flex items-center space-x-4">
+                <div id="score-display" class="bg-blue-500 px-4 py-2 rounded-full flex items-center">
+                    <i class="fas fa-star mr-2"></i>
+                    <span id="score">0</span>
+                </div>
+                <button id="sound-toggle" class="bg-blue-500 p-2 rounded-full">
+                    <i class="fas fa-volume-up"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Game Container -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- Welcome Screen -->
+        <div id="welcome-screen" class="text-center fade-in">
+            <div class="max-w-3xl mx-auto bg-white rounded-xl shadow-md overflow-hidden p-8 mb-8">
+                <h2 class="text-3xl font-bold text-blue-600 mb-4">Bem-vindo ao IoT Quiz!</h2>
+                <p class="text-gray-700 mb-6">Teste seus conhecimentos sobre Internet das Coisas neste jogo educativo! Responda perguntas, complete desafios e torne-se um especialista em IoT.</p>
+                
+                <div class="flex justify-center mb-8">
+                    <div class="relative floating">
+                        <div class="absolute -inset-2 bg-blue-500 rounded-lg blur opacity-75"></div>
+                        <img src="https://cdn-icons-png.flaticon.com/512/4392/4392528.png" alt="IoT Character" class="relative w-48 h-48 mx-auto">
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                    <div class="bg-blue-50 p-4 rounded-lg">
+                        <i class="fas fa-question-circle text-4xl text-blue-600 mb-2"></i>
+                        <h3 class="font-bold text-blue-600">Quiz Interativo</h3>
+                        <p class="text-sm">Responda perguntas sobre IoT</p>
+                    </div>
+                    <div class="bg-blue-50 p-4 rounded-lg">
+                        <i class="fas fa-random text-4xl text-blue-600 mb-2"></i>
+                        <h3 class="font-bold text-blue-600">Respostas Embaralhadas</h3>
+                        <p class="text-sm">Opções misturadas a cada jogo</p>
+                    </div>
+                    <div class="bg-blue-50 p-4 rounded-lg">
+                        <i class="fas fa-brain text-4xl text-blue-600 mb-2"></i>
+                        <h3 class="font-bold text-blue-600">Aprendizado Progressivo</h3>
+                        <p class="text-sm">Níveis de dificuldade crescente</p>
+                    </div>
+                </div>
+                
+                <button id="start-game" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full text-lg transition-all transform hover:scale-105 shadow-lg">
+                    Começar Quiz!
+                </button>
+            </div>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="game-screen" class="hidden">
+            <!-- Level Progress -->
+            <div class="bg-white rounded-lg shadow-md p-4 mb-8">
+                <div class="flex justify-between mb-2">
+                    <span class="font-bold text-blue-600">Pergunta <span id="current-question">1</span>/10</span>
+                    <span id="level-name" class="font-bold">Nível Iniciante</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-4">
+                    <div id="level-progress" class="progress-bar bg-blue-600 h-4 rounded-full" style="width: 0%"></div>
+                </div>
+            </div>
+            
+            <!-- Game Content -->
+            <div id="game-content" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Left Panel - Question -->
+                <div class="bg-white rounded-xl shadow-md p-6 lg:col-span-1">
+                    <h3 class="text-xl font-bold text-blue-600 mb-4 flex items-center">
+                        <i class="fas fa-question-circle mr-2"></i> Pergunta
+                    </h3>
+                    <div id="question-text" class="text-gray-700 mb-4 text-lg">
+                        O que significa a sigla IoT?
+                    </div>
+                    <div id="hint-area" class="bg-yellow-50 border-l-4 border-yellow-400 p-3 mb-4 hidden">
+                        <div class="flex">
+                            <i class="fas fa-lightbulb text-yellow-500 mr-2 mt-1"></i>
+                            <div id="hint-text" class="text-sm text-yellow-800">Dica: Está relacionado a dispositivos conectados à internet.</div>
+                        </div>
+                    </div>
+                    <button id="show-hint" class="bg-yellow-100 hover:bg-yellow-200 text-yellow-800 font-medium py-2 px-4 rounded-full text-sm mr-2">
+                        <i class="fas fa-lightbulb mr-1"></i> Dica
+                    </button>
+                </div>
+                
+                <!-- Center Panel - Options -->
+                <div class="bg-white rounded-xl shadow-md p-6 lg:col-span-2">
+                    <h3 class="text-xl font-bold text-blue-600 mb-4 flex items-center">
+                        <i class="fas fa-list-ol mr-2"></i> Opções
+                    </h3>
+                    <div id="options-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Options will be inserted here by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Feedback Modal -->
+        <div id="feedback-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+            <div class="bg-white rounded-xl shadow-xl p-8 max-w-md w-full mx-4 transform transition-all duration-300 scale-95" id="modal-content">
+                <div class="text-center">
+                    <div id="feedback-icon" class="text-6xl mb-4">
+                        <i class="fas fa-check-circle text-green-500"></i>
+                    </div>
+                    <h3 id="feedback-title" class="text-2xl font-bold mb-2">Parabéns!</h3>
+                    <p id="feedback-message" class="text-gray-700 mb-6">Você acertou a resposta!</p>
+                    <div class="bg-blue-50 p-3 rounded-lg mb-6">
+                        <p class="text-sm text-blue-800 font-medium">Você ganhou <span id="points-earned" class="text-blue-600 font-bold">10</span> pontos!</p>
+                    </div>
+                    <button id="next-question" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-full">
+                        Próxima Pergunta <i class="fas fa-arrow-right ml-2"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Completion Screen -->
+        <div id="completion-screen" class="hidden text-center">
+            <div class="max-w-3xl mx-auto bg-white rounded-xl shadow-md overflow-hidden p-8 mb-8">
+                <div class="relative">
+                    <div class="absolute -inset-2 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg blur opacity-75"></div>
+                    <div class="relative bg-white p-8 rounded-lg">
+                        <div class="text-6xl mb-6 text-yellow-500">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <h2 class="text-3xl font-bold text-gray-800 mb-4">Quiz Completo!</h2>
+                        <p class="text-gray-700 mb-6">Você concluiu todas as perguntas do IoT Quiz!</p>
+                        
+                        <div class="bg-blue-50 rounded-lg p-6 mb-8">
+                            <h3 class="font-bold text-blue-600 mb-4">Seu Desempenho</h3>
+                            <div class="grid grid-cols-3 gap-4">
+                                <div class="bg-white p-3 rounded">
+                                    <div class="text-3xl font-bold text-blue-600"><span id="final-score">0</span></div>
+                                    <div class="text-sm text-gray-600">Pontos Totais</div>
+                                </div>
+                                <div class="bg-white p-3 rounded">
+                                    <div class="text-3xl font-bold text-blue-600"><span id="correct-answers">0</span>/10</div>
+                                    <div class="text-sm text-gray-600">Respostas Corretas</div>
+                                </div>
+                                <div class="bg-white p-3 rounded">
+                                    <div class="text-3xl font-bold text-blue-600"><span id="percentage">0</span>%</div>
+                                    <div class="text-sm text-gray-600">Taxa de Acerto</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex flex-col sm:flex-row justify-center gap-4">
+                            <button id="play-again" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-full">
+                                Jogar Novamente <i class="fas fa-redo ml-2"></i>
+                            </button>
+                            <button id="learn-more" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-full">
+                                Aprender Mais <i class="fas fa-book ml-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-6">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <h2 class="text-xl font-bold flex items-center">
+                        <i class="fas fa-network-wired mr-2"></i> IoT Quiz
+                    </h2>
+                    <p class="text-gray-400 text-sm">Aprenda IoT de forma divertida!</p>
+                </div>
+                <div class="flex space-x-4">
+                    <a href="#" class="text-gray-400 hover:text-white transition">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-6 pt-6 text-center text-sm text-gray-400">
+                <p>© 2023 IoT Quiz. Todos os direitos reservados. Desenvolvido para fins educacionais.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Game State
+        const gameState = {
+            currentQuestion: 0,
+            totalQuestions: 10,
+            score: 0,
+            correctAnswers: 0,
+            soundOn: true,
+            questions: [
+                {
+                    question: "O que significa a sigla IoT?",
+                    options: [
+                        "Internet of Things",
+                        "International Online Technology",
+                        "Integrated Operations Team",
+                        "Internet Organization Treaty"
+                    ],
+                    correctAnswer: 0,
+                    hint: "Dica: Está relacionado a dispositivos conectados à internet.",
+                    points: 10
+                },
+                {
+                    question: "Qual destes dispositivos é um exemplo comum de IoT?",
+                    options: [
+                        "Smartphone",
+                        "Lâmpada Inteligente",
+                        "Computador Desktop",
+                        "Impressora a Laser"
+                    ],
+                    correctAnswer: 1,
+                    hint: "Dica: Pode ser controlado remotamente via internet.",
+                    points: 10
+                },
+                {
+                    question: "Qual protocolo é comumente usado em dispositivos IoT?",
+                    options: [
+                        "HTTP",
+                        "MQTT",
+                        "FTP",
+                        "SMTP"
+                    ],
+                    correctAnswer: 1,
+                    hint: "Dica: É um protocolo leve para comunicação máquina-a-máquina.",
+                    points: 15
+                },
+                {
+                    question: "O que um sensor de temperatura em um sistema IoT faz?",
+                    options: [
+                        "Controla a intensidade da luz",
+                        "Mede a quantidade de umidade no ar",
+                        "Detecta movimento no ambiente",
+                        "Mede a temperatura ambiente"
+                    ],
+                    correctAnswer: 3,
+                    hint: "Dica: Está relacionado a medição de calor/frio.",
+                    points: 10
+                },
+                {
+                    question: "Qual é a principal vantagem da IoT?",
+                    options: [
+                        "Reduzir o custo de dispositivos eletrônicos",
+                        "Aumentar a velocidade da internet",
+                        "Permitir que dispositivos se comuniquem e tomem decisões inteligentes",
+                        "Substituir completamente os computadores pessoais"
+                    ],
+                    correctAnswer: 2,
+                    hint: "Dica: Está relacionado a automação e coleta de dados.",
+                    points: 15
+                },
+                {
+                    question: "O que é um 'smart home'?",
+                    options: [
+                        "Uma casa construída com materiais inteligentes",
+                        "Uma residência com dispositivos IoT conectados",
+                        "Um prédio com elevadores inteligentes",
+                        "Uma casa que consome menos energia"
+                    ],
+                    correctAnswer: 1,
+                    hint: "Dica: Envolve automação residencial.",
+                    points: 10
+                },
+                {
+                    question: "Qual destes NÃO é um sensor comum em IoT?",
+                    options: [
+                        "Sensor de umidade",
+                        "Sensor de movimento",
+                        "Sensor de cor",
+                        "Sensor de velocidade do vento"
+                    ],
+                    correctAnswer: 2,
+                    hint: "Dica: Os outros são frequentemente usados em aplicações IoT.",
+                    points: 15
+                },
+                {
+                    question: "O que significa 'dispositivo wearable' no contexto de IoT?",
+                    options: [
+                        "Dispositivo que pode ser lavado",
+                        "Dispositivo que pode ser usado no corpo",
+                        "Dispositivo com bateria de longa duração",
+                        "Dispositivo resistente a quedas"
+                    ],
+                    correctAnswer: 1,
+                    hint: "Dica: Exemplos incluem smartwatches e fitness trackers.",
+                    points: 10
+                },
+                {
+                    question: "Qual destes é um desafio comum na implementação de IoT?",
+                    options: [
+                        "Falta de dispositivos disponíveis",
+                        "Segurança e privacidade de dados",
+                        "Velocidade insuficiente da internet",
+                        "Custo baixo demais dos sensores"
+                    ],
+                    correctAnswer: 1,
+                    hint: "Dica: É uma preocupação importante com muitos dispositivos conectados.",
+                    points: 15
+                },
+                {
+                    question: "O que é uma 'cidade inteligente' (smart city)?",
+                    options: [
+                        "Uma cidade com muitos prédios altos",
+                        "Uma cidade que usa tecnologia IoT para melhorar serviços urbanos",
+                        "Uma cidade com muitas empresas de tecnologia",
+                        "Uma cidade com transporte público gratuito"
+                    ],
+                    correctAnswer: 1,
+                    hint: "Dica: Envolve o uso de sensores e dados para melhorar a vida urbana.",
+                    points: 20
+                }
+            ],
+            shuffledQuestions: [],
+            currentOptions: []
+        };
+
+        // DOM Elements
+        const welcomeScreen = document.getElementById('welcome-screen');
+        const gameScreen = document.getElementById('game-screen');
+        const completionScreen = document.getElementById('completion-screen');
+        const startGameBtn = document.getElementById('start-game');
+        const currentQuestionDisplay = document.getElementById('current-question');
+        const levelNameDisplay = document.getElementById('level-name');
+        const levelProgress = document.getElementById('level-progress');
+        const questionText = document.getElementById('question-text');
+        const hintArea = document.getElementById('hint-area');
+        const hintText = document.getElementById('hint-text');
+        const showHintBtn = document.getElementById('show-hint');
+        const optionsContainer = document.getElementById('options-container');
+        const feedbackModal = document.getElementById('feedback-modal');
+        const feedbackIcon = document.getElementById('feedback-icon');
+        const feedbackTitle = document.getElementById('feedback-title');
+        const feedbackMessage = document.getElementById('feedback-message');
+        const pointsEarned = document.getElementById('points-earned');
+        const nextQuestionBtn = document.getElementById('next-question');
+        const finalScore = document.getElementById('final-score');
+        const correctAnswersDisplay = document.getElementById('correct-answers');
+        const percentageDisplay = document.getElementById('percentage');
+        const playAgainBtn = document.getElementById('play-again');
+        const learnMoreBtn = document.getElementById('learn-more');
+        const scoreDisplay = document.getElementById('score');
+        const soundToggle = document.getElementById('sound-toggle');
+
+        // Initialize game
+        function initGame() {
+            updateScoreDisplay();
+            setupEventListeners();
+            shuffleQuestions();
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Start game button
+            startGameBtn.addEventListener('click', startGame);
+            
+            // Show hint button
+            showHintBtn.addEventListener('click', showHint);
+            
+            // Next question button
+            nextQuestionBtn.addEventListener('click', nextQuestion);
+            
+            // Play again button
+            playAgainBtn.addEventListener('click', resetGame);
+            
+            // Sound toggle
+            soundToggle.addEventListener('click', toggleSound);
+        }
+
+        // Shuffle questions and answers
+        function shuffleQuestions() {
+            // Create a copy of the original questions array
+            gameState.shuffledQuestions = [...gameState.questions];
+            
+            // Shuffle the order of questions
+            for (let i = gameState.shuffledQuestions.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [gameState.shuffledQuestions[i], gameState.shuffledQuestions[j]] = 
+                [gameState.shuffledQuestions[j], gameState.shuffledQuestions[i]];
+            }
+            
+            // Shuffle options for each question while keeping track of the correct answer
+            gameState.shuffledQuestions.forEach(question => {
+                // Store the correct answer text
+                const correctAnswerText = question.options[question.correctAnswer];
+                
+                // Create an array of objects with text and original index
+                const optionsWithIndex = question.options.map((text, index) => ({ text, originalIndex: index }));
+                
+                // Shuffle the options
+                for (let i = optionsWithIndex.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [optionsWithIndex[i], optionsWithIndex[j]] = [optionsWithIndex[j], optionsWithIndex[i]];
+                }
+                
+                // Find the new index of the correct answer
+                const newCorrectIndex = optionsWithIndex.findIndex(option => option.text === correctAnswerText);
+                
+                // Update the question object
+                question.options = optionsWithIndex.map(option => option.text);
+                question.correctAnswer = newCorrectIndex;
+                question.originalOrder = optionsWithIndex.map(option => option.originalIndex);
+            });
+        }
+
+        // Start game
+        function startGame() {
+            welcomeScreen.classList.add('hidden');
+            gameScreen.classList.remove('hidden');
+            gameState.currentQuestion = 0;
+            gameState.score = 0;
+            gameState.correctAnswers = 0;
+            updateScoreDisplay();
+            loadQuestion(gameState.currentQuestion);
+        }
+
+        // Load question
+        function loadQuestion(questionIndex) {
+            const question = gameState.shuffledQuestions[questionIndex];
+            
+            // Update UI
+            currentQuestionDisplay.textContent = questionIndex + 1;
+            
+            // Set difficulty level name
+            if (questionIndex < 3) {
+                levelNameDisplay.textContent = "Nível Fácil";
+            } else if (questionIndex < 7) {
+                levelNameDisplay.textContent = "Nível Médio";
+            } else {
+                levelNameDisplay.textContent = "Nível Difícil";
+            }
+            
+            questionText.textContent = question.question;
+            hintText.textContent = question.hint;
+            
+            // Update progress
+            const progressPercent = (questionIndex / gameState.totalQuestions) * 100;
+            levelProgress.style.width = `${progressPercent}%`;
+            
+            // Clear previous options
+            optionsContainer.innerHTML = '';
+            
+            // Create and append option cards
+            question.options.forEach((option, index) => {
+                const optionCard = document.createElement('div');
+                optionCard.className = 'option-card bg-gray-50 p-4 rounded-lg border border-gray-200 cursor-pointer transition-all hover:border-blue-300';
+                optionCard.innerHTML = `
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center mr-3 font-bold">${index + 1}</div>
+                        <div>${option}</div>
+                    </div>
+                `;
+                
+                optionCard.addEventListener('click', () => selectAnswer(index));
+                optionsContainer.appendChild(optionCard);
+            });
+            
+            // Reset hint
+            hintArea.classList.add('hidden');
+        }
+
+        // Select answer
+        function selectAnswer(selectedIndex) {
+            const currentQuestion = gameState.shuffledQuestions[gameState.currentQuestion];
+            const isCorrect = selectedIndex === currentQuestion.correctAnswer;
+            
+            // Disable all options
+            const options = optionsContainer.querySelectorAll('.option-card');
+            options.forEach(option => {
+                option.style.pointerEvents = 'none';
+                
+                // Highlight correct answer
+                if (parseInt(option.querySelector('div').textContent) === currentQuestion.correctAnswer + 1) {
+                    option.classList.add('bg-green-50', 'border-green-300');
+                }
+                
+                // Highlight wrong answer if selected
+                if (parseInt(option.querySelector('div').textContent) === selectedIndex + 1 && !isCorrect) {
+                    option.classList.add('bg-red-50', 'border-red-300', 'shake');
+                }
+            });
+            
+            // Update game state
+            if (isCorrect) {
+                gameState.score += currentQuestion.points;
+                gameState.correctAnswers++;
+                updateScoreDisplay();
+            }
+            
+            // Show feedback
+            showFeedback(isCorrect, isCorrect ? currentQuestion.points : 0);
+        }
+
+        // Show feedback
+        function showFeedback(isCorrect, points) {
+            feedbackModal.classList.remove('hidden');
+            
+            if (isCorrect) {
+                feedbackIcon.innerHTML = '<i class="fas fa-check-circle text-green-500"></i>';
+                feedbackTitle.textContent = 'Resposta Correta!';
+                feedbackMessage.textContent = 'Você acertou! Continue assim!';
+                pointsEarned.textContent = points;
+                
+                // Pulse animation for correct answer
+                document.getElementById('modal-content').classList.add('pulse');
+            } else {
+                feedbackIcon.innerHTML = '<i class="fas fa-times-circle text-red-500"></i>';
+                feedbackTitle.textContent = 'Resposta Incorreta';
+                feedbackMessage.textContent = 'Não foi dessa vez, mas continue tentando!';
+                pointsEarned.textContent = '0';
+            }
+        }
+
+        // Show hint
+        function showHint() {
+            hintArea.classList.remove('hidden');
+            // Deduct points for using hint?
+            // gameState.score = Math.max(0, gameState.score - 2);
+            // updateScoreDisplay();
+        }
+
+        // Next question
+        function nextQuestion() {
+            feedbackModal.classList.add('hidden');
+            document.getElementById('modal-content').classList.remove('pulse');
+            
+            gameState.currentQuestion++;
+            
+            if (gameState.currentQuestion < gameState.totalQuestions) {
+                loadQuestion(gameState.currentQuestion);
+            } else {
+                // Game completed
+                gameScreen.classList.add('hidden');
+                completionScreen.classList.remove('hidden');
+                finalScore.textContent = gameState.score;
+                correctAnswersDisplay.textContent = gameState.correctAnswers;
+                
+                // Calculate percentage
+                const percentage = Math.round((gameState.correctAnswers / gameState.totalQuestions) * 100);
+                percentageDisplay.textContent = percentage;
+                
+                // Show different messages based on performance
+                const feedbackMessage = completionScreen.querySelector('p.text-gray-700');
+                if (percentage >= 80) {
+                    feedbackMessage.textContent = "Excelente! Você demonstrou um ótimo conhecimento sobre IoT!";
+                } else if (percentage >= 50) {
+                    feedbackMessage.textContent = "Bom trabalho! Você está no caminho certo para dominar a IoT!";
+                } else {
+                    feedbackMessage.textContent = "Continue aprendendo! IoT é um mundo fascinante que vale a pena explorar!";
+                }
+            }
+        }
+
+        // Reset game
+        function resetGame() {
+            completionScreen.classList.add('hidden');
+            gameScreen.classList.remove('hidden');
+            
+            // Shuffle questions again for a new game
+            shuffleQuestions();
+            
+            // Reset game state
+            gameState.currentQuestion = 0;
+            gameState.score = 0;
+            gameState.correctAnswers = 0;
+            updateScoreDisplay();
+            
+            // Load first question
+            loadQuestion(gameState.currentQuestion);
+        }
+
+        // Update score display
+        function updateScoreDisplay() {
+            scoreDisplay.textContent = gameState.score;
+        }
+
+        // Toggle sound
+        function toggleSound() {
+            gameState.soundOn = !gameState.soundOn;
+            soundToggle.innerHTML = gameState.soundOn ? '<i class="fas fa-volume-up"></i>' : '<i class="fas fa-volume-mute"></i>';
+        }
+
+        // Initialize the game
+        initGame();
+    </script>
+</body>
+</html>
