@@ -1,0 +1,328 @@
+html
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Lagoa Chat - Plataforma de comunicação comunitária">
+  <title>Lagoa Chat | Comunicação em Tempo Real</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="lagoa.css">
+  <link rel="icon" href="data:,"> <!-- Isso evita o erro 404 do favicon -->
+</head>
+<body>
+  <header>
+    <div class="header-content">
+      <div class="logo">
+        <i class="fas fa-comments"></i>
+        <h1>Lagoa Chat <span class="beta-badge">BETA</span></h1>
+      </div>
+    </div>
+  </header>
+  
+  <div class="main-container">
+    <div class="sidebar">
+      <h3 class="sidebar-title"><i class="fas fa-users"></i> Usuários Online <span id="online-count">0</span></h3>
+      <ul class="user-list" id="user-list">
+        <!-- Lista de usuários será preenchida dinamicamente -->
+      </ul>
+    </div>
+    
+      <div class="chat-container">
+        <div id="user-controls">
+          <div id="current-avatar" onclick="toggleAvatarSelection()">👤</div>
+          <div id="avatar-selection">
+            <p>Escolha seu avatar:</p>
+            <div class="avatar-options" id="avatar-options">
+              <div class="avatar-option" data-avatar="👦" onclick="selectAvatar('👦')">👦</div>
+              <div class="avatar-option" data-avatar="👧" onclick="selectAvatar('👧')">👧</div>
+              <div class="avatar-option" data-avatar="🧑" onclick="selectAvatar('🧑')">🧑</div>
+              <div class="avatar-option" data-avatar="👩" onclick="selectAvatar('👩')">👩</div>
+              <div class="avatar-option" data-avatar="👨" onclick="selectAvatar('👨')">👨</div>
+              <div class="avatar-option" data-avatar="🧔" onclick="selectAvatar('🧔')">🧔</div>
+              <div class="avatar-option" data-avatar="👵" onclick="selectAvatar('👵')">👵</div>
+              <div class="avatar-option" data-avatar="👴" onclick="selectAvatar('👴')">👴</div>
+              <div class="avatar-option" data-avatar="🦸" onclick="selectAvatar('🦸')">🦸</div>
+              <div class="avatar-option" data-avatar="🦹" onclick="selectAvatar('🦹')">🦹</div>
+              <div class="avatar-option" data-avatar="🧙" onclick="selectAvatar('🧙')">🧙</div>
+              <div class="avatar-option" data-avatar="🧝" onclick="selectAvatar('🧝')">🧝</div>
+            </div>
+          </div>
+          <input type="text" id="username" placeholder="Digite seu nome (obrigatório)" required>
+        </div>
+
+      <div id="timeline"></div>
+      
+      <div class="typing-indicator" id="typing-indicator"></div>
+      
+      <div id="message-input">
+        <input type="text" id="message" placeholder="Escreva uma mensagem..." autocomplete="off">
+        <button class="btn-primary" id="send-button">
+          <i class="fas fa-paper-plane"></i> Enviar
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  <footer>
+    <p>© 2023 Lagoa Chat | Todos os direitos reservados</p>
+  </footer>
+
+  <!-- / -->
+  <script type="module">
+    // Funções globais para manipulação de avatar
+    window.toggleAvatarSelection = function() {
+      const avatarSelection = document.getElementById('avatar-selection');
+      avatarSelection.style.display = avatarSelection.style.display === 'block' ? 'none' : 'block';
+    };
+
+    window.selectAvatar = function(avatar) {
+      const currentAvatar = document.getElementById('current-avatar');
+      currentAvatar.textContent = avatar;
+      document.getElementById('avatar-selection').style.display = 'none';
+      window.selectedAvatar = avatar; // Armazena o avatar selecionado
+    };
+
+    // Firebase SDK
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
+    import { getDatabase, ref, push, set, onChildAdded, onValue, update, onDisconnect } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyATHDgUW49c0Fvp0fxJs1xnHosoPg5Fmi0",
+      authDomain: "jogos-58c96.firebaseapp.com",
+      databaseURL: "https://jogos-58c96-default-rtdb.firebaseio.com",
+      projectId: "jogos-58c96",
+      storageBucket: "jogos-58c96.appspot.com",
+      messagingSenderId: "311771787091",
+      appId: "1:311771787091:web:ec4d84be9e7286afd8bba6",
+      measurementId: "G-55N8EBNBV0"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    // Elementos do DOM
+    const usernameInput = document.getElementById("username");
+    const messageInput = document.getElementById("message");
+    const timeline = document.getElementById("timeline");
+    const typingIndicator = document.getElementById("typing-indicator");
+    const userList = document.getElementById("user-list");
+    const onlineCount = document.getElementById("online-count");
+    const sendButton = document.getElementById("send-button");
+
+    // Emojis disponíveis para reações
+    const availableEmojis = ['❤️', '😂', '😮', '😢', '👍', '👎', '🔥', '🎉'];
+    let currentUserRef = null;
+    let lastTypingTime = 0;
+    window.selectedAvatar = '👤'; // Variável global para o avatar
+
+    // Formatar hora
+    function formatTime(date) {
+      return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    }
+
+    // Formatar data se a mensagem não for de hoje
+    function formatDate(date) {
+      const today = new Date();
+      if (date.getDate() === today.getDate() && 
+          date.getMonth() === today.getMonth() && 
+          date.getFullYear() === today.getFullYear()) {
+        return formatTime(date);
+      }
+      return date.toLocaleDateString() + ' ' + formatTime(date);
+    }
+
+    // Registrar usuário online (única declaração)
+    function registerUser(username) {
+      if (!username) return;
+      
+      if (currentUserRef) {
+        set(currentUserRef, null);
+      }
+      
+      currentUserRef = ref(db, `online/${username}`);
+      set(currentUserRef, {
+        name: username,
+        avatar: window.selectedAvatar, // Usa o avatar selecionado
+        lastActive: new Date().toISOString()
+      });
+      
+      onDisconnect(currentUserRef).remove();
+    }
+   
+
+    // Atualizar lista de usuários online
+    function updateOnlineUsers() {
+      onValue(ref(db, 'online'), (snapshot) => {
+        userList.innerHTML = '';
+        const users = snapshot.val() || {};
+        const userCount = Object.keys(users).length;
+        onlineCount.textContent = userCount;
+        
+        Object.entries(users).forEach(([username, data]) => {
+          const li = document.createElement('li');
+          li.className = 'user-item';
+          li.innerHTML = `
+            <div class="user-avatar">${data.avatar || '👤'}</div>
+            <span class="user-status online"></span>
+            ${username}
+            <small>${formatTime(new Date(data.lastActive))}</small>
+          `;
+          userList.appendChild(li);
+        });
+      });
+    }
+
+    // Enviar mensagem
+    function sendMessage() {
+      const username = usernameInput.value.trim();
+      const text = messageInput.value.trim();
+
+      if (!username) {
+        alert("Por favor, digite seu nome para participar do chat.");
+        usernameInput.focus();
+        return;
+      }
+      if (!text) {
+        messageInput.focus();
+        return;
+      }
+
+      registerUser(username);
+
+      const msgRef = push(ref(db, "messages"));
+      set(msgRef, {
+        user: username,
+        avatar: selectedAvatar,
+        text: text,
+        reactions: {},
+        timestamp: new Date().toISOString()
+      });
+      messageInput.value = "";
+    }
+
+    // Adicionar reação à mensagem
+    window.addReaction = (msgKey, emoji) => {
+      const username = usernameInput.value.trim();
+      if (!username) {
+        alert("Por favor, digite seu nome para reagir a mensagens.");
+        usernameInput.focus();
+        return;
+      }
+
+      const reactionPath = `messages/${msgKey}/reactions/${emoji}/${username}`;
+      const reactionRef = ref(db, reactionPath);
+
+      onValue(reactionRef, (snapshot) => {
+        if (snapshot.exists()) {
+          // Remove a reação se já existir
+          set(reactionRef, null);
+          update(ref(db, `messages/${msgKey}/reactions/${emoji}`), {
+            count: (snapshot.val().count || 1) - 1
+          });
+        } else {
+          // Adiciona a reação
+          set(reactionRef, true);
+          update(ref(db, `messages/${msgKey}/reactions/${emoji}`), {
+            count: (snapshot.val()?.count || 0) + 1
+          });
+        }
+      }, { onlyOnce: true });
+    };
+
+    // Mostrar quem está digitando
+    messageInput.addEventListener('input', () => {
+      const username = usernameInput.value.trim();
+      if (!username) return;
+      
+      const now = Date.now();
+      if (now - lastTypingTime > 3000) {
+        lastTypingTime = now;
+        // Implementar lógica de "digitando..." se necessário
+      }
+    });
+
+    // Enviar mensagem ao pressionar Enter
+    messageInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        sendMessage();
+      }
+    });
+
+    // Botão de enviar
+    sendButton.addEventListener('click', sendMessage);
+
+    // Atualizar usuário online quando o nome muda
+    usernameInput.addEventListener('change', () => {
+      const username = usernameInput.value.trim();
+      if (username) {
+        registerUser(username);
+      }
+    });
+
+    // Carregar mensagens
+    onChildAdded(ref(db, "messages"), (data) => {
+      const msg = data.val();
+      const key = data.key;
+      const messageTime = msg.timestamp ? new Date(msg.timestamp) : new Date();
+
+      const div = document.createElement("div");
+      div.className = "message";
+      div.innerHTML = `
+        <div class="message-header">
+          <div class="message-avatar">${msg.avatar || '👤'}</div>
+          <strong>${msg.user}</strong>
+          <span class="message-time">${formatDate(messageTime)}</span>
+        </div>
+        <p>${msg.text}</p>
+        <div class="message-actions">
+          ${availableEmojis.map(emoji => `
+            <button class="reaction-btn" onclick="addReaction('${key}', '${emoji}')">
+              ${emoji}
+            </button>
+          `).join('')}
+        </div>
+        <div class="reactions-container" id="reactions-${key}"></div>
+      `;
+
+      timeline.appendChild(div);
+      timeline.scrollTop = timeline.scrollHeight;
+      
+      // Atualizar reações
+      updateReactions(key, msg.reactions);
+    });
+
+    // Atualizar reações das mensagens
+    function updateReactions(msgKey, reactions) {
+      const container = document.getElementById(`reactions-${msgKey}`);
+      if (!container) return;
+      
+      container.innerHTML = '';
+      
+      if (!reactions) return;
+      
+      Object.entries(reactions).forEach(([emoji, data]) => {
+        if (data && data.count > 0) {
+          const reactionDiv = document.createElement('div');
+          reactionDiv.className = 'reaction';
+          reactionDiv.innerHTML = `
+            ${emoji} ${data.count}
+          `;
+          container.appendChild(reactionDiv);
+        }
+      });
+    }
+
+    // Monitorar mudanças nas reações
+    onValue(ref(db, "messages"), (snapshot) => {
+      const messages = snapshot.val() || {};
+      Object.entries(messages).forEach(([key, msg]) => {
+        updateReactions(key, msg.reactions);
+      });
+    });
+
+    // Iniciar monitoramento de usuários online
+    updateOnlineUsers();
+  </script>
+</body>
+</html>
