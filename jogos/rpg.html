@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RPG de Texto</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            background-color: #222;
+            color: #eee;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        #game-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #333;
+            border: 2px solid #555;
+            border-radius: 5px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        
+        #game-title {
+            text-align: center;
+            color: #f0a830;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #f0a830;
+            padding-bottom: 10px;
+        }
+        
+        #game-screen {
+            height: 300px;
+            overflow-y: auto;
+            background-color: #111;
+            padding: 15px;
+            border: 1px solid #444;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        
+        #input-area {
+            display: flex;
+            gap: 10px;
+        }
+        
+        #command-input {
+            flex: 1;
+            padding: 10px;
+            background-color: #222;
+            border: 1px solid #555;
+            color: #eee;
+            font-family: 'Courier New', monospace;
+        }
+        
+        #submit-btn {
+            padding: 10px 20px;
+            background-color: #f0a830;
+            border: none;
+            color: #111;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+        
+        #submit-btn:hover {
+            background-color: #ffc040;
+        }
+        
+        .game-text {
+            margin: 5px 0;
+        }
+        
+        .system-message {
+            color: #aaf;
+        }
+        
+        .enemy-message {
+            color: #f88;
+        }
+        
+        .player-message {
+            color: #8f8;
+        }
+        
+        .gold-message {
+            color: #ff0;
+        }
+        
+        .xp-message {
+            color: #0ff;
+        }
+        
+        #stats-panel {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            background-color: #252525;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        
+        .stat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: #aaa;
+        }
+        
+        .stat-value {
+            font-weight: bold;
+            color: #f0a830;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <h1 id="game-title">⚔️ RPG de Texto 🛡️</h1>
+        
+        <div id="stats-panel">
+            <div class="stat">
+                <span class="stat-label">Vida</span>
+                <span class="stat-value" id="health-stat">100/100</span>
+            </div>
+            <div class="stat">
+                <span class="stat-label">Ataque</span>
+                <span class="stat-value" id="attack-stat">10</span>
+            </div>
+            <div class="stat">
+                <span class="stat-label">Defesa</span>
+                <span class="stat-value" id="defense-stat">5</span>
+            </div>
+            <div class="stat">
+                <span class="stat-label">Nível</span>
+                <span class="stat-value" id="level-stat">1</span>
+            </div>
+            <div class="stat">
+                <span class="stat-label">XP</span>
+                <span class="stat-value" id="xp-stat">0/100</span>
+            </div>
+            <div class="stat">
+                <span class="stat-label">Ouro</span>
+                <span class="stat-value" id="gold-stat">0</span>
+            </div>
+        </div>
+        
+        <div id="game-screen"></div>
+        
+        <div id="input-area">
+            <input type="text" id="command-input" placeholder="Digite um comando (ex: explorar, lutar, fugir, status)" autofocus>
+            <button id="submit-btn">Enviar</button>
+        </div>
+    </div>
+
+    <script>
+        // Elementos do DOM
+        const gameScreen = document.getElementById('game-screen');
+        const commandInput = document.getElementById('command-input');
+        const submitBtn = document.getElementById('submit-btn');
+        
+        // Elementos de status
+        const healthStat = document.getElementById('health-stat');
+        const attackStat = document.getElementById('attack-stat');
+        const defenseStat = document.getElementById('defense-stat');
+        const levelStat = document.getElementById('level-stat');
+        const xpStat = document.getElementById('xp-stat');
+        const goldStat = document.getElementById('gold-stat');
+        
+        // Estado do jogo
+        const player = {
+            name: "Herói",
+            health: 100,
+            maxHealth: 100,
+            attack: 10,
+            defense: 5,
+            level: 1,
+            xp: 0,
+            xpToNextLevel: 100,
+            gold: 0,
+            inventory: []
+        };
+        
+        let currentEnemy = null;
+        let inCombat = false;
+        
+        // Inimigos do jogo
+        const enemies = [
+            { name: "Goblin", health: 30, attack: 8, defense: 2, xp: 20, gold: 10 },
+            { name: "Orc", health: 50, attack: 12, defense: 5, xp: 40, gold: 25 },
+            { name: "Esqueleto", health: 40, attack: 10, defense: 3, xp: 30, gold: 15 },
+            { name: "Lobo Selvagem", health: 35, attack: 9, defense: 1, xp: 25, gold: 5 },
+            { name: "Dragão", health: 100, attack: 20, defense: 10, xp: 100, gold: 50 }
+        ];
+        
+        // Locais para explorar
+        const locations = [
+            "Floresta Sombria",
+            "Caverna dos Mortos",
+            "Vila Abandonada",
+            "Montanha do Terror",
+            "Ruínas Antigas"
+        ];
+        
+        // Função para adicionar texto na tela
+        function addText(text, className = "") {
+            const p = document.createElement('p');
+            p.className = `game-text ${className}`;
+            p.textContent = text;
+            gameScreen.appendChild(p);
+            gameScreen.scrollTop = gameScreen.scrollHeight;
+        }
+        
+        // Atualizar status na tela
+        function updateStats() {
+            healthStat.textContent = `${player.health}/${player.maxHealth}`;
+            attackStat.textContent = player.attack;
+            defenseStat.textContent = player.defense;
+            levelStat.textContent = player.level;
+            xpStat.textContent = `${player.xp}/${player.xpToNextLevel}`;
+            goldStat.textContent = player.gold;
+        }
+        
+        // Gerar um inimigo aleatório
+        function generateEnemy() {
+            const randomEnemy = enemies[Math.floor(Math.random() * enemies.length)];
+            currentEnemy = {
+                ...randomEnemy,
+                maxHealth: randomEnemy.health
+            };
+            return currentEnemy;
+        }
+        
+        // Sistema de batalha
+        function battle(command) {
+            if (!inCombat) {
+                addText("Você não está em combate no momento.", "system-message");
+                return;
+            }
+            
+            if (command === "lutar") {
+                // Jogador ataca
+                const playerDamage = Math.max(1, player.attack - currentEnemy.defense + Math.floor(Math.random() * 5));
+                currentEnemy.health -= playerDamage;
+                
+                addText(`Você ataca o ${currentEnemy.name} e causa ${playerDamage} de dano!`, "player-message");
+                
+                // Verificar se o inimigo morreu
+                if (currentEnemy.health <= 0) {
+                    addText(`Você derrotou o ${currentEnemy.name}!`, "system-message");
+                    
+                    // Recompensas
+                    player.xp += currentEnemy.xp;
+                    player.gold += currentEnemy.gold;
+                    
+                    addText(`Você ganhou ${currentEnemy.xp} XP e ${currentEnemy.gold} de ouro!`, "gold-message");
+                    
+                    // Verificar se subiu de nível
+                    checkLevelUp();
+                    
+                    inCombat = false;
+                    currentEnemy = null;
+                    updateStats();
+                    return;
+                }
+                
+                // Inimigo ataca
+                const enemyDamage = Math.max(1, currentEnemy.attack - player.defense + Math.floor(Math.random() * 3));
+                player.health -= enemyDamage;
+                
+                addText(`O ${currentEnemy.name} te ataca e causa ${enemyDamage} de dano!`, "enemy-message");
+                
+                // Verificar se o jogador morreu
+                if (player.health <= 0) {
+                    addText("Você foi derrotado! Fim do jogo.", "system-message");
+                    player.health = 0;
+                    inCombat = false;
+                    updateStats();
+                    return;
+                }
+                
+                updateStats();
+                
+            } else if (command === "fugir") {
+                const escapeChance = Math.random();
+                
+                if (escapeChance > 0.5) {
+                    addText("Você fugiu do combate!", "system-message");
+                    inCombat = false;
+                    currentEnemy = null;
+                } else {
+                    addText("Você não conseguiu fugir!", "system-message");
+                    
+                    // Inimigo ataca quando tenta fugir
+                    const enemyDamage = Math.max(1, currentEnemy.attack - player.defense + Math.floor(Math.random() * 3));
+                    player.health -= enemyDamage;
+                    
+                    addText(`O ${currentEnemy.name} te ataca e causa ${enemyDamage} de dano!`, "enemy-message");
+                    
+                    if (player.health <= 0) {
+                        addText("Você foi derrotado! Fim do jogo.", "system-message");
+                        player.health = 0;
+                        inCombat = false;
+                        updateStats();
+                        return;
+                    }
+                    
+                    updateStats();
+                }
+            }
+        }
+        
+        // Verificar se subiu de nível
+        function checkLevelUp() {
+            if (player.xp >= player.xpToNextLevel) {
+                player.level++;
+                player.xp -= player.xpToNextLevel;
+                player.xpToNextLevel = Math.floor(player.xpToNextLevel * 1.5);
+                
+                player.maxHealth += 20;
+                player.health = player.maxHealth;
+                player.attack += 3;
+                player.defense += 2;
+                
+                addText(`✨ Parabéns! Você subiu para o nível ${player.level}! ✨`, "xp-message");
+                addText("Seus atributos foram aumentados!", "system-message");
+                
+                updateStats();
+            }
+        }
+        
+        // Comandos do jogo
+        function processCommand(command) {
+            command = command.toLowerCase().trim();
+            
+            if (command === "explorar") {
+                if (inCombat) {
+                    addText("Você não pode explorar durante um combate!", "system-message");
+                    return;
+                }
+                
+                const location = locations[Math.floor(Math.random() * locations.length)];
+                addText(`Você está explorando ${location}...`, "system-message");
+                
+                // Chance de encontrar um inimigo
+                if (Math.random() > 0.3) {
+                    const enemy = generateEnemy();
+                    addText(`Um ${enemy.name} selvagem apareceu!`, "enemy-message");
+                    addText("Digite 'lutar' para atacar ou 'fugir' para tentar escapar.", "system-message");
+                    inCombat = true;
+                } else {
+                    const foundGold = Math.floor(Math.random() * 20) + 5;
+                    player.gold += foundGold;
+                    addText(`Você encontrou ${foundGold} de ouro!`, "gold-message");
+                    updateStats();
+                }
+                
+            } else if (command === "lutar" || command === "fugir") {
+                battle(command);
+                
+            } else if (command === "status") {
+                addText("=== STATUS DO PERSONAGEM ===", "system-message");
+                addText(`Nome: ${player.name}`, "player-message");
+                addText(`Nível: ${player.level}`, "xp-message");
+                addText(`Vida: ${player.health}/${player.maxHealth}`, "player-message");
+                addText(`Ataque: ${player.attack}`, "player-message");
+                addText(`Defesa: ${player.defense}`, "player-message");
+                addText(`XP: ${player.xp}/${player.xpToNextLevel}`, "xp-message");
+                addText(`Ouro: ${player.gold}`, "gold-message");
+                
+            } else if (command === "inventario") {
+                if (player.inventory.length === 0) {
+                    addText("Seu inventário está vazio.", "system-message");
+                } else {
+                    addText("=== INVENTÁRIO ===", "system-message");
+                    player.inventory.forEach(item => {
+                        addText(`- ${item}`, "player-message");
+                    });
+                }
+                
+            } else if (command === "curar") {
+                if (player.gold >= 10) {
+                    player.gold -= 10;
+                    player.health = player.maxHealth;
+                    addText("Você usou 10 de ouro para se curar completamente!", "system-message");
+                    updateStats();
+                } else {
+                    addText("Você não tem ouro suficiente para se curar (custa 10 de ouro).", "system-message");
+                }
+                
+            } else if (command === "ajuda") {
+                addText("=== COMANDOS DISPONÍVEIS ===", "system-message");
+                addText("- explorar: Explora um local e encontra inimigos ou tesouros", "player-message");
+                addText("- lutar: Ataca o inimigo em combate", "player-message");
+                addText("- fugir: Tenta escapar do combate", "player-message");
+                addText("- status: Mostra seus atributos", "player-message");
+                addText("- inventario: Mostra seus itens", "player-message");
+                addText("- curar: Gasta 10 de ouro para restaurar sua vida", "player-message");
+                addText("- ajuda: Mostra esta lista de comandos", "player-message");
+                
+            } else {
+                addText("Comando não reconhecido. Digite 'ajuda' para ver os comandos disponíveis.", "system-message");
+            }
+        }
+        
+        // Evento de enviar comando
+        submitBtn.addEventListener('click', () => {
+            const command = commandInput.value;
+            if (command.trim() !== "") {
+                addText(`> ${command}`, "system-message");
+                processCommand(command);
+                commandInput.value = "";
+            }
+        });
+        
+        commandInput.addEventListener('keypress', (e) => {
+            if (e.key === "Enter") {
+                const command = commandInput.value;
+                if (command.trim() !== "") {
+                    addText(`> ${command}`, "system-message");
+                    processCommand(command);
+                    commandInput.value = "";
+                }
+            }
+        });
+        
+        // Mensagem inicial
+        addText("Bem-vindo ao RPG de Texto!", "system-message");
+        addText("Digite 'explorar' para começar sua aventura ou 'ajuda' para ver os comandos.", "system-message");
+        
+        // Inicializar status
+        updateStats();
+    </script>
+</body>
+</html>

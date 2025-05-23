@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Futebol Viral</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #333;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+        }
+
+        #game-container {
+            position: relative;
+            width: 800px;
+            height: 500px;
+            background-color: #4CAF50; /* Verde gramado */
+            border: 5px solid #FFF;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+        }
+
+        #field {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            /* Linhas do campo (opcional) */
+            background-image: 
+                linear-gradient(to bottom, transparent 49.5%, white 49.5%, white 50.5%, transparent 50.5%), /* Linha meio campo */
+                radial-gradient(circle at center, white 2px, transparent 2px); /* Círculo central */
+            background-size: 100% 100%, 150px 150px;
+            background-position: center, center;
+            background-repeat: no-repeat;
+        }
+
+        .goal {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 15px; /* Mais fino */
+            height: 150px; /* Maior */
+            background-color: rgba(255, 255, 255, 0.8);
+            border: 3px solid #555;
+            box-sizing: border-box;
+        }
+
+        #goal-left { left: 0; border-left: none; border-radius: 0 5px 5px 0; }
+        #goal-right { right: 0; border-right: none; border-radius: 5px 0 0 5px; }
+
+        #player {
+            position: absolute;
+            width: 35px;
+            height: 35px;
+            background-color: #007bff; /* Azul mais vibrante */
+            border: 2px solid #0056b3;
+            border-radius: 50%;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            transition: transform 0.1s ease-out; /* Animação suave */
+        }
+
+        #ball {
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 50%;
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.4), 0 1px 3px rgba(0, 0, 0, 0.2);
+            transition: transform 0.05s linear;
+        }
+
+        #goalkeeper {
+            position: absolute;
+            width: 30px;
+            height: 70px;
+            background-color: #dc3545; /* Vermelho */
+            border: 2px solid #a71d2a;
+            border-radius: 5px;
+            right: 50px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            transition: top 0.15s ease; /* Movimento mais suave */
+        }
+
+        #scoreboard {
+            position: absolute;
+            top: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.6);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 10px;
+            font-size: 20px;
+            font-weight: bold;
+            display: flex;
+            gap: 20px;
+            z-index: 10;
+        }
+
+        #controls-info {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        .screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+            z-index: 20;
+        }
+
+        .screen h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
+        }
+        .screen h2 {
+            font-size: 32px;
+            margin-bottom: 30px;
+        }
+
+        .screen p {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .button {
+            padding: 12px 25px;
+            font-size: 20px;
+            background-color: #28a745; /* Verde */
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+            margin-top: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        .button:hover {
+            background-color: #218838;
+            transform: scale(1.05);
+        }
+        .button:active {
+            transform: scale(0.98);
+        }
+
+        #share-button {
+            background-color: #17a2b8; /* Azul info */
+        }
+        #share-button:hover {
+            background-color: #138496;
+        }
+
+        #goal-flash {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            opacity: 0;
+            transition: opacity 0.1s ease-out;
+            pointer-events: none; /* Não interfere com cliques */
+            z-index: 15;
+        }
+
+        #kick-power-bar-container {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 20px;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 5px;
+            overflow: hidden;
+            display: none; /* Começa escondido */
+             z-index: 10;
+        }
+
+        #kick-power-bar {
+            width: 0%;
+            height: 100%;
+            background-color: #ffc107; /* Amarelo */
+            transition: width 0.1s linear;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <div id="field">
+            <div id="goal-left" class="goal"></div>
+            <div id="goal-right" class="goal"></div>
+            <div id="player"></div>
+            <div id="ball"></div>
+            <div id="goalkeeper"></div>
+            <div id="scoreboard">
+                <span id="score">Gols: 0</span>
+                <span id="timer">Tempo: 60</span>
+                <span id="high-score">Recorde: 0</span>
+            </div>
+            <div id="controls-info">Setas: Mover | Segure Espaço: Carregar Chute | Solte: Chutar</div>
+            <div id="goal-flash"></div>
+            <div id="kick-power-bar-container">
+                <div id="kick-power-bar"></div>
+            </div>
+        </div>
+
+        <div id="start-screen" class="screen">
+            <h1>Futebol Viral!</h1>
+            <p>Use as setas para mover e a barra de espaço para chutar.</p>
+            <p>Marque o máximo de gols antes que o tempo acabe!</p>
+            <button id="start-btn" class="button">Iniciar Jogo</button>
+        </div>
+
+        <div id="game-over-screen" class="screen" style="display: none;">
+            <h1>Fim de Jogo!</h1>
+            <h2 id="final-score">Sua pontuação: 0</h2>
+            <h2 id="final-high-score">Novo Recorde!</h2>
+            <button id="restart-btn" class="button">Jogar Novamente</button>
+            <button id="share-button" class="button">Compartilhar</button>
+        </div>
+    </div>
+
+    <script>
+        // --- Configurações --- 
+        const GAME_WIDTH = 800;
+        const GAME_HEIGHT = 500;
+        const PLAYER_SPEED = 3;
+        const PLAYER_FRICTION = 0.85;
+        const BALL_FRICTION = 0.98;
+        const MAX_KICK_POWER = 15;
+        const KICK_POWER_INCREMENT = 0.5;
+        const GOALKEEPER_SPEED = 2.5;
+        const GOAL_WIDTH = 150;
+        const GOAL_Y_TOP = (GAME_HEIGHT - GOAL_WIDTH) / 2;
+        const GOAL_Y_BOTTOM = (GAME_HEIGHT + GOAL_WIDTH) / 2;
+        const GAME_TIME_SECONDS = 60;
+
+        // --- Elementos DOM --- 
+        const player = document.getElementById('player');
+        const ball = document.getElementById('ball');
+        const goalkeeper = document.getElementById('goalkeeper');
+        const scoreDisplay = document.getElementById('score');
+        const timerDisplay = document.getElementById('timer');
+        const highScoreDisplay = document.getElementById('high-score');
+        const startScreen = document.getElementById('start-screen');
+        const gameOverScreen = document.getElementById('game-over-screen');
+        const startBtn = document.getElementById('start-btn');
+        const restartBtn = document.getElementById('restart-btn');
+        const shareBtn = document.getElementById('share-button');
+        const finalScoreDisplay = document.getElementById('final-score');
+        const finalHighScoreDisplay = document.getElementById('final-high-score');
+        const goalFlash = document.getElementById('goal-flash');
+        const kickPowerBarContainer = document.getElementById('kick-power-bar-container');
+        const kickPowerBar = document.getElementById('kick-power-bar');
+
+        // --- Variáveis de Estado --- 
+        let playerX, playerY, playerVelX = 0, playerVelY = 0;
+        let ballX, ballY, ballSpeedX = 0, ballSpeedY = 0;
+        let goalkeeperY;
+        let score = 0;
+        let highScore = localStorage.getItem('highScore') || 0;
+        let gameRunning = false;
+        let timer = GAME_TIME_SECONDS;
+        let timerInterval;
+        let kickPower = 0;
+        let chargingKick = false;
+
+        const keys = {
+            ArrowUp: false,
+            ArrowDown: false,
+            ArrowLeft: false,
+            ArrowRight: false,
+            ' ': false // Usar ' ' para espaço
+        };
+
+        // --- Funções --- 
+
+        function initGame() {
+            playerX = 100;
+            playerY = GAME_HEIGHT / 2 - player.offsetHeight / 2;
+            playerVelX = 0;
+            playerVelY = 0;
+            resetBallPosition();
+            goalkeeperY = GAME_HEIGHT / 2 - goalkeeper.offsetHeight / 2;
+            score = 0;
+            timer = GAME_TIME_SECONDS;
+            scoreDisplay.textContent = `Gols: ${score}`;
+            timerDisplay.textContent = `Tempo: ${timer}`;
+            highScoreDisplay.textContent = `Recorde: ${highScore}`;
+            gameOverScreen.style.display = 'none';
+            startScreen.style.display = 'flex';
+            gameRunning = false;
+            chargingKick = false;
+            kickPower = 0;
+            kickPowerBarContainer.style.display = 'none';
+            if (timerInterval) clearInterval(timerInterval);
+            updateElementPositions();
+        }
+
+        function startGame() {
+            startScreen.style.display = 'none';
+            gameRunning = true;
+            timer = GAME_TIME_SECONDS;
+            timerDisplay.textContent = `Tempo: ${timer}`;
+            resetBallPosition();
+            timerInterval = setInterval(updateTimer, 1000);
+            requestAnimationFrame(gameLoop);
+        }
+
+        function endGame() {
+            gameRunning = false;
+            clearInterval(timerInterval);
+            finalScoreDisplay.textContent = `Sua pontuação: ${score}`;
+            if (score > highScore) {
+                highScore = score;
+                localStorage.setItem('highScore', highScore);
+                finalHighScoreDisplay.textContent = 'Novo Recorde!';
+                finalHighScoreDisplay.style.display = 'block';
+            } else {
+                 finalHighScoreDisplay.style.display = 'none';
+            }
+            highScoreDisplay.textContent = `Recorde: ${highScore}`;
+            gameOverScreen.style.display = 'flex';
+        }
+
+        function updateTimer() {
+            timer--;
+            timerDisplay.textContent = `Tempo: ${timer}`;
+            if (timer <= 0) {
+                endGame();
+            }
+        }
+
+        function resetBallPosition() {
+            ballSpeedX = 0;
+            ballSpeedY = 0;
+            // Posicionar a bola um pouco à frente do jogador
+            const playerCenterX = playerX + player.offsetWidth / 2;
+            const playerCenterY = playerY + player.offsetHeight / 2;
+            ballX = playerCenterX + player.offsetWidth / 2 + 5; // Ajuste para não ficar em cima
+            ballY = playerCenterY - ball.offsetHeight / 2;
+            updateElementPositions();
+        }
+
+        function updateElementPositions() {
+            player.style.transform = `translate(${playerX}px, ${playerY}px)`;
+            ball.style.transform = `translate(${ballX}px, ${ballY}px)`;
+            goalkeeper.style.top = goalkeeperY + 'px';
+        }
+
+        function handleInput() {
+            // Movimento do Jogador com aceleração
+            if (keys.ArrowUp) playerVelY -= PLAYER_SPEED * 0.1;
+            if (keys.ArrowDown) playerVelY += PLAYER_SPEED * 0.1;
+            if (keys.ArrowLeft) playerVelX -= PLAYER_SPEED * 0.1;
+            if (keys.ArrowRight) playerVelX += PLAYER_SPEED * 0.1;
+
+            // Limitar velocidade máxima
+            playerVelX = Math.max(-PLAYER_SPEED, Math.min(PLAYER_SPEED, playerVelX));
+            playerVelY = Math.max(-PLAYER_SPEED, Math.min(PLAYER_SPEED, playerVelY));
+
+            // Carregar chute
+            if (keys[' '] && !isBallMoving()) {
+                chargingKick = true;
+                kickPower = Math.min(MAX_KICK_POWER, kickPower + KICK_POWER_INCREMENT);
+                kickPowerBarContainer.style.display = 'block';
+                kickPowerBar.style.width = `${(kickPower / MAX_KICK_POWER) * 100}%`;
+            } else if (chargingKick) {
+                // Chutar ao soltar espaço
+                shootBall();
+                chargingKick = false;
+                kickPower = 0;
+                kickPowerBarContainer.style.display = 'none';
+                kickPowerBar.style.width = '0%';
+            }
+        }
+        
+        function isBallMoving() {
+             return Math.abs(ballSpeedX) > 0.1 || Math.abs(ballSpeedY) > 0.1;
+        }
+
+        function shootBall() {
+            const dx = ballX - (playerX + player.offsetWidth / 2);
+            const dy = ballY - (playerY + player.offsetHeight / 2);
+            const angle = Math.atan2(dy, dx);
+            
+            // Chute direcionado para frente, com pequena variação baseada na posição relativa
+            const baseAngle = 0; // Chute reto para frente
+            const angleVariation = angle * 0.2; // Pequena influência da posição
+            const finalAngle = baseAngle + angleVariation;
+
+            ballSpeedX = Math.cos(finalAngle) * kickPower;
+            ballSpeedY = Math.sin(finalAngle) * kickPower;
+        }
+
+        function updatePlayer() {
+            // Aplicar velocidade
+            playerX += playerVelX;
+            playerY += playerVelY;
+
+            // Aplicar atrito
+            playerVelX *= PLAYER_FRICTION;
+            playerVelY *= PLAYER_FRICTION;
+
+            // Parar se velocidade for muito baixa
+            if (Math.abs(playerVelX) < 0.1) playerVelX = 0;
+            if (Math.abs(playerVelY) < 0.1) playerVelY = 0;
+
+            // Colisão com bordas do campo
+            playerX = Math.max(0, Math.min(GAME_WIDTH - player.offsetWidth, playerX));
+            playerY = Math.max(0, Math.min(GAME_HEIGHT - player.offsetHeight, playerY));
+        }
+
+        function updateBall() {
+            if (!isBallMoving()) {
+                 // Bola acompanha o jogador se não estiver chutada
+                const playerCenterX = playerX + player.offsetWidth / 2;
+                const playerCenterY = playerY + player.offsetHeight / 2;
+                ballX = playerCenterX + player.offsetWidth / 2 + 5;
+                ballY = playerCenterY - ball.offsetHeight / 2;
+                return;
+            }
+
+            ballX += ballSpeedX;
+            ballY += ballSpeedY;
+
+            // Aplicar atrito na bola
+            ballSpeedX *= BALL_FRICTION;
+            ballSpeedY *= BALL_FRICTION;
+
+            // Parar bola se velocidade muito baixa
+            if (Math.abs(ballSpeedX) < 0.1 && Math.abs(ballSpeedY) < 0.1) {
+                ballSpeedX = 0;
+                ballSpeedY = 0;
+            }
+
+            // Colisão com bordas verticais (quicar)
+            if (ballY <= 0 || ballY >= GAME_HEIGHT - ball.offsetHeight) {
+                ballSpeedY *= -0.8; // Perde energia ao quicar
+                ballY = Math.max(0, Math.min(GAME_HEIGHT - ball.offsetHeight, ballY)); // Corrigir posição
+            }
+            
+            // Colisão com bordas horizontais (laterais)
+             if (ballX <= 0) {
+                 ballSpeedX *= -0.8;
+                 ballX = 0;
+             }
+             // Não resetar imediatamente ao sair pela direita, verificar gol primeiro
+
+            // Colisão com jogador (simples, só para evitar sobreposição)
+            if (checkCollision(player, ball)) {
+                 // Afastar a bola ligeiramente
+                 const dx = ballX - playerX;
+                 const dy = ballY - playerY;
+                 const dist = Math.sqrt(dx*dx + dy*dy);
+                 const minDist = (player.offsetWidth + ball.offsetWidth) / 2;
+                 if (dist < minDist) {
+                     const overlap = minDist - dist;
+                     const angle = Math.atan2(dy, dx);
+                     ballX += Math.cos(angle) * overlap * 1.1; // Afasta um pouco mais
+                     ballY += Math.sin(angle) * overlap * 1.1;
+                     // Transferir um pouco de momento (opcional, pode complicar)
+                     // ballSpeedX += playerVelX * 0.1;
+                     // ballSpeedY += playerVelY * 0.1;
+                 }
+            }
+
+            // Colisão com goleiro
+            const gkRect = { x: goalkeeper.offsetLeft, y: goalkeeperY, width: goalkeeper.offsetWidth, height: goalkeeper.offsetHeight };
+            const ballRect = { x: ballX, y: ballY, width: ball.offsetWidth, height: ball.offsetHeight };
+
+            if (rectCollision(ballRect, gkRect)) {
+                // Rebater a bola de forma mais realista
+                const impactAngle = Math.atan2(ballY - (goalkeeperY + gkRect.height / 2), ballX - (gkRect.x + gkRect.width / 2));
+                const speedMagnitude = Math.sqrt(ballSpeedX**2 + ballSpeedY**2);
+                const bounceFactor = 0.8; // Quão forte a bola rebate
+                
+                ballSpeedX = Math.cos(impactAngle) * speedMagnitude * bounceFactor;
+                ballSpeedY = Math.sin(impactAngle) * speedMagnitude * bounceFactor;
+
+                // Adicionar um pouco da velocidade vertical do goleiro ao rebote
+                // ballSpeedY += (goalkeeperY - previousGoalkeeperY) * 0.1; // (Necessitaria guardar previousGoalkeeperY)
+
+                // Ajustar posição para evitar que a bola entre no goleiro
+                ballX += ballSpeedX * 1.5; 
+                ballY += ballSpeedY * 1.5;
+            }
+
+            // Verificar Gol
+            checkGoal();
+            
+             // Resetar se sair muito pela lateral direita (após checar gol)
+             if (ballX > GAME_WIDTH + 50) { // Dá uma margem
+                 resetBallPosition();
+             }
+        }
+
+        function updateGoalkeeper() {
+            // IA Simples: Segue a bola verticalmente com um pequeno atraso/limite
+            const targetY = ballY - goalkeeper.offsetHeight / 2;
+            const diffY = targetY - goalkeeperY;
+            
+            // Movimento mais suave e limitado
+            goalkeeperY += Math.sign(diffY) * Math.min(Math.abs(diffY), GOALKEEPER_SPEED);
+
+            // Limitar movimento do goleiro à área próxima ao gol
+            const minGoalAreaY = GOAL_Y_TOP - 20; // Um pouco acima do gol
+            const maxGoalAreaY = GOAL_Y_BOTTOM - goalkeeper.offsetHeight + 20; // Um pouco abaixo
+            goalkeeperY = Math.max(minGoalAreaY, Math.min(maxGoalAreaY, goalkeeperY));
+        }
+
+        function checkCollision(el1, el2) {
+            const rect1 = el1.getBoundingClientRect();
+            const rect2 = el2.getBoundingClientRect();
+            // Ajustar para posições absolutas dentro do container se necessário
+            // Neste caso, como usamos transform, getBoundingClientRect pode não ser ideal
+            // Vamos usar cálculo manual baseado nas variáveis x, y
+            const r1 = { x: parseFloat(el1.style.transform.split('(')[1].split(',')[0]) || 0, y: parseFloat(el1.style.transform.split(',')[1].split(')')[0]) || 0, width: el1.offsetWidth, height: el1.offsetHeight };
+            const r2 = { x: parseFloat(el2.style.transform.split('(')[1].split(',')[0]) || 0, y: parseFloat(el2.style.transform.split(',')[1].split(')')[0]) || 0, width: el2.offsetWidth, height: el2.offsetHeight };
+            
+            return rectCollision(r1, r2);
+        }
+        
+        function rectCollision(rect1, rect2) {
+             return (
+                rect1.x < rect2.x + rect2.width &&
+                rect1.x + rect1.width > rect2.x &&
+                rect1.y < rect2.y + rect2.height &&
+                rect1.y + rect1.height > rect2.y
+            );
+        }
+
+        function checkGoal() {
+            // Verifica se a bola *entrou* completamente no gol direito
+            if (ballX + ball.offsetWidth > GAME_WIDTH - 5 && // Passou da linha do gol (considerando borda) 
+                ballX < GAME_WIDTH + ball.offsetWidth && // Não foi muito longe
+                ballY > GOAL_Y_TOP && 
+                ballY + ball.offsetHeight < GOAL_Y_BOTTOM) 
+            {
+                score++;
+                scoreDisplay.textContent = `Gols: ${score}`;
+                showGoalFlash();
+                resetBallPosition();
+                // Pequeno delay antes de reiniciar a bola?
+            }
+        }
+
+        function showGoalFlash() {
+            goalFlash.style.opacity = '1';
+            setTimeout(() => {
+                goalFlash.style.opacity = '0';
+            }, 150); // Duração do flash
+        }
+
+        function shareScore() {
+            const shareText = `Marquei ${score} gols no Futebol Viral! Meu recorde é ${highScore}. Consegue fazer melhor?`;
+            // Tentar usar a API Web Share
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Futebol Viral - Pontuação',
+                    text: shareText,
+                    // url: window.location.href // Adicionar URL se o jogo estiver online
+                }).then(() => {
+                    console.log('Pontuação compartilhada com sucesso!');
+                }).catch((error) => {
+                    console.error('Erro ao compartilhar:', error);
+                    // Fallback para prompt se a API falhar ou for cancelada
+                    prompt('Copie e compartilhe sua pontuação:', shareText);
+                });
+            } else {
+                // Fallback para navegadores sem suporte
+                prompt('Copie e compartilhe sua pontuação:', shareText);
+            }
+        }
+
+        // --- Loop Principal --- 
+        function gameLoop(timestamp) {
+            if (!gameRunning) return;
+
+            handleInput();
+            updatePlayer();
+            updateBall();
+            updateGoalkeeper();
+            updateElementPositions();
+
+            requestAnimationFrame(gameLoop);
+        }
+
+        // --- Event Listeners --- 
+        document.addEventListener('keydown', (e) => {
+            if (e.key in keys) {
+                keys[e.key] = true;
+                // Prevenir comportamento padrão apenas para teclas usadas pelo jogo
+                 if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', ' '].includes(e.key)) {
+                     e.preventDefault();
+                 }
+            }
+        });
+
+        document.addEventListener('keyup', (e) => {
+            if (e.key in keys) {
+                keys[e.key] = false;
+                 if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', ' '].includes(e.key)) {
+                     e.preventDefault();
+                 }
+            }
+        });
+
+        startBtn.addEventListener('click', startGame);
+        restartBtn.addEventListener('click', initGame);
+        shareBtn.addEventListener('click', shareScore);
+
+        // --- Inicialização --- 
+        initGame(); 
+
+    </script>
+</body>
+</html>
